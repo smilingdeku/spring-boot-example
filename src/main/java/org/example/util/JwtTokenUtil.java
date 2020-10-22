@@ -35,24 +35,24 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public boolean isTokenExpired(String token) {
-        Date expiration = getExpirationFromToken(token);
+        Date expiration = getExpirationByToken(token);
         return expiration.before(new Date());
     }
 
-    public String getSubjectFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);
+    public String getSubjectByToken(String token) {
+        return getClaimByToken(token, Claims::getSubject);
     }
 
-    public Date getExpirationFromToken(String token) {
-        return getClaimFromToken(token, Claims::getExpiration);
+    public Date getExpirationByToken(String token) {
+        return getClaimByToken(token, Claims::getExpiration);
     }
 
-    private <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        Claims claims = getClaimsFromToken(token);
+    private <T> T getClaimByToken(String token, Function<Claims, T> claimsResolver) {
+        Claims claims = getClaimsByToken(token);
         return claimsResolver.apply(claims);
     }
 
-    private Claims getClaimsFromToken(String token) {
+    private Claims getClaimsByToken(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)

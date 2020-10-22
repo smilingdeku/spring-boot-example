@@ -40,7 +40,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         final String token = request.getHeader(SecurityConstants.TOKEN_HEADER);
         if (!StringUtils.isEmpty(token)) {
             try {
-               String subject = jwtTokenUtil.getSubjectFromToken(token);
+               String subject = jwtTokenUtil.getSubjectByToken(token);
                 if (!StringUtils.isEmpty(subject)) {
                     Authentication authentication = new UsernamePasswordAuthenticationToken(
                             subject, null, Collections.emptyList());
