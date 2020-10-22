@@ -1,2 +1,6 @@
 server:
   port: 8080
+
+jwt:
+  secret: 6v9y$B&E)H@McQfTjWnZr4u7x!z%C*F-
+  timeout: 3600
