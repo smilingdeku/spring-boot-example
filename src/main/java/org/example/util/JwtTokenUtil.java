@@ -1,6 +1,7 @@
 package org.example.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,9 +35,26 @@ public class JwtTokenUtil implements Serializable {
                 .compact();
     }
 
+    public String generateToken(Map<String, Object> claims) {
+        return Jwts.builder()
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .setClaims(claims)
+                .setExpiration(new Date(System.currentTimeMillis() + timeout * 1000))
+                .compact();
+    }
+
+    public String refreshToken(String token) {
+        Claims claims = getClaimsByToken(token);
+        return generateToken(claims);
+    }
+
     public boolean isTokenExpired(String token) {
-        Date expiration = getExpirationByToken(token);
-        return expiration.before(new Date());
+        try {
+            getExpirationByToken(token);
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
+        return false;
     }
 
     public String getSubjectByToken(String token) {
@@ -47,7 +65,7 @@ public class JwtTokenUtil implements Serializable {
         return getClaimByToken(token, Claims::getExpiration);
     }
 
-    private <T> T getClaimByToken(String token, Function<Claims, T> claimsResolver) {
+    private  <T> T getClaimByToken(String token, Function<Claims, T> claimsResolver) {
         Claims claims = getClaimsByToken(token);
         return claimsResolver.apply(claims);
     }

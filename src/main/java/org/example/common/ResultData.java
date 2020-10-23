@@ -6,21 +6,27 @@ import java.io.Serializable;
 public class ResultData<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String code;
+    private Integer code;
     private String msg;
     private T data;
 
-    public ResultData(String code, String msg, T data) {
+    public ResultData(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    public String getCode() {
+    public ResultData(Code code, T data) {
+        this.code = code.getCode();
+        this.msg = code.getMsg();
+        this.data = data;
+    }
+
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 

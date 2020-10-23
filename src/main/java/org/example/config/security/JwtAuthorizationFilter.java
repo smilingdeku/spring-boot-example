@@ -41,6 +41,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if (!StringUtils.isEmpty(token)) {
             try {
                String subject = jwtTokenUtil.getSubjectByToken(token);
+               // 可在 token 过期前的一段时间内，重新签发 token，并通过请求头返回
+//               Date expiration = jwtTokenUtil.getExpirationByToken(token);
+//               if (expiration.getTime() - System.currentTimeMillis() < 10000) {
+//                   response.setHeader(SecurityConstants.TOKEN_HEADER, jwtTokenUtil.refreshToken(token));
+//               }
                 if (!StringUtils.isEmpty(subject)) {
                     Authentication authentication = new UsernamePasswordAuthenticationToken(
                             subject, null, Collections.emptyList());
