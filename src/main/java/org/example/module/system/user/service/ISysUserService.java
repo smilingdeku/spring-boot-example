@@ -1,6 +1,6 @@
 package org.example.module.system.user.service;
 
-import org.example.module.system.user.entity.SysUser;
+import org.example.module.system.user.domain.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -13,4 +13,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysUserService extends IService<SysUser> {
 
+    /**
+     * 通过用户名获取用户
+     *
+     * @param userName 用户名
+     * @return SysUser
+     */
+    SysUser getUserByUserName(String userName);
 }

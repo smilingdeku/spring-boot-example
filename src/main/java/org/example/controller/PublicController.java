@@ -10,6 +10,8 @@ public class PublicController {
 
     @GetMapping
     public String getMessage() {
-        return "Hello from public API controller";
+        throw new RuntimeException("...");
+//        throw new BusinessException(Code.UNKNOWN_ERROR);
+//        return "Hello from public API controller";
     }
 }

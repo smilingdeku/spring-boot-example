@@ -1,10 +1,9 @@
-package org.example.config.security;
+package org.example.config.security.filter;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import org.example.constant.SecurityConstants;
 import org.example.util.JwtTokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +36,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {
-        final String token = request.getHeader(SecurityConstants.TOKEN_HEADER);
+        final String token = jwtTokenUtil.getToken(request);
         if (!StringUtils.isEmpty(token)) {
             try {
                String subject = jwtTokenUtil.getSubjectByToken(token);
-               // 可在 token 过期前的一段时间内，重新签发 token，并通过请求头返回
+               // 可在 token 过期前的一段时间内，重新签发 token
 //               Date expiration = jwtTokenUtil.getExpirationByToken(token);
 //               if (expiration.getTime() - System.currentTimeMillis() < 10000) {
 //                   response.setHeader(SecurityConstants.TOKEN_HEADER, jwtTokenUtil.refreshToken(token));

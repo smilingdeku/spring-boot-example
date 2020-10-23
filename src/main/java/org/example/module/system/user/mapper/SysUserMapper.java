@@ -1,6 +1,6 @@
 package org.example.module.system.user.mapper;
 
-import org.example.module.system.user.entity.SysUser;
+import org.example.module.system.user.domain.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,10 +17,16 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil implements Serializable {
 
-    @Value("${jwt.secret}")
+    @Value("${token.header}")
+    private String header;
+    @Value("${token.secret}")
     private String secret;
-    @Value("${jwt.timeout}")
+    @Value("${token.timeout}")
     private Long timeout;
+
+    public String getToken(HttpServletRequest request) {
+        return request.getHeader(header);
+    }
 
     public String generateToken(String subject) {
         Map<String, Object> claims = new HashMap<>();

@@ -16,10 +16,20 @@ public class ResultData<T> implements Serializable {
         this.data = data;
     }
 
+    public ResultData(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
     public ResultData(Code code, T data) {
         this.code = code.getCode();
         this.msg = code.getMsg();
         this.data = data;
+    }
+
+    public ResultData(Code code) {
+        this.code = code.getCode();
+        this.msg = code.getMsg();
     }
 
     public Integer getCode() {

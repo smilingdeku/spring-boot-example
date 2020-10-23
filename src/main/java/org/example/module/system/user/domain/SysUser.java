@@ -1,4 +1,4 @@
-package org.example.module.system.user.entity;
+package org.example.module.system.user.domain;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
