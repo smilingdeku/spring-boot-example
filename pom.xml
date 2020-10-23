@@ -23,6 +23,7 @@
 
         <jjwt.version>0.9.1</jjwt.version>
         <mybatis-plus.version>3.1.0</mybatis-plus.version>
+        <beetl.version>2.9.10</beetl.version>
     </properties>
 
     <dependencies>
@@ -54,6 +55,13 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
             <version>${mybatis-plus.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Template engine -->
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>beetl</artifactId>
+            <version>${beetl.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- JWT -->
