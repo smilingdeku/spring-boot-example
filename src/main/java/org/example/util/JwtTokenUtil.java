@@ -72,7 +72,7 @@ public class JwtTokenUtil implements Serializable {
         return getClaimByToken(token, Claims::getExpiration);
     }
 
-    private  <T> T getClaimByToken(String token, Function<Claims, T> claimsResolver) {
+    private <T> T getClaimByToken(String token, Function<Claims, T> claimsResolver) {
         Claims claims = getClaimsByToken(token);
         return claimsResolver.apply(claims);
     }

@@ -17,13 +17,11 @@ public class SpringUtil implements BeanFactoryPostProcessor {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T getBean(String name) throws BeansException
-    {
+    public static <T> T getBean(String name) throws BeansException {
         return (T) beanFactory.getBean(name);
     }
 
-    public static <T> T getBean(Class<T> clz) throws BeansException
-    {
+    public static <T> T getBean(Class<T> clz) throws BeansException {
         T result = (T) beanFactory.getBean(clz);
         return result;
     }
