@@ -10,10 +10,10 @@ spring:
   messages:
     basename: i18n/messages
   datasource:
-    url: jdbc:mysql://47.103.195.154:3306/base?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://127.0.0.1:3306/base?useUnicode=true&characterEncoding=utf8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: Qwe#123456
+    password: 123456
 
 mybatis-plus:
   configuration:
