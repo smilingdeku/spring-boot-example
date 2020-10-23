@@ -17,16 +17,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     private final static Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @SuppressWarnings("all")
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<?> handleException(Exception e) {
-        log.error("Unkonwn exception", e);
-        return new ResponseEntity<>(new ResultData(Code.UNKNOWN_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
+        log.error("Unknown exception", e);
+        return new ResponseEntity<>(new ResultData<>(Code.UNKNOWN_ERROR),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = BusinessException.class)
     public ResponseEntity<?> handleBusinessException(BusinessException e) {
         log.error("Business exception", e);
-        return ResponseEntity.ok(new ResultData<>(e.getCode(), e.getMessage()));
+        return new ResponseEntity<>(new ResultData<>(e.getCode(), e.getMessage()),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
