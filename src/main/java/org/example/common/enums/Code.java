@@ -1,6 +1,6 @@
 package org.example.common.enums;
 
-import org.example.util.MessageUtil;
+import org.example.common.util.MessageUtil;
 
 public enum Code {
     UNKNOWN_ERROR(-1, "unknown-error"),

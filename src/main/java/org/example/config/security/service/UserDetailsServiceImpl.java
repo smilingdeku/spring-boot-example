@@ -1,12 +1,12 @@
 package org.example.config.security.service;
 
 import org.example.config.security.domain.User;
-import org.example.constant.MsgKeyConstant;
-import org.example.exception.BusinessException;
+import org.example.common.constant.MsgKeyConstant;
+import org.example.common.exception.BusinessException;
 import org.example.module.system.user.domain.SysUser;
 import org.example.module.system.user.service.ISysUserService;
-import org.example.util.ConvertUtil;
-import org.example.util.MessageUtil;
+import org.example.common.util.ConvertUtil;
+import org.example.common.util.MessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

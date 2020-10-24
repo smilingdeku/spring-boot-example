@@ -2,9 +2,9 @@ package org.example.config.exception;
 
 import org.example.common.domain.Result;
 import org.example.common.enums.Code;
-import org.example.constant.MsgKeyConstant;
-import org.example.exception.BusinessException;
-import org.example.util.MessageUtil;
+import org.example.common.constant.MsgKeyConstant;
+import org.example.common.exception.BusinessException;
+import org.example.common.util.MessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;

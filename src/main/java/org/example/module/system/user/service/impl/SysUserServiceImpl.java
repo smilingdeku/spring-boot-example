@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.example.module.system.user.domain.SysUser;
 import org.example.module.system.user.mapper.SysUserMapper;
 import org.example.module.system.user.service.ISysUserService;
-import org.example.util.JwtTokenUtil;
+import org.example.common.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
