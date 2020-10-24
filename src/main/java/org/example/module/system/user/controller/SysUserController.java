@@ -34,6 +34,6 @@ public class SysUserController {
         String token = sysUserService.login(request.getUsername(), request.getPassword());
         TokenResponse response = new TokenResponse();
         response.setToken(token);
-        return ResponseEntity.ok(new Result<>(Code.SUCCESS, token));
+        return ResponseEntity.ok(new Result<>(Code.SUCCESS, response));
     }
 }

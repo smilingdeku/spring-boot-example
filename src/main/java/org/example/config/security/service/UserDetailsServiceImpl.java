@@ -29,13 +29,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser user = sysUserService.getUserByUserName(username);
         if (Objects.isNull(user)) {
-            throw new UsernameNotFoundException(MessageUtil.message(MsgKeyConstant.USER_NOT_EXISTED, username));
+            throw new UsernameNotFoundException(MessageUtil.message(MsgKeyConstant.SYSTEM_USER_NOT_EXISTED, username));
         }
         if (Objects.nonNull(user.getDeletedAt())) {
-            throw new BusinessException(MessageUtil.message(MsgKeyConstant.USER_IS_DELETED, username));
+            throw new BusinessException(MessageUtil.message(MsgKeyConstant.SYSTEM_USER_IS_DELETED, username));
         }
         if (!ConvertUtil.getAsBoolean(user.getStatus(), false)) {
-            throw new BusinessException(MessageUtil.message(MsgKeyConstant.USER_IS_DISABLE, username));
+            throw new BusinessException(MessageUtil.message(MsgKeyConstant.SYSTEM_USER_IS_DISABLE, username));
         }
         return new User(user, Collections.emptySet());
     }

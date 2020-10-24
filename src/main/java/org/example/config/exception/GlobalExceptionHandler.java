@@ -42,10 +42,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = AuthenticationException.class)
     public ResponseEntity<?> handleAuthenticationExceptionException(AuthenticationException e) {
-        log.error("AuthenticationException", e);
         String msg = e.getMessage();
         if (e instanceof BadCredentialsException) {
-            msg = MessageUtil.message(MsgKeyConstant.USERNAME_PASSWORD_NOT_MATCH);
+            msg = MessageUtil.message(MsgKeyConstant.SYSTEM_USERNAME_PASSWORD_NOT_MATCH);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new Result<>(HttpStatus.UNAUTHORIZED.value(), msg));
