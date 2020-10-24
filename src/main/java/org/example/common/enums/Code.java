@@ -1,10 +1,12 @@
-package org.example.common;
+package org.example.common.enums;
 
 import org.example.util.MessageUtil;
 
 public enum Code {
-    SUCCESS(0, "SUCCESS"),
-    UNKNOWN_ERROR(-1, "UNKNOWN_ERROR");
+    UNKNOWN_ERROR(-1, "unknown-error"),
+    SUCCESS(0, "success"),
+    FAIL(500, "fail"),
+    ;
 
     Code(Integer code, String msgKey) {
         this.code = code;

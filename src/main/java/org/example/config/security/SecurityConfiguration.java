@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -25,6 +26,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthorizationFilter jwtAuthorizationFilter;
     @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @Override
@@ -32,12 +35,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         httpSecurity.cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/public", "/api/authenticate", "/api/refresh-token").permitAll()
+                .antMatchers("/system/user/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
     }
 
     @Override
@@ -51,8 +55,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean

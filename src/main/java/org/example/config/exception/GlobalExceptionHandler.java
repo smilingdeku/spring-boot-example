@@ -1,16 +1,25 @@
 package org.example.config.exception;
 
-import org.example.common.Code;
-import org.example.common.ResultData;
+import org.example.common.domain.Result;
+import org.example.common.enums.Code;
+import org.example.constant.MsgKeyConstant;
 import org.example.exception.BusinessException;
+import org.example.util.MessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.validation.ConstraintViolationException;
+
 
 @RestControllerAdvice
 @Order(value = Ordered.HIGHEST_PRECEDENCE)
@@ -19,15 +28,48 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<?> handleException(Exception e) {
-        log.error("Unknown exception", e);
-        return new ResponseEntity<>(new ResultData<>(Code.UNKNOWN_ERROR),
-                HttpStatus.INTERNAL_SERVER_ERROR);
+        log.error("UnknownException", e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new Result<>(Code.UNKNOWN_ERROR));
     }
 
     @ExceptionHandler(value = BusinessException.class)
     public ResponseEntity<?> handleBusinessException(BusinessException e) {
-        log.error("Business exception", e);
-        return new ResponseEntity<>(new ResultData<>(e.getCode(), e.getMessage()),
-                HttpStatus.INTERNAL_SERVER_ERROR);
+        log.error("BusinessException", e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new Result<>(e.getCode(), e.getMessage()));
     }
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    public ResponseEntity<?> handleAuthenticationExceptionException(AuthenticationException e) {
+        log.error("AuthenticationException", e);
+        String msg = e.getMessage();
+        if (e instanceof BadCredentialsException) {
+            msg = MessageUtil.message(MsgKeyConstant.USERNAME_PASSWORD_NOT_MATCH);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new Result<>(HttpStatus.UNAUTHORIZED.value(), msg));
+    }
+
+    @ExceptionHandler(value = BindException.class)
+    public ResponseEntity<?> handleValidException(BindException e) {
+        String msg = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Result<>(HttpStatus.BAD_REQUEST.value(), msg));
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleValidException(MethodArgumentNotValidException e) {
+        String msg = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Result<>(HttpStatus.BAD_REQUEST.value(), msg));
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public ResponseEntity<?> handleValidException(ConstraintViolationException e) {
+        String msg = e.getConstraintViolations().iterator().next().getMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Result<>(HttpStatus.BAD_REQUEST.value(), msg));
+    }
+
 }

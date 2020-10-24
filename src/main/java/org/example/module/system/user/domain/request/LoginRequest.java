@@ -1,4 +1,4 @@
-package org.example.common;
+package org.example.module.system.user.domain.request;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -6,9 +6,9 @@ import java.io.Serializable;
 public class LoginRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @NotBlank
+    @NotBlank(message = "{system.user.username-can-not-be-blank}")
     private String username;
-    @NotBlank
+    @NotBlank(message = "{system.user.password-can-not-be-blank}")
     private String password;
 
     public LoginRequest() {

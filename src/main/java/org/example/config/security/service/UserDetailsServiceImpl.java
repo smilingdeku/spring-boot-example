@@ -1,8 +1,12 @@
 package org.example.config.security.service;
 
 import org.example.config.security.domain.User;
+import org.example.constant.MsgKeyConstant;
+import org.example.exception.BusinessException;
 import org.example.module.system.user.domain.SysUser;
 import org.example.module.system.user.service.ISysUserService;
+import org.example.util.ConvertUtil;
+import org.example.util.MessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +23,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Autowired
-    private ISysUserService userService;
+    private ISysUserService sysUserService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SysUser user = userService.getUserByUserName(username);
+        SysUser user = sysUserService.getUserByUserName(username);
         if (Objects.isNull(user)) {
-            return null;
+            throw new UsernameNotFoundException(MessageUtil.message(MsgKeyConstant.USER_NOT_EXISTED, username));
+        }
+        if (Objects.nonNull(user.getDeletedAt())) {
+            throw new BusinessException(MessageUtil.message(MsgKeyConstant.USER_IS_DELETED, username));
+        }
+        if (!ConvertUtil.getAsBoolean(user.getStatus(), false)) {
+            throw new BusinessException(MessageUtil.message(MsgKeyConstant.USER_IS_DISABLE, username));
         }
         return new User(user, Collections.emptySet());
     }
