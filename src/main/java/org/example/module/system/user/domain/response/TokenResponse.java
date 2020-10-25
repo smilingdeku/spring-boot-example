@@ -1,7 +1,9 @@
 package org.example.module.system.user.domain.response;
 
 
-public class TokenResponse {
+import java.io.Serializable;
+
+public class TokenResponse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String token;
