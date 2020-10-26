@@ -1,15 +1,15 @@
 package org.example.config.security.service;
 
-import org.example.config.security.domain.User;
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.exception.BusinessException;
-import org.example.module.sys.user.domain.SysUser;
-import org.example.module.sys.user.service.ISysUserService;
 import org.example.common.util.ConvertUtil;
 import org.example.common.util.MessageUtil;
+import org.example.module.sys.user.domain.SysUser;
+import org.example.module.sys.user.service.ISysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,6 +37,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (!ConvertUtil.getAsBoolean(user.getStatus(), false)) {
             throw new BusinessException(MessageUtil.message(MsgKeyConstant.SYSTEM_USER_IS_DISABLE, username));
         }
-        return new User(user, Collections.emptySet());
+        return new User(user.getUsername(), user.getPassword(), Collections.emptyList());
     }
 }
