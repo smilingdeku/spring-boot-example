@@ -34,14 +34,14 @@ public class ApiResult<T> implements Serializable {
         this.msg = code.getMsg();
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"rawtypes"})
     public static ApiResult success(Object data) {
-        return new ApiResult(Code.SUCCESS, data);
+        return new ApiResult<>(Code.SUCCESS, data);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"rawtypes"})
     public static ApiResult fail(Object data) {
-        return new ApiResult(Code.FAIL, data);
+        return new ApiResult<>(Code.FAIL, data);
     }
 
     public Integer getCode() {
