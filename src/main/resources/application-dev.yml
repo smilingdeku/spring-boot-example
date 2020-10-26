@@ -1,0 +1,17 @@
+token:
+  header: Authorization
+  secret: 6v9y$B&E)H@McQfTjWnZr4u7x!z%C*F-
+  timeout: 3600
+
+spring:
+  messages:
+    basename: i18n/messages
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/base?useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
