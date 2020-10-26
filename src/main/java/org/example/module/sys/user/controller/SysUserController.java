@@ -1,7 +1,7 @@
 package org.example.module.sys.user.controller;
 
 
-import org.example.common.domain.Result;
+import org.example.common.domain.ResultData;
 import org.example.common.enums.Code;
 import org.example.module.sys.user.domain.request.LoginRequest;
 import org.example.module.sys.user.domain.response.TokenResponse;
@@ -34,6 +34,6 @@ public class SysUserController {
         String token = sysUserService.login(request.getUsername(), request.getPassword());
         TokenResponse response = new TokenResponse();
         response.setToken(token);
-        return ResponseEntity.ok(new Result<>(Code.SUCCESS, response));
+        return ResponseEntity.ok(new ResultData<>(Code.SUCCESS, response));
     }
 }

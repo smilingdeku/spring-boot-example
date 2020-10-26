@@ -1,6 +1,6 @@
 package org.example.config.exception;
 
-import org.example.common.domain.Result;
+import org.example.common.domain.ResultData;
 import org.example.common.enums.Code;
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.exception.BusinessException;
@@ -30,14 +30,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleException(Exception e) {
         log.error("UnknownException", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new Result<>(Code.UNKNOWN_ERROR));
+                .body(new ResultData<>(Code.UNKNOWN_ERROR));
     }
 
     @ExceptionHandler(value = BusinessException.class)
     public ResponseEntity<?> handleBusinessException(BusinessException e) {
         log.error("BusinessException", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new Result<>(e.getCode(), e.getMessage()));
+                .body(new ResultData<>(e.getCode(), e.getMessage()));
     }
 
     @ExceptionHandler(value = AuthenticationException.class)
@@ -47,28 +47,28 @@ public class GlobalExceptionHandler {
             msg = MessageUtil.message(MsgKeyConstant.SYSTEM_USERNAME_PASSWORD_NOT_MATCH);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new Result<>(HttpStatus.UNAUTHORIZED.value(), msg));
+                .body(new ResultData<>(HttpStatus.UNAUTHORIZED.value(), msg));
     }
 
     @ExceptionHandler(value = BindException.class)
     public ResponseEntity<?> handleValidException(BindException e) {
         String msg = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new Result<>(HttpStatus.BAD_REQUEST.value(), msg));
+                .body(new ResultData<>(HttpStatus.BAD_REQUEST.value(), msg));
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidException(MethodArgumentNotValidException e) {
         String msg = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new Result<>(HttpStatus.BAD_REQUEST.value(), msg));
+                .body(new ResultData<>(HttpStatus.BAD_REQUEST.value(), msg));
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
     public ResponseEntity<?> handleValidException(ConstraintViolationException e) {
         String msg = e.getConstraintViolations().iterator().next().getMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new Result<>(HttpStatus.BAD_REQUEST.value(), msg));
+                .body(new ResultData<>(HttpStatus.BAD_REQUEST.value(), msg));
     }
 
 }

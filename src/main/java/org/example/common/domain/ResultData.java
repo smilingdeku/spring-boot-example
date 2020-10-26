@@ -5,31 +5,31 @@ import org.example.common.enums.Code;
 
 import java.io.Serializable;
 
-public class Result<T> implements Serializable {
+public class ResultData<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer code;
     private String msg;
     private T data;
 
-    public Result(Integer code, String msg, T data) {
+    public ResultData(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    public Result(Integer code, String msg) {
+    public ResultData(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public Result(Code code, T data) {
+    public ResultData(Code code, T data) {
         this.code = code.getCode();
         this.msg = code.getMsg();
         this.data = data;
     }
 
-    public Result(Code code) {
+    public ResultData(Code code) {
         this.code = code.getCode();
         this.msg = code.getMsg();
     }
