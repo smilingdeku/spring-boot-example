@@ -2,7 +2,7 @@ package org.example.config.security.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.example.module.system.user.domain.SysUser;
+import org.example.module.sys.user.domain.SysUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
