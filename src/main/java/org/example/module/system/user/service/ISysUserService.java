@@ -16,10 +16,10 @@ public interface ISysUserService extends IService<SysUser> {
     /**
      * 通过用户名获取用户
      *
-     * @param userName 用户名
+     * @param username 用户名
      * @return SysUser
      */
-    SysUser getUserByUserName(String userName);
+    SysUser getUserByUsername(String username);
 
     /**
      * 登录

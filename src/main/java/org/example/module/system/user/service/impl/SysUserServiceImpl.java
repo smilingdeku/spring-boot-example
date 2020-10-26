@@ -28,8 +28,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private AuthenticationManager authenticationManager;
 
     @Override
-    public SysUser getUserByUserName(String userName) {
-        return this.getOne(new QueryWrapper<SysUser>().lambda().eq(SysUser::getUserName, userName));
+    public SysUser getUserByUsername(String username) {
+        return this.getOne(new QueryWrapper<SysUser>().lambda().eq(SysUser::getUsername, username));
     }
 
     @Override
