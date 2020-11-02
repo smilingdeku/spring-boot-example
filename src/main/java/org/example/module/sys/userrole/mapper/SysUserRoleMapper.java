@@ -1,6 +1,6 @@
 package org.example.module.sys.userrole.mapper;
 
-import org.example.module.sys.userrole.entity.SysUserRole;
+import org.example.module.sys.userrole.domain.entity.SysUserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

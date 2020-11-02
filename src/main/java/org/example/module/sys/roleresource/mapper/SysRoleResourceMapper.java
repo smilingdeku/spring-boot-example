@@ -1,6 +1,6 @@
 package org.example.module.sys.roleresource.mapper;
 
-import org.example.module.sys.roleresource.entity.SysRoleResource;
+import org.example.module.sys.roleresource.domain.entity.SysRoleResource;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

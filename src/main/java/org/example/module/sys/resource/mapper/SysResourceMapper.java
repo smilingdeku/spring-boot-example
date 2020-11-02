@@ -1,7 +1,9 @@
 package org.example.module.sys.resource.mapper;
 
-import org.example.module.sys.resource.entity.SysResource;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.example.module.sys.resource.domain.entity.SysResource;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +14,14 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2020-11-02
  */
 public interface SysResourceMapper extends BaseMapper<SysResource> {
+
+    /**
+     * 获取用户资源
+     *
+     * @param username 用户名
+     * @param type     资源类型
+     * @return List<SysResource>
+     */
+    List<SysResource> listByUsername(String username, int type);
 
 }

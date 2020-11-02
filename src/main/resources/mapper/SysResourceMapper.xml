@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.module.sys.resource.mapper.SysResourceMapper">
+
+    <select id="listByUsername" resultType="org.example.module.sys.resource.domain.entity.SysResource">
+        SELECT tsr.*
+        FROM t_sys_resource tsr
+        LEFT JOIN t_sys_role_resource tsrr ON tsr.id = tsrr.resource_id
+        LEFT JOIN t_sys_user_role tsur ON tsur.role_id = tsrr.role_id
+        LEFT JOIN t_sys_user tsu ON tsu.id = tsur.user_id
+        WHERE tsu.username = #{username} AND tsr.type = #{type}
+        ORDER BY tsr.sort_number
+    </select>
+</mapper>

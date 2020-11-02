@@ -1,6 +1,6 @@
 package org.example.module.sys.role.service;
 
-import org.example.module.sys.role.entity.SysRole;
+import org.example.module.sys.role.domain.entity.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

@@ -1,6 +1,6 @@
 package org.example.module.sys.resource.service.impl;
 
-import org.example.module.sys.resource.entity.SysResource;
+import org.example.module.sys.resource.domain.entity.SysResource;
 import org.example.module.sys.resource.mapper.SysResourceMapper;
 import org.example.module.sys.resource.service.ISysResourceService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

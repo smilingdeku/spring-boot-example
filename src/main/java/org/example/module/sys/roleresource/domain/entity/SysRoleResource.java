@@ -1,4 +1,4 @@
-package org.example.module.sys.roleresource.entity;
+package org.example.module.sys.roleresource.domain.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 /**

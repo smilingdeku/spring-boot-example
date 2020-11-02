@@ -6,3 +6,6 @@ spring:
     active: dev
   messages:
     basename: i18n/messages
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml

@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -20,7 +22,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -28,6 +29,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -38,21 +41,22 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             try {
                String subject = jwtTokenUtil.getSubjectByToken(token);
                 if (!StringUtils.isEmpty(subject)) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            subject, null, Collections.emptyList());
+                            subject, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (ExpiredJwtException exception) {
-                log.warn("Request to parse expired JWT : {} failed : {}", token, exception.getMessage());
+                log.warn("Request to parse expired JWT: {} failed: {}", token, exception.getMessage());
             } catch (UnsupportedJwtException exception) {
-                log.warn("Request to parse unsupported JWT : {} failed : {}", token, exception.getMessage());
+                log.warn("Request to parse unsupported JWT: {} failed: {}", token, exception.getMessage());
             } catch (MalformedJwtException exception) {
-                log.warn("Request to parse invalid JWT : {} failed : {}", token, exception.getMessage());
+                log.warn("Request to parse invalid JWT: {} failed: {}", token, exception.getMessage());
             } catch (SignatureException exception) {
-                log.warn("Request to parse JWT with invalid signature : {} failed : {}", token, exception.getMessage());
+                log.warn("Request to parse JWT with invalid signature: {} failed: {}", token, exception.getMessage());
             } catch (IllegalArgumentException exception) {
-                log.warn("Request to parse empty or null JWT : {} failed : {}", token, exception.getMessage());
+                log.warn("Request to parse empty or null JWT: {} failed: {}", token, exception.getMessage());
             }
         }
         filterChain.doFilter(request, response);

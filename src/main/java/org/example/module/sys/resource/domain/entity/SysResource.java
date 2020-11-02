@@ -1,4 +1,4 @@
-package org.example.module.sys.resource.entity;
+package org.example.module.sys.resource.domain.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
 import java.io.Serializable;

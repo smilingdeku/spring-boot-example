@@ -1,6 +1,6 @@
 package org.example.module.sys.userrole.service.impl;
 
-import org.example.module.sys.userrole.entity.SysUserRole;
+import org.example.module.sys.userrole.domain.entity.SysUserRole;
 import org.example.module.sys.userrole.mapper.SysUserRoleMapper;
 import org.example.module.sys.userrole.service.ISysUserRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

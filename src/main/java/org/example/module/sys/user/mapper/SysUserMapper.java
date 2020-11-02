@@ -1,7 +1,9 @@
 package org.example.module.sys.user.mapper;
 
-import org.example.module.sys.user.domain.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.example.module.sys.user.domain.entity.SysUser;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +15,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
+    /**
+     * 根据用户名获取权限列表
+     *
+     * @param username 用户名
+     * @return List<String>
+     */
+    List<String> listPermissionByUsername(String username);
 }

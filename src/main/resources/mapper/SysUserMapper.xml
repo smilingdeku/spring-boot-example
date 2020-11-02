@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.module.sys.user.mapper.SysUserMapper">
+
+    <select id="listPermissionByUsername" resultType="java.lang.String">
+        SELECT DISTINCT tsr.permission
+        FROM t_sys_user tsu
+        LEFT JOIN t_sys_user_role tsur ON tsu.id = tsur.user_id
+        LEFT JOIN t_sys_role_resource tsrr ON tsrr.role_id = tsur.role_id
+        LEFT JOIN t_sys_resource tsr ON tsr.id = tsrr.id
+        WHERE tsu.username = #{username}
+            AND tsr.permission IS NOT NULL
+            AND tsr.permission &lt;&gt; ''
+    </select>
+</mapper>

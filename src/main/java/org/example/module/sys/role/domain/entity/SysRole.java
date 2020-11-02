@@ -1,18 +1,18 @@
-package org.example.module.sys.user.domain;
+package org.example.module.sys.role.domain.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 /**
  * <p>
- * 系统用户
+ * 系统角色
  * </p>
  *
  * @author linzhaoming
- * @since 2020-10-23
+ * @since 2020-10-26
  */
-@TableName("t_sys_user")
-public class SysUser implements Serializable {
+@TableName("t_sys_role")
+public class SysRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,29 +22,14 @@ public class SysUser implements Serializable {
     private Long id;
 
     /**
-     * 用户名
+     * 角色名称
      */
-    private String username;
+    private String name;
 
     /**
-     * 密码
+     * 排序号
      */
-    private String password;
-
-    /**
-     * 真实姓名
-     */
-    private String realName;
-
-    /**
-     * 邮箱
-     */
-    private String email;
-
-    /**
-     * 电话
-     */
-    private String phone;
+    private Integer sortNumber;
 
     /**
      * 备注
@@ -74,44 +59,20 @@ public class SysUser implements Serializable {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getRealName() {
-        return realName;
+    public Integer getSortNumber() {
+        return sortNumber;
     }
 
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setSortNumber(Integer sortNumber) {
+        this.sortNumber = sortNumber;
     }
 
     public String getMemo() {
@@ -148,13 +109,10 @@ public class SysUser implements Serializable {
 
     @Override
     public String toString() {
-        return "SysUser{" +
+        return "SysRole{" +
         ", id=" + id +
-        ", username=" + username +
-        ", realName=" + realName +
-        ", password=" + password +
-        ", email=" + email +
-        ", phone=" + phone +
+        ", name=" + name +
+        ", sortNumber=" + sortNumber +
         ", memo=" + memo +
         ", status=" + status +
         ", createdAt=" + createdAt +
