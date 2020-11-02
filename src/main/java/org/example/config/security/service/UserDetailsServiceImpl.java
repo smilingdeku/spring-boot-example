@@ -31,9 +31,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException(MessageUtil.message(MsgKeyConstant.SYSTEM_USER_NOT_EXISTED, username));
         }
-        if (Objects.nonNull(user.getDeletedAt())) {
-            throw new BusinessException(MessageUtil.message(MsgKeyConstant.SYSTEM_USER_IS_DELETED, username));
-        }
         if (!ConvertUtil.getAsBoolean(user.getStatus(), false)) {
             throw new BusinessException(MessageUtil.message(MsgKeyConstant.SYSTEM_USER_IS_DISABLE, username));
         }

@@ -1,5 +1,4 @@
 package org.example.module.sys.role.entity;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
@@ -51,12 +50,6 @@ public class SysRole implements Serializable {
      * 更新时间
      */
     private LocalDateTime updatedAt;
-
-    /**
-     * 删除时间
-     */
-    @TableLogic
-    private LocalDateTime deletedAt;
 
     public Long getId() {
         return id;
@@ -114,14 +107,6 @@ public class SysRole implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public LocalDateTime getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(LocalDateTime deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
     @Override
     public String toString() {
         return "SysRole{" +
@@ -132,7 +117,6 @@ public class SysRole implements Serializable {
         ", status=" + status +
         ", createdAt=" + createdAt +
         ", updatedAt=" + updatedAt +
-        ", deletedAt=" + deletedAt +
         "}";
     }
 }
