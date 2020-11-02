@@ -1,4 +1,4 @@
-package org.example.module.sys.resource.controller;
+package org.example.module.sys.userrole.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 系统资源 前端控制器
+ * 系统用户角色关联 前端控制器
  * </p>
  *
  * @author linzhaoming
  * @since 2020-11-02
  */
 @RestController
-@RequestMapping("/sys/resource")
-public class SysResourceController {
+@RequestMapping("/sys/user-role")
+public class SysUserRoleController {
 
 }
