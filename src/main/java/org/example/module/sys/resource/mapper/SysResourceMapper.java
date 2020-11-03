@@ -22,6 +22,6 @@ public interface SysResourceMapper extends BaseMapper<SysResource> {
      * @param type     资源类型
      * @return List<SysResource>
      */
-    List<SysResource> listByUsername(String username, int type);
+    List<SysResource> listByUsernameAndType(String username, int type);
 
 }

@@ -3,12 +3,12 @@ package org.example.module.sys.user.domain.response;
 
 import java.io.Serializable;
 
-public class TokenResponse implements Serializable {
+public class LoginResponse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String token;
 
-    public TokenResponse() {
+    public LoginResponse() {
     }
 
     public String getToken() {

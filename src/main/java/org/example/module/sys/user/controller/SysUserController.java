@@ -3,7 +3,7 @@ package org.example.module.sys.user.controller;
 
 import org.example.common.domain.ApiResult;
 import org.example.module.sys.user.domain.request.LoginRequest;
-import org.example.module.sys.user.domain.response.TokenResponse;
+import org.example.module.sys.user.domain.response.LoginResponse;
 import org.example.module.sys.user.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class SysUserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Validated LoginRequest request) {
         String token = sysUserService.login(request.getUsername(), request.getPassword());
-        TokenResponse response = new TokenResponse();
+        LoginResponse response = new LoginResponse();
         response.setToken(token);
         return ResponseEntity.ok(ApiResult.success(response));
     }

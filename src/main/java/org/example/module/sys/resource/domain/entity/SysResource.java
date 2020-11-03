@@ -15,6 +15,10 @@ public class SysResource implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /** 类型常量 */
+    public static final int TYPE_MENU = 1;
+    public static final int TYPE_BUTTON = 2;
+
     /**
      * 主键
      */
