@@ -32,6 +32,11 @@ public class SysUser implements Serializable {
     private String password;
 
     /**
+     * 头像
+     */
+    private String avatar;
+
+    /**
      * 真实姓名
      */
     private String realName;
@@ -98,6 +103,14 @@ public class SysUser implements Serializable {
         this.password = password;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -153,6 +166,7 @@ public class SysUser implements Serializable {
         ", username=" + username +
         ", realName=" + realName +
         ", password=" + password +
+        ", avatar=" + avatar +
         ", email=" + email +
         ", phone=" + phone +
         ", memo=" + memo +
