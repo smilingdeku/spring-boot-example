@@ -41,6 +41,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public SysUser getByUsername(String username) {
+        return this.getOne(new QueryWrapper<SysUser>().lambda().eq(SysUser::getUsername, username));
+    }
+
+    @Override
     public List<String> listPermissionByUsername(String username) {
         return this.getBaseMapper().listPermissionByUsername(username);
     }

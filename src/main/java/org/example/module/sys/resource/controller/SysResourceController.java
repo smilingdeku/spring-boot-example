@@ -1,13 +1,13 @@
 package org.example.module.sys.resource.controller;
 
 
+import org.example.common.base.BaseController;
 import org.example.common.domain.ApiResult;
 import org.example.common.domain.Router;
 import org.example.module.sys.resource.service.ISysResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,14 +23,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/resource")
-public class SysResourceController {
+public class SysResourceController extends BaseController {
 
     @Autowired
     private ISysResourceService resourceService;
 
-    @GetMapping("/menu/{username}")
-    public ResponseEntity<?> userMenuList(@PathVariable String username) {
-        List<Router> routerList = resourceService.listRouterByUsername(username);
+    @GetMapping("/routers")
+    public ResponseEntity<?> getRouters() {
+        List<Router> routerList = resourceService.listRouterByUsername(getCurrentUsername());
         return ResponseEntity.ok(ApiResult.success(routerList));
     }
 

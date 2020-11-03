@@ -32,6 +32,13 @@ public interface ISysUserService extends IService<SysUser> {
      */
     String login(String username, String password);
 
+    /**
+     * 根据用户名获取用户信息
+     *
+     * @param username 用户名
+     * @return SysUser
+     */
+    SysUser getByUsername(String username);
 
     /**
      * 根据用户名获取权限列表
