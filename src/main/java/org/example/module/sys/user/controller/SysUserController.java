@@ -10,7 +10,6 @@ import org.example.module.sys.user.domain.response.UserResponse;
 import org.example.module.sys.user.service.ISysUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,19 +33,19 @@ public class SysUserController extends BaseController {
     private ISysUserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Validated LoginRequest request) {
+    public Result<LoginResponse> login(@RequestBody @Validated LoginRequest request) {
         String token = userService.login(request.getUsername(), request.getPassword());
         LoginResponse response = new LoginResponse();
         response.setToken(token);
-        return ResponseEntity.ok(Result.success(response));
+        return Result.success(response);
     }
 
     @GetMapping
-    public ResponseEntity<?> info() {
+    public Result<UserResponse> info() {
         UserResponse response = new UserResponse();
         SysUser user = userService.getByUsername(getCurrentUsername());
         BeanUtils.copyProperties(user, response);
         response.setPermissions(userService.listPermissionByUsername(getCurrentUsername()));
-        return ResponseEntity.ok(Result.success(response));
+        return Result.success(response);
     }
 }

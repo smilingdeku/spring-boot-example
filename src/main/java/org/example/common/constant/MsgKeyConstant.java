@@ -2,12 +2,10 @@ package org.example.common.constant;
 
 public class MsgKeyConstant {
     private MsgKeyConstant() {}
-    /** 未知错误 */
-    public static final String UNKNOWN_ERROR = "unknown-error";
     /** 请求成功 */
     public static final String SUCCESS = "success";
     /** 操作失败 */
-    public static final String FAIL = "fail";
+    public static final String FAIL = "failure";
     /** 认证失败 */
     public static final String UNAUTHORIZED = "unauthorized";
     /** 用户不存在 */

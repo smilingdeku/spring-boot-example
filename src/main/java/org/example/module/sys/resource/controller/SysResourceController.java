@@ -6,7 +6,6 @@ import org.example.common.domain.Result;
 import org.example.common.domain.Router;
 import org.example.module.sys.resource.service.ISysResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,9 +28,9 @@ public class SysResourceController extends BaseController {
     private ISysResourceService resourceService;
 
     @GetMapping("/routers")
-    public ResponseEntity<?> getRouters() {
+    public Result<List<Router>> getRouters() {
         List<Router> routerList = resourceService.listRouterByUsername(getCurrentUsername());
-        return ResponseEntity.ok(Result.success(routerList));
+        return Result.success(routerList);
     }
 
 }
