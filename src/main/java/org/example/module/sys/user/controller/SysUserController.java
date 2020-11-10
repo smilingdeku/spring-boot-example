@@ -2,7 +2,7 @@ package org.example.module.sys.user.controller;
 
 
 import org.example.common.base.BaseController;
-import org.example.common.domain.ApiResult;
+import org.example.common.domain.Result;
 import org.example.module.sys.user.domain.entity.SysUser;
 import org.example.module.sys.user.domain.request.LoginRequest;
 import org.example.module.sys.user.domain.response.LoginResponse;
@@ -38,7 +38,7 @@ public class SysUserController extends BaseController {
         String token = userService.login(request.getUsername(), request.getPassword());
         LoginResponse response = new LoginResponse();
         response.setToken(token);
-        return ResponseEntity.ok(ApiResult.success(response));
+        return ResponseEntity.ok(Result.success(response));
     }
 
     @GetMapping
@@ -47,6 +47,6 @@ public class SysUserController extends BaseController {
         SysUser user = userService.getByUsername(getCurrentUsername());
         BeanUtils.copyProperties(user, response);
         response.setPermissions(userService.listPermissionByUsername(getCurrentUsername()));
-        return ResponseEntity.ok(ApiResult.success(response));
+        return ResponseEntity.ok(Result.success(response));
     }
 }

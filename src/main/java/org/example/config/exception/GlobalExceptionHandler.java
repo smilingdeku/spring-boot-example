@@ -1,8 +1,7 @@
 package org.example.config.exception;
 
 import org.example.common.constant.MsgKeyConstant;
-import org.example.common.domain.ApiResult;
-import org.example.common.enums.Code;
+import org.example.common.domain.Result;
 import org.example.common.exception.BusinessException;
 import org.example.common.util.MessageUtil;
 import org.slf4j.Logger;
@@ -31,15 +30,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<?> handleException(Exception e) {
         log.error("UnknownException", e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResult<>(Code.UNKNOWN_ERROR));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.failure());
     }
 
     @ExceptionHandler(value = BusinessException.class)
     public ResponseEntity<?> handleBusinessException(BusinessException e) {
         log.error("BusinessException", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResult<>(e.getCode(), e.getMessage()));
+                .body(new Result<>(e.getCode(), e.getMessage()));
     }
 
     @ExceptionHandler(value = AuthenticationException.class)
@@ -48,36 +46,31 @@ public class GlobalExceptionHandler {
         if (e instanceof BadCredentialsException) {
             msg = MessageUtil.message(MsgKeyConstant.SYSTEM_USERNAME_PASSWORD_NOT_MATCH);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ApiResult<>(HttpStatus.UNAUTHORIZED.value(), msg));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Result.failure(msg));
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)
     public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException e) {
         String msg = e.getMessage();
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ApiResult<>(HttpStatus.FORBIDDEN.value(), msg));
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.failure(msg));
     }
 
     @ExceptionHandler(value = BindException.class)
     public ResponseEntity<?> handleValidException(BindException e) {
         String msg = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ApiResult<>(HttpStatus.BAD_REQUEST.value(), msg));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Result.failure(msg));
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidException(MethodArgumentNotValidException e) {
         String msg = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ApiResult<>(HttpStatus.BAD_REQUEST.value(), msg));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Result.failure(msg));
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
     public ResponseEntity<?> handleValidException(ConstraintViolationException e) {
         String msg = e.getConstraintViolations().iterator().next().getMessage();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ApiResult<>(HttpStatus.BAD_REQUEST.value(), msg));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Result.failure(msg));
     }
 
 }

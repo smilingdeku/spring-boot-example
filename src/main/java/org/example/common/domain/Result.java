@@ -5,43 +5,22 @@ import org.example.common.enums.Code;
 
 import java.io.Serializable;
 
-public class ApiResult<T> implements Serializable {
+public class Result<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer code;
     private String msg;
     private T data;
 
-    public ApiResult(Integer code, String msg, T data) {
-        this.code = code;
-        this.msg = msg;
-        this.data = data;
-    }
-
-    public ApiResult(Integer code, String msg) {
+    public Result(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public ApiResult(Code code, T data) {
+    public Result(Code code, T data) {
         this.code = code.getCode();
         this.msg = code.getMsg();
         this.data = data;
-    }
-
-    public ApiResult(Code code) {
-        this.code = code.getCode();
-        this.msg = code.getMsg();
-    }
-
-    @SuppressWarnings({"rawtypes"})
-    public static ApiResult success(Object data) {
-        return new ApiResult<>(Code.SUCCESS, data);
-    }
-
-    @SuppressWarnings({"rawtypes"})
-    public static ApiResult fail(Object data) {
-        return new ApiResult<>(Code.FAIL, data);
     }
 
     public Integer getCode() {
@@ -66,5 +45,21 @@ public class ApiResult<T> implements Serializable {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public static Result<Void> success() {
+        return new Result<>(Code.SUCCESS, null);
+    }
+
+    public static <T> Result<T> success(T data) {
+        return new Result<>(Code.SUCCESS, data);
+    }
+
+    public static Result<Void> failure() {
+        return new Result<>(Code.FAILURE, null);
+    }
+
+    public static Result<Void> failure(String msg) {
+        return new Result<>(Code.FAILURE.getCode(), msg);
     }
 }

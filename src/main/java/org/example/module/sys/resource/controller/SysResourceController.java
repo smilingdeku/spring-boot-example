@@ -2,7 +2,7 @@ package org.example.module.sys.resource.controller;
 
 
 import org.example.common.base.BaseController;
-import org.example.common.domain.ApiResult;
+import org.example.common.domain.Result;
 import org.example.common.domain.Router;
 import org.example.module.sys.resource.service.ISysResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class SysResourceController extends BaseController {
     @GetMapping("/routers")
     public ResponseEntity<?> getRouters() {
         List<Router> routerList = resourceService.listRouterByUsername(getCurrentUsername());
-        return ResponseEntity.ok(ApiResult.success(routerList));
+        return ResponseEntity.ok(Result.success(routerList));
     }
 
 }
