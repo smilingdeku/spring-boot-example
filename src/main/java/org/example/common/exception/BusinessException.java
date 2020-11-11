@@ -2,7 +2,6 @@ package org.example.common.exception;
 
 
 import org.example.common.enums.Code;
-import org.springframework.http.HttpStatus;
 
 public class BusinessException extends RuntimeException {
 
@@ -14,7 +13,7 @@ public class BusinessException extends RuntimeException {
     }
 
     public BusinessException(String message) {
-        this(HttpStatus.INTERNAL_SERVER_ERROR.value(), message);
+        this(Code.FAILURE.getCode(), message);
     }
 
     public BusinessException(Code code) {
