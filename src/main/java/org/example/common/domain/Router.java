@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author linzhaoming
  * @since 2020/11/03
  **/
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Router extends TreeNode<Router> implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -17,6 +17,8 @@ public class Router extends TreeNode<Router> implements Serializable {
     private String redirect;
     private String name;
     private RouterMeta meta;
+    private boolean alwaysShow;
+    private boolean hidden;
 
     public String getPath() {
         return path;
@@ -56,5 +58,21 @@ public class Router extends TreeNode<Router> implements Serializable {
 
     public void setMeta(RouterMeta meta) {
         this.meta = meta;
+    }
+
+    public boolean getAlwaysShow() {
+        return alwaysShow;
+    }
+
+    public void setAlwaysShow(boolean alwaysShow) {
+        this.alwaysShow = alwaysShow;
+    }
+
+    public boolean getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 }

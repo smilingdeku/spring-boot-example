@@ -36,6 +36,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
             Router router = new Router();
             router.setId(Long.toString(resource.getId()));
             router.setParentId(null == resource.getParentId() ? null : Long.toString(resource.getParentId()));
+            router.setAlwaysShow(null == resource.getParentId());
             router.setPath(resource.getPath());
             router.setComponent(resource.getComponent());
             router.setName(resource.getName());
