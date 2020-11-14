@@ -155,7 +155,7 @@ public class ConvertUtil {
         if (booleanObject == null) {
             return false;
         }
-        return booleanObject.booleanValue();
+        return booleanObject;
     }
     
     /**
@@ -177,7 +177,7 @@ public class ConvertUtil {
         if (booleanObject == null) {
             return defaultValue;
         }
-        return booleanObject.booleanValue();
+        return booleanObject;
     }
     
     /**
@@ -196,7 +196,7 @@ public class ConvertUtil {
         } else if (answer instanceof Byte) {
             return (Byte) answer;
         }
-        return Byte.valueOf(answer.byteValue());
+        return answer.byteValue();
     }
     
     /**
@@ -230,7 +230,7 @@ public class ConvertUtil {
         if (byteObject == null) {
             return 0;
         }
-        return byteObject.byteValue();
+        return byteObject;
     }
     
     /**
@@ -247,7 +247,7 @@ public class ConvertUtil {
         if (byteObject == null) {
             return defaultValue;
         }
-        return byteObject.byteValue();
+        return byteObject;
     }
     
     /**
@@ -265,7 +265,7 @@ public class ConvertUtil {
         } else if (answer instanceof Short) {
             return (Short) answer;
         }
-        return Short.valueOf(answer.shortValue());
+        return answer.shortValue();
     }
     
     /**
@@ -299,7 +299,7 @@ public class ConvertUtil {
         if (shortObject == null) {
             return 0;
         }
-        return shortObject.shortValue();
+        return shortObject;
     }
     
     /**
@@ -316,7 +316,7 @@ public class ConvertUtil {
         if (shortObject == null) {
             return defaultValue;
         }
-        return shortObject.shortValue();
+        return shortObject;
     }
     
     /**
@@ -334,7 +334,7 @@ public class ConvertUtil {
         } else if (answer instanceof Integer) {
             return (Integer) answer;
         }
-        return Integer.valueOf(answer.intValue());
+        return answer.intValue();
     }
     
     /**
@@ -368,7 +368,7 @@ public class ConvertUtil {
         if (integerObject == null) {
             return 0;
         }
-        return integerObject.intValue();
+        return integerObject;
     }
     
     /**
@@ -385,7 +385,7 @@ public class ConvertUtil {
         if (integerObject == null) {
             return defaultValue;
         }
-        return integerObject.intValue();
+        return integerObject;
     }
     
     /**
@@ -403,7 +403,7 @@ public class ConvertUtil {
         } else if (answer instanceof Long) {
             return (Long) answer;
         }
-        return Long.valueOf(answer.longValue());
+        return answer.longValue();
     }
     
     /**
@@ -437,7 +437,7 @@ public class ConvertUtil {
         if (longObject == null) {
             return 0L;
         }
-        return longObject.longValue();
+        return longObject;
     }
     
     /**
@@ -455,7 +455,7 @@ public class ConvertUtil {
         if (longObject == null) {
             return defaultValue;
         }
-        return longObject.longValue();
+        return longObject;
     }
     
     /**
@@ -473,7 +473,7 @@ public class ConvertUtil {
         } else if (answer instanceof Float) {
             return (Float) answer;
         }
-        return Float.valueOf(answer.floatValue());
+        return answer.floatValue();
     }
     
     /**
@@ -507,7 +507,7 @@ public class ConvertUtil {
         if (floatObject == null) {
             return 0f;
         }
-        return floatObject.floatValue();
+        return floatObject;
     }
     
     /**
@@ -525,7 +525,7 @@ public class ConvertUtil {
         if (floatObject == null) {
             return defaultValue;
         }
-        return floatObject.floatValue();
+        return floatObject;
     }
     
     /**
@@ -543,7 +543,7 @@ public class ConvertUtil {
         } else if (answer instanceof Double) {
             return (Double) answer;
         }
-        return Double.valueOf(answer.doubleValue());
+        return answer.doubleValue();
     }
     
     /**
@@ -577,7 +577,7 @@ public class ConvertUtil {
         if (doubleObject == null) {
             return 0d;
         }
-        return doubleObject.doubleValue();
+        return doubleObject;
     }
     
     /**
@@ -595,7 +595,7 @@ public class ConvertUtil {
         if (doubleObject == null) {
             return defaultValue;
         }
-        return doubleObject.doubleValue();
+        return doubleObject;
     }
     
     /**
@@ -611,7 +611,7 @@ public class ConvertUtil {
         if (longObject == null) {
             return BigInteger.ZERO;
         }
-        return BigInteger.valueOf(longObject.longValue());
+        return BigInteger.valueOf(longObject);
     }
     
     /**
@@ -629,7 +629,7 @@ public class ConvertUtil {
         if (longObject == null) {
             return defaultValue;
         }
-        return BigInteger.valueOf(longObject.longValue());
+        return BigInteger.valueOf(longObject);
     }
     
     /**
@@ -645,7 +645,7 @@ public class ConvertUtil {
         if (doubleObject == null) {
             return BigDecimal.ZERO;
         }
-        return BigDecimal.valueOf(doubleObject.doubleValue());
+        return BigDecimal.valueOf(doubleObject);
     }
     
     /**
@@ -663,7 +663,7 @@ public class ConvertUtil {
         if (doubleObject == null) {
             return defaultValue;
         }
-        return BigDecimal.valueOf(doubleObject.doubleValue());
+        return BigDecimal.valueOf(doubleObject);
     }
     
     /**
@@ -712,19 +712,19 @@ public class ConvertUtil {
         R result = null;
         if (defaultValue == null) { return result; }
         Class<?> clz = defaultValue.getClass();
-        if (Boolean.class.equals(clz) || boolean.class.equals(clz)) {
+        if (Boolean.class.equals(clz)) {
             result = (R) getAsBoolean(obj, (Boolean) defaultValue);
-        } else if (Byte.class.equals(clz) || byte.class.equals(clz)) {
+        } else if (Byte.class.equals(clz)) {
             result = (R) getAsByte(obj, (Byte) defaultValue);
-        } else if (Short.class.equals(clz) || short.class.equals(clz)) {
+        } else if (Short.class.equals(clz)) {
             result = (R) getAsShort(obj, (Short) defaultValue);
-        } else if (Integer.class.equals(clz) || int.class.equals(clz)) {
+        } else if (Integer.class.equals(clz)) {
             result = (R) getAsInteger(obj, (Integer) defaultValue);
-        } else if (Long.class.equals(clz) || long.class.equals(clz)) {
+        } else if (Long.class.equals(clz)) {
             result = (R) getAsLong(obj, (Long) defaultValue);
-        } else if (Float.class.equals(clz) || float.class.equals(clz)) {
+        } else if (Float.class.equals(clz)) {
             result = (R) getAsFloat(obj, (Float) defaultValue);
-        } else if (Double.class.equals(clz) || double.class.equals(clz)) {
+        } else if (Double.class.equals(clz)) {
             result = (R) getAsDouble(obj, (Double) defaultValue);
         } else if (BigInteger.class.equals(clz)) {
             result = (R) getAsBigInteger(obj, (BigInteger) defaultValue);

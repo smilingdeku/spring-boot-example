@@ -15,6 +15,7 @@ public class RouterMeta implements Serializable {
 
     private String title;
     private String icon;
+    private Boolean breadcrumb = true;
 
     public RouterMeta() {
     }
@@ -22,6 +23,12 @@ public class RouterMeta implements Serializable {
     public RouterMeta(String title, String icon) {
         this.title = title;
         this.icon = icon;
+    }
+
+    public RouterMeta(String title, String icon, Boolean breadcrumb) {
+        this.title = title;
+        this.icon = icon;
+        this.breadcrumb = breadcrumb;
     }
 
     public String getTitle() {
@@ -38,5 +45,13 @@ public class RouterMeta implements Serializable {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public Boolean getBreadcrumb() {
+        return breadcrumb;
+    }
+
+    public void setBreadcrumb(Boolean breadcrumb) {
+        this.breadcrumb = breadcrumb;
     }
 }
