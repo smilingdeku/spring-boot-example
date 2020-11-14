@@ -1,5 +1,7 @@
 package org.example.module.system.user.domain.entity;
+
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -29,6 +31,7 @@ public class SysUser implements Serializable {
     /**
      * 密码
      */
+    @JsonIgnore
     private String password;
 
     /**

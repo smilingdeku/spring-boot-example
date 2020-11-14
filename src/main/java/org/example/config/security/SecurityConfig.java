@@ -22,7 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthorizationFilter jwtAuthorizationFilter;
