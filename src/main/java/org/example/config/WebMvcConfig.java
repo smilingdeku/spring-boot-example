@@ -30,17 +30,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return validator;
     }
 
-//    @Override
-//    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        super.extendMessageConverters(converters);
-//        converters.forEach(converter -> {
-//            // 解决 LocalDateTime 返回 Json 数组
-//            if (converter instanceof AbstractJackson2HttpMessageConverter) {
-//                ObjectMapper objectMapper = ((AbstractJackson2HttpMessageConverter) converter).getObjectMapper();
-//                objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-//                objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-//            }
-//        });
-//    }
-
 }
