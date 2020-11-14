@@ -3,6 +3,7 @@ package org.example.config;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.context.annotation.Bean;
@@ -20,14 +21,19 @@ import java.util.TimeZone;
 @JsonComponent
 public class DateFormatConfig {
 
+    @Value("${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}")
+    private String pattern;
+    @Value("${spring.jackson.time-zone:GMT+8}")
+    private String timeZone;
+
     @Autowired
     private LocalDateTimeSerializer serializer;
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilder() {
         return builder -> {
-            TimeZone tz = TimeZone.getTimeZone("GMT+8");
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            TimeZone tz = TimeZone.getTimeZone(timeZone);
+            DateFormat df = new SimpleDateFormat(pattern);
             df.setTimeZone(tz);
             builder.failOnEmptyBeans(false)
                     .failOnUnknownProperties(false)
@@ -38,7 +44,7 @@ public class DateFormatConfig {
 
     @Bean
     public LocalDateTimeSerializer localDateTimeDeserializer() {
-        return new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(pattern));
     }
 
     @Bean
