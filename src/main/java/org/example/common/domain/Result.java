@@ -1,65 +1,60 @@
 package org.example.common.domain;
 
-
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.example.common.enums.Code;
 
-import java.io.Serializable;
+import java.util.HashMap;
 
-public class Result<T> implements Serializable {
+/**
+ * @author cark
+ * @since 2020-11-15
+ **/
+public class Result extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
-    private Integer code;
-    private String msg;
-    private T data;
-
-    public Result(Integer code, String msg) {
-        this.code = code;
-        this.msg = msg;
+    public Result(Integer code, String msg, Object data) {
+        super.put("code", code);
+        super.put("msg", msg);
+        super.put("data", data);
     }
 
-    public Result(Code code, T data) {
-        this.code = code.getCode();
-        this.msg = code.getMsg();
-        this.data = data;
+    public Result(Code code, Object data) {
+        this(code.getCode(), code.getMsg(), data);
     }
 
-    public Integer getCode() {
-        return code;
+    public Result(Integer code, String msg, IPage<Object> page) {
+        super.put("code", code);
+        super.put("msg", msg);
+        super.put("data", page.getRecords());
+        super.put("total", page.getTotal());
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    public Result(Code code, IPage<Object> page) {
+        this(code.getCode(), code.getMsg(), page);
     }
 
-    public String getMsg() {
-        return msg;
+    public static Result success() {
+        return new Result(Code.SUCCESS, (Object) null);
     }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
+    
+    public static Result success(String msg) {
+        return new Result(Code.SUCCESS.getCode(), msg, (Object) null);
     }
-
-    public T getData() {
-        return data;
+    
+    public static Result success(Object data) {
+        return new Result(Code.SUCCESS, data);
     }
-
-    public void setData(T data) {
-        this.data = data;
+    
+    public static Result page(IPage<Object> page) {
+        return new Result(Code.SUCCESS, page);
     }
-
-    public static Result<Void> success() {
-        return new Result<>(Code.SUCCESS, null);
+    
+    public static Result failure() {
+        return new Result(Code.FAILURE, (Object) null);
     }
-
-    public static <T> Result<T> success(T data) {
-        return new Result<>(Code.SUCCESS, data);
+    
+    public static Result failure(String msg) {
+        return new Result(Code.FAILURE.getCode(), msg, (Object) null);
     }
-
-    public static Result<Void> failure() {
-        return new Result<>(Code.FAILURE, null);
-    }
-
-    public static Result<Void> failure(String msg) {
-        return new Result<>(Code.FAILURE.getCode(), msg);
-    }
+    
 }

@@ -35,7 +35,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     private ISysUserService userService;
 
     @PostMapping("/login")
-    public Result<LoginResponse> login(@RequestBody @Validated LoginRequest request) {
+    public Result login(@RequestBody @Validated LoginRequest request) {
         String token = userService.login(request.getUsername(), request.getPassword());
         LoginResponse response = new LoginResponse();
         response.setToken(token);
@@ -43,7 +43,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     }
 
     @GetMapping
-    public Result<UserResponse> info() {
+    public Result info() {
         UserResponse response = new UserResponse();
         SysUser user = userService.getByUsername(getCurrentUsername());
         BeanUtils.copyProperties(user, response);

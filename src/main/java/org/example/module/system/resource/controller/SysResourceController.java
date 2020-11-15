@@ -30,7 +30,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
     private ISysResourceService resourceService;
 
     @GetMapping("/routers")
-    public Result<List<Router>> getRouters() {
+    public Result getRouters() {
         List<Router> routerList = resourceService.listRouterByUsername(getCurrentUsername());
         return Result.success(routerList);
     }

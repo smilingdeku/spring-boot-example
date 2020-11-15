@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleBusinessException(BusinessException e) {
         log.error("BusinessException", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new Result<>(e.getCode(), e.getMessage()));
+                .body(new Result(e.getCode(), e.getMessage(), (Object) null));
     }
 
     @ExceptionHandler(value = AuthenticationException.class)
