@@ -15,6 +15,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
 /**
+ * 解决 LocalDateTime 返回数据为 JSON 数组
+ *
  * @author linzhaoming
  * @since 2020/11/14
  **/
