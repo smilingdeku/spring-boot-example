@@ -3,12 +3,12 @@ package org.example.common.enums;
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.util.MessageUtil;
 
-public enum Code {
+public enum ResultCode {
     SUCCESS(0, MsgKeyConstant.SUCCESS),
     FAILURE(9999, MsgKeyConstant.FAIL),
     ;
 
-    Code(Integer code, String msgKey) {
+    ResultCode(Integer code, String msgKey) {
         this.code = code;
         this.msgKey = msgKey;
     }

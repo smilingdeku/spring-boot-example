@@ -1,8 +1,8 @@
 package org.example.module.system.resource.controller;
 
 import org.example.common.base.BaseController;
-import org.example.common.domain.Result;
-import org.example.common.domain.Router;
+import org.example.common.domain.response.Result;
+import org.example.common.domain.entity.Router;
 import org.example.module.system.resource.domain.entity.SysResource;
 import org.example.module.system.resource.mapper.SysResourceMapper;
 import org.example.module.system.resource.service.ISysResourceService;

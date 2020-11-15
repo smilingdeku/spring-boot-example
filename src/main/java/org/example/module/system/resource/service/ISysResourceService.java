@@ -1,7 +1,7 @@
 package org.example.module.system.resource.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.example.common.domain.Router;
+import org.example.common.domain.entity.Router;
 import org.example.module.system.resource.domain.entity.SysResource;
 
 import java.util.List;

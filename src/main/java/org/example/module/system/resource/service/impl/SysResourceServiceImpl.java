@@ -1,8 +1,8 @@
 package org.example.module.system.resource.service.impl;
 
 import org.example.common.base.BaseService;
-import org.example.common.domain.Router;
-import org.example.common.domain.RouterMeta;
+import org.example.common.domain.entity.Router;
+import org.example.common.domain.entity.RouterMeta;
 import org.example.common.util.TreeUtil;
 import org.example.module.system.resource.domain.entity.SysResource;
 import org.example.module.system.resource.mapper.SysResourceMapper;

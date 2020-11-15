@@ -1,8 +1,11 @@
 package org.example.module.system.user.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.common.base.BaseController;
-import org.example.common.domain.Result;
+import org.example.common.domain.request.QueryRequest;
+import org.example.common.domain.response.Result;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.LoginRequest;
 import org.example.module.system.user.domain.response.LoginResponse;
@@ -12,12 +15,16 @@ import org.example.module.system.user.service.ISysUserService;
 import org.example.module.system.user.service.impl.SysUserServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -49,5 +56,13 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         BeanUtils.copyProperties(user, response);
         response.setPermissions(userService.listPermissionByUsername(getCurrentUsername()));
         return Result.success(response);
+    }
+
+    @PreAuthorize("hasAuthority('system:user')")
+    @GetMapping("/page")
+    public Result page(@RequestParam Map<String, Object> requestParam) {
+        QueryRequest query = mapToQuery(requestParam);
+        IPage<SysUser> page = getBaseService().page(new Page<>(query.getPageIndex(), query.getPageSize()));
+        return Result.page(page);
     }
 }

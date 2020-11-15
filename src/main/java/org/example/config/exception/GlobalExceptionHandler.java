@@ -1,7 +1,7 @@
 package org.example.config.exception;
 
 import org.example.common.constant.MsgKeyConstant;
-import org.example.common.domain.Result;
+import org.example.common.domain.response.Result;
 import org.example.common.exception.BusinessException;
 import org.example.common.util.MessageUtil;
 import org.slf4j.Logger;

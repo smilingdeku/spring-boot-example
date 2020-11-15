@@ -1,4 +1,4 @@
-package org.example.common.domain;
+package org.example.common.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

@@ -1,6 +1,6 @@
 package org.example.common.util;
 
-import org.example.common.domain.TreeNode;
+import org.example.common.domain.entity.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;

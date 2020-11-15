@@ -1,7 +1,7 @@
 package org.example.common.exception;
 
 
-import org.example.common.enums.Code;
+import org.example.common.enums.ResultCode;
 
 public class BusinessException extends RuntimeException {
 
@@ -13,10 +13,10 @@ public class BusinessException extends RuntimeException {
     }
 
     public BusinessException(String message) {
-        this(Code.FAILURE.getCode(), message);
+        this(ResultCode.FAILURE.getCode(), message);
     }
 
-    public BusinessException(Code code) {
+    public BusinessException(ResultCode code) {
         super(code.getMsg());
         this.code = code.getCode();
     }
