@@ -12,10 +12,8 @@ import org.example.module.system.user.domain.request.LoginRequest;
 import org.example.module.system.user.domain.response.LoginResponse;
 import org.example.module.system.user.domain.response.UserResponse;
 import org.example.module.system.user.mapper.SysUserMapper;
-import org.example.module.system.user.service.ISysUserService;
 import org.example.module.system.user.service.impl.SysUserServiceImpl;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -42,12 +40,9 @@ import java.util.Map;
 @RequestMapping("/sys/user")
 public class SysUserController extends BaseController<SysUserServiceImpl, SysUserMapper, SysUser> {
 
-    @Autowired
-    private ISysUserService userService;
-
     @PostMapping("/login")
     public Result login(@RequestBody @Validated LoginRequest request) {
-        String token = userService.login(request.getUsername(), request.getPassword());
+        String token = getBaseService().login(request.getUsername(), request.getPassword());
         LoginResponse response = new LoginResponse();
         response.setToken(token);
         return Result.success(response);
@@ -56,9 +51,9 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @GetMapping
     public Result info() {
         UserResponse response = new UserResponse();
-        SysUser user = userService.getByUsername(getCurrentUsername());
+        SysUser user = getBaseService().getByUsername(getCurrentUsername());
         BeanUtils.copyProperties(user, response);
-        response.setPermissions(userService.listPermissionByUsername(getCurrentUsername()));
+        response.setPermissions(getBaseService().listPermissionByUsername(getCurrentUsername()));
         return Result.success(response);
     }
 

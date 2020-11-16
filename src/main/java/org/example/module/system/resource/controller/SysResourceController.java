@@ -1,13 +1,11 @@
 package org.example.module.system.resource.controller;
 
 import org.example.common.base.BaseController;
-import org.example.common.domain.response.Result;
 import org.example.common.domain.entity.Router;
+import org.example.common.domain.response.Result;
 import org.example.module.system.resource.domain.entity.SysResource;
 import org.example.module.system.resource.mapper.SysResourceMapper;
-import org.example.module.system.resource.service.ISysResourceService;
 import org.example.module.system.resource.service.impl.SysResourceServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,12 +24,9 @@ import java.util.List;
 @RequestMapping("/sys/resource")
 public class SysResourceController extends BaseController<SysResourceServiceImpl, SysResourceMapper, SysResource> {
 
-    @Autowired
-    private ISysResourceService resourceService;
-
     @GetMapping("/routers")
     public Result getRouters() {
-        List<Router> routerList = resourceService.listRouterByUsername(getCurrentUsername());
+        List<Router> routerList = getBaseService().listRouterByUsername(getCurrentUsername());
         return Result.success(routerList);
     }
 
