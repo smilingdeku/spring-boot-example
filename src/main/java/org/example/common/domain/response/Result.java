@@ -22,14 +22,14 @@ public class Result extends HashMap<String, Object> {
         this(code.getCode(), code.getMsg(), data);
     }
 
-    public Result(Integer code, String msg, IPage page) {
+    public Result(Integer code, String msg, IPage<?> page) {
         super.put("code", code);
         super.put("msg", msg);
         super.put("data", page.getRecords());
         super.put("total", page.getTotal());
     }
 
-    public Result(ResultCode code, IPage page) {
+    public Result(ResultCode code, IPage<?> page) {
         this(code.getCode(), code.getMsg(), page);
     }
 
@@ -45,7 +45,7 @@ public class Result extends HashMap<String, Object> {
         return new Result(ResultCode.SUCCESS, data);
     }
     
-    public static Result page(IPage page) {
+    public static Result page(IPage<?> page) {
         return new Result(ResultCode.SUCCESS, page);
     }
     
