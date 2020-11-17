@@ -84,4 +84,10 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         return Result.success(getBaseService().removeByIds(Arrays.asList(ids)));
     }
 
+    @PostMapping
+    public Result save(@RequestBody SysUser sysUser) {
+        return Result.success(sysUser);
+    }
+
+
 }
