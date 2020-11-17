@@ -1,6 +1,7 @@
 package org.example.config;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
 /**
- * 解决 LocalDateTime 返回数据为 JSON 数组
+ * 解决 LocalDateTime 返回数据为 JSON 数组 & String 转化为 LocalDateTime 报异常
  *
  * @author linzhaoming
  * @since 2020/11/14
@@ -30,6 +31,8 @@ public class DateFormatConfig {
 
     @Autowired
     private LocalDateTimeSerializer serializer;
+    @Autowired
+    private LocalDateTimeDeserializer deserializer;
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilder() {
@@ -45,12 +48,20 @@ public class DateFormatConfig {
     }
 
     @Bean
-    public LocalDateTimeSerializer localDateTimeDeserializer() {
+    public LocalDateTimeSerializer localDateTimeSerializer() {
         return new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(pattern));
     }
 
     @Bean
+    public LocalDateTimeDeserializer localDateTimeDeserializer() {
+        return new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(pattern));
+    }
+
+    @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
-        return builder -> builder.serializerByType(LocalDateTime.class, serializer);
+        return builder -> {
+            builder.serializerByType(LocalDateTime.class, serializer);
+            builder.deserializerByType(LocalDateTime.class, deserializer);
+        };
     }
 }
