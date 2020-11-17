@@ -8,6 +8,8 @@ public class MsgKeyConstant {
     public static final String FAIL = "failure";
     /** 认证失败 */
     public static final String UNAUTHORIZED = "unauthorized";
+    /** 权限不足 */
+    public static final String PERMISSION_DENIED = "permission.denied";
     /** 用户不存在 */
     public static final String SYSTEM_USER_NOT_EXISTED = "system.user.not-existed";
     /** 用户已被删除 */

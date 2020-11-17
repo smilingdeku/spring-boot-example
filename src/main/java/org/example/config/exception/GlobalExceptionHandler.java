@@ -29,13 +29,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<?> handleException(Exception e) {
-        log.error("UnknownException", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.failure());
     }
 
     @ExceptionHandler(value = BusinessException.class)
     public ResponseEntity<?> handleBusinessException(BusinessException e) {
-        log.error("BusinessException", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new Result(e.getCode(), e.getMessage(), (Object) null));
     }
@@ -51,7 +49,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = AccessDeniedException.class)
     public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException e) {
-        String msg = e.getMessage();
+        String msg = MessageUtil.message(MsgKeyConstant.PERMISSION_DENIED);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.failure(msg));
     }
 
