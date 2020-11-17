@@ -69,7 +69,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         }
         IPage<SysUser> page = getBaseService().page(new Page<>(query.getPageIndex(), query.getPageSize()),
                 queryWrapper);
-        return Result.page(page);
+        return Result.success(page);
     }
 
     @GetMapping("/{id}")

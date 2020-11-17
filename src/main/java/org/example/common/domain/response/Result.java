@@ -45,7 +45,7 @@ public class Result extends HashMap<String, Object> {
         return new Result(ResultCode.SUCCESS, data);
     }
     
-    public static Result page(IPage<?> page) {
+    public static Result success(IPage<?> page) {
         return new Result(ResultCode.SUCCESS, page);
     }
     
