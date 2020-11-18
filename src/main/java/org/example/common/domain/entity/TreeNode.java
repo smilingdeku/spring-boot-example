@@ -1,16 +1,12 @@
 package org.example.common.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class TreeNode<T> {
 
-    @JsonIgnore
     private String id;
-    @JsonIgnore
     private String parentId;
     private List<TreeNode<T>> children = new ArrayList<>();
 

@@ -1,5 +1,6 @@
 package org.example.common.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
@@ -12,6 +13,10 @@ import java.io.Serializable;
 public class Router extends TreeNode<Router> implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @JsonIgnore
+    private String id;
+    @JsonIgnore
+    private String parentId;
     private String path;
     private String component;
     private String redirect;

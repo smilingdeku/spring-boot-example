@@ -1,6 +1,7 @@
 package org.example.module.system.resource.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.example.module.system.resource.domain.dto.ResourceTreeNode;
 import org.example.module.system.resource.domain.entity.SysResource;
 
 import java.util.List;
@@ -24,4 +25,11 @@ public interface SysResourceMapper extends BaseMapper<SysResource> {
      */
     List<SysResource> listByUsernameAndType(String username, int type);
 
+    /**
+     * 获取资源节点信息 (无层级关系)
+     *
+     * @param username 用户名 (获取该用户是否有权限)
+     * @return List<ResourceTreeNode>
+     */
+    List<ResourceTreeNode> listResourceTreeNode(Long roleId);
 }

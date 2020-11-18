@@ -7,12 +7,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.Result;
+import org.example.module.system.resource.service.ISysResourceService;
 import org.example.module.system.role.domain.entity.SysRole;
 import org.example.module.system.role.mapper.SysRoleMapper;
 import org.example.module.system.role.service.impl.SysRoleServiceImpl;
 import org.example.module.system.user.domain.entity.SysUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +40,9 @@ import java.util.Map;
 @RequestMapping("/sys/role")
 public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRoleMapper, SysRole> {
 
+    @Autowired
+    private ISysResourceService sysResourceService;
+
     @PreAuthorize("hasAuthority('system:role')")
     @GetMapping("/page")
     public Result page(@RequestParam Map<String, Object> requestParam) {
@@ -50,6 +56,11 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         return Result.success(page);
     }
 
+    @GetMapping("/{id}")
+    public Result get(@PathVariable Serializable id) {
+        return Result.success(getBaseService().getById(id));
+    }
+
     @PreAuthorize("hasAuthority('system:role:add')")
     @PostMapping
     public Result save(@RequestBody SysRole sysRole) {
@@ -57,7 +68,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     }
 
     @PreAuthorize("hasAuthority('system:role:delete')")
-    @GetMapping("/{ids}")
+    @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Serializable[] ids) {
         return Result.success();
     }
@@ -66,6 +77,11 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     @PutMapping
     public Result update(@RequestBody SysUser sysRole) {
         return Result.success();
+    }
+
+    @GetMapping("/{id}/resources")
+    public Result roleResources(@PathVariable Long id) {
+        return Result.success(sysResourceService.listResourceTreeNode(id));
     }
 
 }

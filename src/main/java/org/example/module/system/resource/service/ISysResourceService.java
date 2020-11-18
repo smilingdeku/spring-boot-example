@@ -2,6 +2,7 @@ package org.example.module.system.resource.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.common.domain.entity.Router;
+import org.example.module.system.resource.domain.dto.ResourceTreeNode;
 import org.example.module.system.resource.domain.entity.SysResource;
 
 import java.util.List;
@@ -32,4 +33,12 @@ public interface ISysResourceService extends IService<SysResource> {
      * @return List<Router>
      */
     List<Router> listRouterByUsername(String username);
+
+    /**
+     * 获取资源节点信息 (有层级关系)
+     *
+     * @param roleId 角色 ID (获取该用户是否有权限)
+     * @return List<ResourceTreeNode>
+     */
+    List<ResourceTreeNode> listResourceTreeNode(Long roleId);
 }
