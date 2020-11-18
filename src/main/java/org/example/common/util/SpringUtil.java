@@ -22,7 +22,6 @@ public class SpringUtil implements BeanFactoryPostProcessor {
     }
 
     public static <T> T getBean(Class<T> clz) throws BeansException {
-        T result = (T) beanFactory.getBean(clz);
-        return result;
+        return (T) beanFactory.getBean(clz);
     }
 }
