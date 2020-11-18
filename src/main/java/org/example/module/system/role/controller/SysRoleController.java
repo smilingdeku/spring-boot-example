@@ -10,18 +10,19 @@ import org.example.common.domain.response.Result;
 import org.example.module.system.role.domain.entity.SysRole;
 import org.example.module.system.role.mapper.SysRoleMapper;
 import org.example.module.system.role.service.impl.SysRoleServiceImpl;
+import org.example.module.system.user.domain.entity.SysUser;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -49,15 +50,22 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         return Result.success(page);
     }
 
-    @PreAuthorize("hasAuthority('system:role')")
-    @GetMapping("/{ids}")
-    public Result delete(@PathVariable Serializable[] ids) {
-        return Result.success(getBaseService().removeByIds(Arrays.asList(ids)));
-    }
-
+    @PreAuthorize("hasAuthority('system:role:add')")
     @PostMapping
     public Result save(@RequestBody SysRole sysRole) {
         return Result.success(sysRole);
+    }
+
+    @PreAuthorize("hasAuthority('system:role:delete')")
+    @GetMapping("/{ids}")
+    public Result delete(@PathVariable Serializable[] ids) {
+        return Result.success();
+    }
+
+    @PreAuthorize("hasAuthority('system:role:edit')")
+    @PutMapping
+    public Result update(@RequestBody SysUser sysRole) {
+        return Result.success();
     }
 
 }

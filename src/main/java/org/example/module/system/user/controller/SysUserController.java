@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -78,16 +78,23 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         return Result.success(sysUser);
     }
 
-    @PreAuthorize("hasAuthority('system:user:delete')")
-    @DeleteMapping("/{ids}")
-    public Result delete(@PathVariable Serializable[] ids) {
-        return Result.success(getBaseService().removeByIds(Arrays.asList(ids)));
-    }
-
+    @PreAuthorize("hasAuthority('system:user:add')")
     @PostMapping
     public Result save(@RequestBody SysUser sysUser) {
         return Result.success(sysUser);
     }
 
+    @PreAuthorize("hasAuthority('system:user:delete')")
+    @DeleteMapping("/{ids}")
+    public Result delete(@PathVariable Serializable[] ids) {
+//        return Result.success(getBaseService().removeByIds(Arrays.asList(ids)));
+        return Result.success();
+    }
+
+    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PutMapping
+    public Result update(@RequestBody SysUser sysUser) {
+        return Result.success();
+    }
 
 }
