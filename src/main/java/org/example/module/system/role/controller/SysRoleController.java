@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -57,7 +56,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     }
 
     @GetMapping("/{id}")
-    public Result get(@PathVariable Serializable id) {
+    public Result get(@PathVariable Long id) {
         return Result.success(getBaseService().getById(id));
     }
 
@@ -69,7 +68,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
 
     @PreAuthorize("hasAuthority('system:role:delete')")
     @DeleteMapping("/{ids}")
-    public Result delete(@PathVariable Serializable[] ids) {
+    public Result delete(@PathVariable Long[] ids) {
         return Result.success();
     }
 

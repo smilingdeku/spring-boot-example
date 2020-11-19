@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +43,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
     }
 
     @GetMapping("/{id}")
-    public Result get(@PathVariable Serializable id) {
+    public Result get(@PathVariable Long id) {
         return Result.success(getBaseService().getById(id));
     }
 
