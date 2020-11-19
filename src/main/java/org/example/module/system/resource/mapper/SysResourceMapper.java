@@ -28,7 +28,7 @@ public interface SysResourceMapper extends BaseMapper<SysResource> {
     /**
      * 获取资源节点信息 (无层级关系)
      *
-     * @param username 用户名 (获取该用户是否有权限)
+     * @param roleId 角色 ID (获取该角色是否有权限)
      * @return List<ResourceTreeNode>
      */
     List<ResourceTreeNode> listResourceTreeNode(Long roleId);

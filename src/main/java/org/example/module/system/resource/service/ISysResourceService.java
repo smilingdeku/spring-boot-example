@@ -37,7 +37,7 @@ public interface ISysResourceService extends IService<SysResource> {
     /**
      * 获取资源节点信息 (有层级关系)
      *
-     * @param roleId 角色 ID (获取该用户是否有权限)
+     * @param roleId 角色 ID (获取该角色是否有权限)
      * @return List<ResourceTreeNode>
      */
     List<ResourceTreeNode> listResourceTreeNode(Long roleId);
