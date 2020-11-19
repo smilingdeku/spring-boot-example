@@ -14,7 +14,9 @@ import org.example.module.system.user.domain.response.UserResponse;
 import org.example.module.system.user.mapper.SysUserMapper;
 import org.example.module.system.user.service.impl.SysUserServiceImpl;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -40,6 +43,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/user")
 public class SysUserController extends BaseController<SysUserServiceImpl, SysUserMapper, SysUser> {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public Result login(@RequestBody @Validated LoginRequest request) {
@@ -80,7 +86,9 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @PreAuthorize("hasAuthority('system:user:add')")
     @PostMapping
     public Result save(@RequestBody SysUser sysUser) {
-        return Result.success(sysUser);
+        sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
+        boolean success = getBaseService().save(sysUser);
+        return success ? Result.success(sysUser) : Result.failure();
     }
 
     @PreAuthorize("hasAuthority('system:user:delete')")
@@ -93,7 +101,16 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @PreAuthorize("hasAuthority('system:user:edit')")
     @PutMapping
     public Result update(@RequestBody SysUser sysUser) {
-        return Result.success();
+        SysUser old = getBaseService().getById(sysUser.getId());
+        if (Objects.isNull(old)) {
+            return Result.failure();
+        }
+        if (!old.getPassword().equals(sysUser.getPassword())) {
+            String newPassword = passwordEncoder.encode(sysUser.getPassword());
+            sysUser.setPassword(newPassword);
+        }
+        boolean success = getBaseService().updateById(sysUser);
+        return success ? Result.success(sysUser) : Result.failure();
     }
 
 }

@@ -1,7 +1,8 @@
 package org.example.module.system.user.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class SysUser implements Serializable {
     /**
      * 主键
      */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -31,7 +33,6 @@ public class SysUser implements Serializable {
     /**
      * 密码
      */
-    @JsonIgnore
     private String password;
 
     /**
