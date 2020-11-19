@@ -59,6 +59,12 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         return Result.success(page);
     }
 
+    @GetMapping("/list")
+    public Result list() {
+        return Result.success(getBaseService().listResourceTreeNode(
+                new LambdaQueryWrapper<SysResource>().orderByAsc(SysResource::getSortNumber)));
+    }
+
     @PostMapping
     public Result save(@RequestBody SysResource sysResource) {
         return Result.success(sysResource);

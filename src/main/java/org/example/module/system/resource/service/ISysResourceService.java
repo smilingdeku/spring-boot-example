@@ -1,5 +1,6 @@
 package org.example.module.system.resource.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.common.domain.entity.Router;
 import org.example.module.system.resource.domain.dto.ResourceTreeNode;
@@ -41,4 +42,12 @@ public interface ISysResourceService extends IService<SysResource> {
      * @return List<ResourceTreeNode>
      */
     List<ResourceTreeNode> listResourceTreeNode(Long roleId);
+
+    /**
+     * 获取资源节点列表 (有层级关系)
+     *
+     * @param queryWrapper 查询条件
+     * @return List<ResourceTreeNode>
+     */
+    List<ResourceTreeNode> listResourceTreeNode(Wrapper<SysResource> queryWrapper);
 }

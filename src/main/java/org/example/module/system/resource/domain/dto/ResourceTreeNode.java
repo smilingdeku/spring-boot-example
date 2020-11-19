@@ -13,8 +13,22 @@ import java.io.Serializable;
 public class ResourceTreeNode extends TreeNode<ResourceTreeNode> implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private Integer type;
     private String name;
-    private boolean hasPermission;
+    private String icon;
+    private String path;
+    private String component;
+    private String permission;
+    private Integer sortNumber;
+    private Boolean hasPermission;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public String getName() {
         return name;
@@ -24,11 +38,51 @@ public class ResourceTreeNode extends TreeNode<ResourceTreeNode> implements Seri
         this.name = name;
     }
 
-    public boolean getHasPermission() {
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getComponent() {
+        return component;
+    }
+
+    public void setComponent(String component) {
+        this.component = component;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
+    }
+
+    public Integer getSortNumber() {
+        return sortNumber;
+    }
+
+    public void setSortNumber(Integer sortNumber) {
+        this.sortNumber = sortNumber;
+    }
+
+    public Boolean getHasPermission() {
         return hasPermission;
     }
 
-    public void setHasPermission(boolean hasPermission) {
+    public void setHasPermission(Boolean hasPermission) {
         this.hasPermission = hasPermission;
     }
 }

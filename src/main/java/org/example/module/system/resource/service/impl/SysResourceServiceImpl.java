@@ -1,5 +1,6 @@
 package org.example.module.system.resource.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import org.example.common.base.BaseService;
 import org.example.common.domain.entity.Router;
 import org.example.common.domain.entity.RouterMeta;
@@ -52,4 +53,25 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
         List<ResourceTreeNode> nodeList = this.getBaseMapper().listResourceTreeNode(roleId);
         return TreeUtil.build(nodeList, null);
     }
+
+    @Override
+    public List<ResourceTreeNode> listResourceTreeNode(Wrapper<SysResource> queryWrapper) {
+        List<SysResource> resourceList = this.list(queryWrapper);
+        List<ResourceTreeNode> treeNodeList = new ArrayList<>();
+        for (SysResource resource : resourceList) {
+            ResourceTreeNode treeNode = new ResourceTreeNode();
+            treeNode.setId(Long.toString(resource.getId()));
+            treeNode.setParentId(null == resource.getParentId() ? null : Long.toString(resource.getParentId()));
+            treeNode.setType(resource.getType());
+            treeNode.setName(resource.getName());
+            treeNode.setIcon(resource.getIcon());
+            treeNode.setPath(resource.getPath());
+            treeNode.setComponent(resource.getComponent());
+            treeNode.setPermission(resource.getPermission());
+            treeNode.setSortNumber(resource.getSortNumber());
+            treeNodeList.add(treeNode);
+        }
+        return TreeUtil.build(treeNodeList, null);
+    }
+
 }
