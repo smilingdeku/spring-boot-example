@@ -99,6 +99,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         return Result.success(sysRole);
     }
 
+    @PreAuthorize("hasAnyAuthority('system:role:add', 'system:role:edit')")
     @GetMapping("/{id}/resources")
     public Result roleResources(@PathVariable Long id) {
         return Result.success(sysResourceService.listResourceTreeNode(id));

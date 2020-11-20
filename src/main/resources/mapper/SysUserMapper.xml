@@ -7,7 +7,7 @@
         FROM t_sys_user tsu
         LEFT JOIN t_sys_user_role tsur ON tsu.id = tsur.user_id
         LEFT JOIN t_sys_role_resource tsrr ON tsrr.role_id = tsur.role_id
-        LEFT JOIN t_sys_resource tsr ON tsr.id = tsrr.id
+        LEFT JOIN t_sys_resource tsr ON tsr.id = tsrr.resource_id
         WHERE tsu.username = #{username}
             AND tsr.permission IS NOT NULL
             AND tsr.permission &lt;&gt; ''

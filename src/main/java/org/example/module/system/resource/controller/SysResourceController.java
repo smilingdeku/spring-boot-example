@@ -13,6 +13,7 @@ import org.example.module.system.resource.service.impl.SysResourceServiceImpl;
 import org.example.module.system.roleresource.domain.entity.SysRoleResource;
 import org.example.module.system.roleresource.service.ISysRoleResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +50,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         return Result.success(routerList);
     }
 
+    @PreAuthorize("hasAuthority('system:resource:edit')")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         return Result.success(getBaseService().getById(id));
@@ -66,18 +68,21 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         return Result.success(page);
     }
 
+    @PreAuthorize("hasAuthority('system:resource:edit')")
     @GetMapping("/list")
     public Result list() {
         return Result.success(getBaseService().listResourceTreeNode(
                 new LambdaQueryWrapper<SysResource>().orderByAsc(SysResource::getSortNumber)));
     }
 
+    @PreAuthorize("hasAuthority('system:resource:add')")
     @PostMapping
     public Result save(@RequestBody SysResource sysResource) {
         boolean success = getBaseService().save(sysResource);
         return success ? Result.success(sysResource) : Result.failure();
     }
 
+    @PreAuthorize("hasAuthority('system:resource:delete')")
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) {
         List<Long> idList = Arrays.asList(ids);
@@ -89,6 +94,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         return Result.success();
     }
 
+    @PreAuthorize("hasAuthority('system:resource:edit')")
     @PutMapping
     public Result update(@RequestBody SysResource sysResource) {
         boolean success = getBaseService().updateById(sysResource);
