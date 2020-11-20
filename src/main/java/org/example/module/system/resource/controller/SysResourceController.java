@@ -68,7 +68,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         return Result.success(page);
     }
 
-    @PreAuthorize("hasAuthority('system:resource:edit')")
+    @PreAuthorize("hasAuthority('system:resource')")
     @GetMapping("/list")
     public Result list() {
         return Result.success(getBaseService().listResourceTreeNode(
