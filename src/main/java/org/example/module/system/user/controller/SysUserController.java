@@ -13,6 +13,7 @@ import org.example.module.system.user.domain.response.LoginResponse;
 import org.example.module.system.user.domain.response.UserResponse;
 import org.example.module.system.user.mapper.SysUserMapper;
 import org.example.module.system.user.service.impl.SysUserServiceImpl;
+import org.example.module.system.userrole.service.ISysUserRoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -46,6 +49,8 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ISysUserRoleService sysUserRoleService;
 
     @PostMapping("/login")
     public Result login(@RequestBody @Validated LoginRequest request) {
@@ -77,6 +82,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         return Result.success(page);
     }
 
+    @PreAuthorize("hasAuthority('system:user:edit')")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         SysUser sysUser = getBaseService().getById(id);
@@ -94,7 +100,11 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @PreAuthorize("hasAuthority('system:user:delete')")
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) {
-//        return Result.success(getBaseService().removeByIds(Arrays.asList(ids)));
+        List<Long> idList = Arrays.asList(ids);
+        idList.forEach(id -> {
+            getBaseService().removeById(id);
+            sysUserRoleService.deleteByUserId(id);
+        });
         return Result.success();
     }
 
@@ -102,10 +112,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @PutMapping
     public Result update(@RequestBody SysUser sysUser) {
         SysUser old = getBaseService().getById(sysUser.getId());
-        if (Objects.isNull(old)) {
-            return Result.failure();
-        }
-        if (!old.getPassword().equals(sysUser.getPassword())) {
+        if (Objects.nonNull(old) && !old.getPassword().equals(sysUser.getPassword())) {
             String newPassword = passwordEncoder.encode(sysUser.getPassword());
             sysUser.setPassword(newPassword);
         }
