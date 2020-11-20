@@ -13,4 +13,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 
+    /**
+     * 删除用户角色
+     *
+     * @param userId 用户 ID
+     */
+    void deleteByUserId(Long userId);
+
 }

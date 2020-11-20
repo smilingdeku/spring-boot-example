@@ -13,4 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysUserRoleService extends IService<SysUserRole> {
 
+    /**
+     * 删除用户角色
+     *
+     * @param userId 用户 ID
+     */
+    void deleteByUserId(Long userId);
 }
