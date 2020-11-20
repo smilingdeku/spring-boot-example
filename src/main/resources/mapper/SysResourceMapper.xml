@@ -18,4 +18,10 @@
         LEFT JOIN t_sys_role_resource tsrr ON tsr.id = tsrr.resource_id AND tsrr.role_id = #{roleId}
         ORDER BY tsr.sort_number
     </select>
+    <select id="getById" resultType="org.example.module.system.resource.domain.dto.SysResourceDTO">
+        SELECT tsr1.id, tsr1.parent_id, tsr1.name, tsr2.name AS `parent_name`, tsr1.type, tsr1.icon, tsr1.path, tsr1.component, tsr1.permission, tsr1.sort_number
+        FROM t_sys_resource tsr1
+        LEFT JOIN t_sys_resource tsr2 ON tsr1.parent_id = tsr2.id
+        WHERE tsr1.id = #{id}
+    </select>
 </mapper>

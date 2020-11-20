@@ -10,6 +10,9 @@ import org.example.common.domain.response.Result;
 import org.example.module.system.resource.domain.entity.SysResource;
 import org.example.module.system.resource.mapper.SysResourceMapper;
 import org.example.module.system.resource.service.impl.SysResourceServiceImpl;
+import org.example.module.system.roleresource.domain.entity.SysRoleResource;
+import org.example.module.system.roleresource.service.ISysRoleResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +39,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/resource")
 public class SysResourceController extends BaseController<SysResourceServiceImpl, SysResourceMapper, SysResource> {
+
+    @Autowired
+    private ISysRoleResourceService sysRoleResourceService;
 
     @GetMapping("/routers")
     public Result getRouters() {
@@ -67,17 +74,25 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
 
     @PostMapping
     public Result save(@RequestBody SysResource sysResource) {
-        return Result.success(sysResource);
+        boolean success = getBaseService().save(sysResource);
+        return success ? Result.success(sysResource) : Result.failure();
     }
 
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) {
+        List<Long> idList = Arrays.asList(ids);
+        idList.forEach(id -> {
+            getBaseService().removeById(id);
+            sysRoleResourceService.remove(new LambdaQueryWrapper<SysRoleResource>()
+                    .eq(SysRoleResource::getResourceId, id));
+        });
         return Result.success();
     }
 
     @PutMapping
     public Result update(@RequestBody SysResource sysResource) {
-        return Result.success(sysResource);
+        boolean success = getBaseService().updateById(sysResource);
+        return success ? Result.success(sysResource) : Result.failure();
     }
 
 }

@@ -2,6 +2,7 @@ package org.example.module.system.resource.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.example.module.system.resource.domain.dto.ResourceTreeNode;
+import org.example.module.system.resource.domain.dto.SysResourceDTO;
 import org.example.module.system.resource.domain.entity.SysResource;
 
 import java.util.List;
@@ -32,4 +33,12 @@ public interface SysResourceMapper extends BaseMapper<SysResource> {
      * @return List<ResourceTreeNode>
      */
     List<ResourceTreeNode> listResourceTreeNode(Long roleId);
+
+    /**
+     * 获取资源信息
+     *
+     * @param id ID
+     * @return SysResourceDTO
+     */
+    SysResourceDTO getById(Long id);
 }

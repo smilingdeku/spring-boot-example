@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.common.domain.entity.Router;
 import org.example.module.system.resource.domain.dto.ResourceTreeNode;
+import org.example.module.system.resource.domain.dto.SysResourceDTO;
 import org.example.module.system.resource.domain.entity.SysResource;
 
 import java.util.List;
@@ -50,4 +51,12 @@ public interface ISysResourceService extends IService<SysResource> {
      * @return List<ResourceTreeNode>
      */
     List<ResourceTreeNode> listResourceTreeNode(Wrapper<SysResource> queryWrapper);
+
+    /**
+     * 获取资源信息
+     *
+     * @param id ID
+     * @return SysResourceDTO
+     */
+    SysResourceDTO getById(Long id);
 }

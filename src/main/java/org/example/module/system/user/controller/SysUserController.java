@@ -13,6 +13,7 @@ import org.example.module.system.user.domain.response.LoginResponse;
 import org.example.module.system.user.domain.response.UserResponse;
 import org.example.module.system.user.mapper.SysUserMapper;
 import org.example.module.system.user.service.impl.SysUserServiceImpl;
+import org.example.module.system.userrole.domain.entity.SysUserRole;
 import org.example.module.system.userrole.service.ISysUserRoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +104,8 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         List<Long> idList = Arrays.asList(ids);
         idList.forEach(id -> {
             getBaseService().removeById(id);
-            sysUserRoleService.deleteByUserId(id);
+            sysUserRoleService.remove(new LambdaQueryWrapper<SysUserRole>()
+                    .eq(SysUserRole::getUserId, id));
         });
         return Result.success();
     }

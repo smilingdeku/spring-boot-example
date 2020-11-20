@@ -6,6 +6,7 @@ import org.example.common.domain.entity.Router;
 import org.example.common.domain.entity.RouterMeta;
 import org.example.common.util.TreeUtil;
 import org.example.module.system.resource.domain.dto.ResourceTreeNode;
+import org.example.module.system.resource.domain.dto.SysResourceDTO;
 import org.example.module.system.resource.domain.entity.SysResource;
 import org.example.module.system.resource.mapper.SysResourceMapper;
 import org.example.module.system.resource.service.ISysResourceService;
@@ -72,6 +73,11 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
             treeNodeList.add(treeNode);
         }
         return TreeUtil.build(treeNodeList, null);
+    }
+
+    @Override
+    public SysResourceDTO getById(Long id) {
+        return getBaseMapper().getById(id);
     }
 
 }
