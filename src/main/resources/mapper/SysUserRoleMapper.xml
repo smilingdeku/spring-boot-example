@@ -7,4 +7,9 @@
         FROM t_sys_user_role
         WHERE user_id = #{userId}
     </delete>
+    <select id="listRoleIdByUserId" resultType="java.lang.Long">
+        SELECT role_id
+        FROM t_sys_user_role
+        WHERE user_id = #{userId}
+    </select>
 </mapper>

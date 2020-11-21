@@ -6,6 +6,8 @@ import org.example.module.system.userrole.mapper.SysUserRoleMapper;
 import org.example.module.system.userrole.service.ISysUserRoleService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 系统用户角色关联 服务实现类
@@ -20,5 +22,10 @@ public class SysUserRoleServiceImpl extends BaseService<SysUserRoleMapper, SysUs
     @Override
     public void deleteByUserId(Long userId) {
         getBaseMapper().deleteByUserId(userId);
+    }
+
+    @Override
+    public List<Long> listRoleIdByUserId(Long userId) {
+        return getBaseMapper().listRoleIdByUserId(userId);
     }
 }

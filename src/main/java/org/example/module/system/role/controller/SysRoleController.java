@@ -65,6 +65,14 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         return Result.success(page);
     }
 
+    @PreAuthorize("hasAuthority('system:user')")
+    @GetMapping("/list")
+    public Result list() {
+        LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
+        List<SysRole> list = getBaseService().list(queryWrapper);
+        return Result.success(list);
+    }
+
     @PreAuthorize("hasAuthority('system:role:edit')")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {

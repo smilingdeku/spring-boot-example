@@ -9,6 +9,7 @@ import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.Result;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.LoginRequest;
+import org.example.module.system.user.domain.request.SysUserRequest;
 import org.example.module.system.user.domain.response.LoginResponse;
 import org.example.module.system.user.domain.response.UserResponse;
 import org.example.module.system.user.mapper.SysUserMapper;
@@ -18,7 +19,6 @@ import org.example.module.system.userrole.service.ISysUserRoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * <p>
@@ -49,9 +48,8 @@ import java.util.Objects;
 public class SysUserController extends BaseController<SysUserServiceImpl, SysUserMapper, SysUser> {
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
     private ISysUserRoleService sysUserRoleService;
+
 
     @PostMapping("/login")
     public Result login(@RequestBody @Validated LoginRequest request) {
@@ -92,10 +90,9 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
 
     @PreAuthorize("hasAuthority('system:user:add')")
     @PostMapping
-    public Result save(@RequestBody SysUser sysUser) {
-        sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
-        boolean success = getBaseService().save(sysUser);
-        return success ? Result.success(sysUser) : Result.failure();
+    public Result save(@RequestBody SysUserRequest request) {
+        SysUser sysUser = getBaseService().saveUserAndRoles(request);
+        return Result.success(sysUser);
     }
 
     @PreAuthorize("hasAuthority('system:user:delete')")
@@ -112,14 +109,16 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
 
     @PreAuthorize("hasAuthority('system:user:edit')")
     @PutMapping
-    public Result update(@RequestBody SysUser sysUser) {
-        SysUser old = getBaseService().getById(sysUser.getId());
-        if (Objects.nonNull(old) && !old.getPassword().equals(sysUser.getPassword())) {
-            String newPassword = passwordEncoder.encode(sysUser.getPassword());
-            sysUser.setPassword(newPassword);
-        }
-        boolean success = getBaseService().updateById(sysUser);
-        return success ? Result.success(sysUser) : Result.failure();
+    public Result update(@RequestBody SysUserRequest request) {
+        SysUser sysUser = getBaseService().updateUserAndRoles(request);
+        return Result.success(sysUser);
+    }
+
+    @PreAuthorize("hasAnyAuthority('system:user:add', 'system:user:edit')")
+    @GetMapping("/{id}/roles")
+    public Result userRoles(@PathVariable Long id) {
+        List<Long> roleIds = sysUserRoleService.listRoleIdByUserId(id);
+        return Result.success(roleIds);
     }
 
 }

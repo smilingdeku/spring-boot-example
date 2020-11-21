@@ -2,6 +2,7 @@ package org.example.module.system.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.module.system.user.domain.entity.SysUser;
+import org.example.module.system.user.domain.request.SysUserRequest;
 
 import java.util.List;
 
@@ -47,4 +48,20 @@ public interface ISysUserService extends IService<SysUser> {
      * @return List<String>
      */
     List<String> listPermissionByUsername(String username);
+
+    /**
+     * 保存用户和角色
+     *
+     * @param request 请求数据
+     * @return SysUser
+     */
+    SysUser saveUserAndRoles(SysUserRequest request);
+
+    /**
+     * 更新用户和角色
+     *
+     * @param request 请求数据
+     * @return SysUser
+     */
+    SysUser updateUserAndRoles(SysUserRequest request);
 }

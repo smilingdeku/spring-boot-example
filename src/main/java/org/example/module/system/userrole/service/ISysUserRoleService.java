@@ -1,7 +1,9 @@
 package org.example.module.system.userrole.service;
 
-import org.example.module.system.userrole.domain.entity.SysUserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.example.module.system.userrole.domain.entity.SysUserRole;
+
+import java.util.List;
 
 /**
  * <p>
@@ -19,4 +21,12 @@ public interface ISysUserRoleService extends IService<SysUserRole> {
      * @param userId 用户 ID
      */
     void deleteByUserId(Long userId);
+
+    /**
+     * 获取用户角色 ID 列表
+     *
+     * @param userId 用户 ID
+     * @return List<Long>
+     */
+    List<Long> listRoleIdByUserId(Long userId);
 }

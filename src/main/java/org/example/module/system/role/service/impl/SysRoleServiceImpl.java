@@ -10,6 +10,7 @@ import org.example.module.system.roleresource.domain.entity.SysRoleResource;
 import org.example.module.system.roleresource.service.ISysRoleResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,7 @@ public class SysRoleServiceImpl extends BaseService<SysRoleMapper, SysRole> impl
     @Autowired
     private ISysRoleResourceService sysRoleResourceService;
 
+    @Transactional
     @Override
     public SysRole saveRoleAndResources(SysRoleRequest request) {
         SysRole sysRole = new SysRole();
@@ -46,6 +48,7 @@ public class SysRoleServiceImpl extends BaseService<SysRoleMapper, SysRole> impl
         return sysRole;
     }
 
+    @Transactional
     @Override
     public SysRole updateRoleAndResources(SysRoleRequest request) {
         SysRole sysRole = new SysRole();
@@ -56,15 +59,13 @@ public class SysRoleServiceImpl extends BaseService<SysRoleMapper, SysRole> impl
         this.updateById(sysRole);
         List<SysRoleResource> roleResourceList = sysRoleResourceService.list(new LambdaQueryWrapper<SysRoleResource>()
                 .eq(SysRoleResource::getRoleId, sysRole.getId()));
-        roleResourceList.stream().filter(item -> !request.getResourceIds().contains(item.getResourceId()))
-                .forEach(item -> {
-                    sysRoleResourceService.removeById(item);
-                    request.getResourceIds().remove(item.getResourceId());
-                });
+        roleResourceList.stream().filter(item -> !request.getResourceIds().contains(item.getResourceId())).forEach(item -> {
+            sysRoleResourceService.removeById(item);
+            request.getResourceIds().remove(item.getResourceId());
+        });
         if (!CollectionUtils.isEmpty(request.getResourceIds())) {
             request.getResourceIds().forEach(resourceId -> {
-              if (roleResourceList.stream()
-                      .noneMatch(sysRoleResource -> sysRoleResource.getResourceId().equals(resourceId))) {
+              if (roleResourceList.stream().noneMatch(sysRoleResource -> sysRoleResource.getResourceId().equals(resourceId))) {
                   SysRoleResource roleResource = new SysRoleResource();
                   roleResource.setRoleId(sysRole.getId());
                   roleResource.setResourceId(resourceId);
