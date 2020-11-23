@@ -13,7 +13,7 @@ public class QueryRequest extends LinkedHashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
     public String getKeyword() {
-        return null == super.get("keyword") ? null : String.valueOf(super.get("keyword"));
+        return ConvertUtil.toStr(super.get("keyword"), null);
     }
 
     public Integer getPageIndex() {
@@ -30,7 +30,7 @@ public class QueryRequest extends LinkedHashMap<String, Object> {
     }
 
     public String getOrderField() {
-        return null == super.get("orderField") ? null : String.valueOf(super.get("orderField"));
+        return ConvertUtil.toStr(super.get("orderField"), null);
     }
 
     public boolean getIsAsc() {
