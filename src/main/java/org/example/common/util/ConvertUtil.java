@@ -5,53 +5,46 @@ import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
+/**
+ * 数据转换工具类
+ */
 public class ConvertUtil {
-    
+
     /**
-     * Gets a String from a Object in a null-safe manner.
-     * <p>
-     * The String is obtained via <code>toString</code>.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a String, <code>null</code> if null object input
+     * 转换为 String
+     *
+     * @param obj 数据
+     * @return String
      */
-    public static String getAsString(final Object obj) {
+    public static String toStr(final Object obj) {
         if (obj != null) {
             return obj.toString();
         }
         return null;
     }
-    
+
     /**
-     * Gets a String from a Object in a null-safe manner.
-     * <p>
-     * The String is obtained via <code>toString</code>.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  what to return if the value is null or if the conversion fails
-     * @return the value of the Object as a String, <code>defaultValue</code> if null object input
+     * 转换为 String
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return String
      */
-    public static String getAsString(final Object obj, String defaultValue) {
-        String answer = getAsString(obj);
+    public static String toStr(final Object obj, String def) {
+        String answer = toStr(obj);
         if (answer == null) {
-            answer = defaultValue;
+            answer = def;
         }
         return answer;
     }
-    
+
     /**
-     * Gets a Number from a Object in a null-safe manner.
-     * <p>
-     * If the value is a <code>Number</code> it is returned directly.
-     * If the value is a <code>String</code> it is converted using
-     * {@link NumberFormat#parse(String)} on the system default formatter
-     * returning <code>null</code> if the conversion fails.
-     * Otherwise, <code>null</code> is returned.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a Number, <code>null</code> if null object input
+     * 转换为 Number
+     *
+     * @param obj 数据
+     * @return Number
      */
-    public static Number getAsNumber(final Object obj) {
+    public static Number toNumber(final Object obj) {
         if (obj != null) {
             if (obj instanceof Number) {
                 return (Number) obj;
@@ -69,39 +62,29 @@ public class ConvertUtil {
         }
         return null;
     }
-    
+
     /**
-     *  Converting the Object into a number,
-     *  using the default value if the the conversion fails.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  what to return if the value is null or if the conversion fails
-     * @return the value of the object as a number, or defaultValue if the 
-     *    original value is null, the object is null or the number conversion
-     *    fails
+     * 转换为 Number
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return Number
      */
-    public static Number getAsNumber(final Object obj, Number defaultValue) {
-        Number answer = getAsNumber(obj);
+    public static Number toNumber(final Object obj, Number def) {
+        Number answer = toNumber(obj);
         if (answer == null) {
-            answer = defaultValue;
+            answer = def;
         }
         return answer;
     }
-    
+
     /**
-     * Gets a Boolean from a Object in a null-safe manner.
-     * <p>
-     * If the value is a <code>Boolean</code> it is returned directly.
-     * If the value is a <code>String</code> and it equals 'true' ignoring case
-     * then <code>true</code> is returned, otherwise <code>false</code>.
-     * If the value is a <code>Number</code> an integer zero value returns
-     * <code>false</code> and non-zero returns <code>true</code>.
-     * Otherwise, <code>null</code> is returned.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a Boolean, <code>null</code> if null object input
+     * 转换为 Boolean
+     *
+     * @param obj 数据
+     * @return Boolean
      */
-    public static Boolean getAsBoolean(final Object obj) {
+    public static Boolean toBoolean(final Object obj) {
         if (obj != null) {
             if (obj instanceof Boolean) {
                 return (Boolean) obj;
@@ -114,83 +97,59 @@ public class ConvertUtil {
         }
         return null;
     }
-    
+
     /**
-     * Gets a Boolean from a Object in a null-safe manner.
-     * <p>
-     * If the value is a <code>Boolean</code> it is returned directly.
-     * If the value is a <code>String</code> and it equals 'true' ignoring case
-     * then <code>true</code> is returned, otherwise <code>false</code>.
-     * If the value is a <code>Number</code> an integer zero value returns
-     * <code>false</code> and non-zero returns <code>true</code>.
-     * Otherwise, <code>null</code> is returned.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  what to return if the value is null or if the conversion fails
-     * @return the value of the Object as a Boolean, <code>defaultValue</code> if null object input
+     * 转换为 Boolean
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return Boolean
      */
-    public static Boolean getAsBoolean(final Object obj, Boolean defaultValue) {
-        Boolean answer = getAsBoolean(obj);
+    public static Boolean toBoolean(final Object obj, Boolean def) {
+        Boolean answer = toBoolean(obj);
         if (answer == null) {
-            answer = defaultValue;
+            answer = def;
         }
         return answer;
     }
-    
+
     /**
-     * Gets a boolean from a Object in a null-safe manner.
-     * <p>
-     * If the value is a <code>Boolean</code> its value is returned.
-     * If the value is a <code>String</code> and it equals 'true' ignoring case
-     * then <code>true</code> is returned, otherwise <code>false</code>.
-     * If the value is a <code>Number</code> an integer zero value returns
-     * <code>false</code> and non-zero returns <code>true</code>.
-     * Otherwise, <code>false</code> is returned.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a Boolean, <code>false</code> if null object input
+     * 转换为 boolean
+     *
+     * @param obj 数据
+     * @return boolean
      */
-    public static boolean getAsBooleanValue(final Object obj) {
-        Boolean booleanObject = getAsBoolean(obj);
+    public static boolean toBooleanValue(final Object obj) {
+        Boolean booleanObject = toBoolean(obj);
         if (booleanObject == null) {
             return false;
         }
         return booleanObject;
     }
-    
+
     /**
-     * Gets a boolean from a Object in a null-safe manner.
-     * <p>
-     * If the value is a <code>Boolean</code> its value is returned.
-     * If the value is a <code>String</code> and it equals 'true' ignoring case
-     * then <code>true</code> is returned, otherwise <code>false</code>.
-     * If the value is a <code>Number</code> an integer zero value returns
-     * <code>false</code> and non-zero returns <code>true</code>.
-     * Otherwise, <code>false</code> is returned.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  what to return if the value is null or if the conversion fails
-     * @return the value in the Map as a Boolean, <code>defaultValue</code> if null object input
+     * 转化为 boolean
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return boolean
      */
-    public static boolean getAsBooleanValue(final Object obj, boolean defaultValue) {
-        Boolean booleanObject = getAsBoolean(obj);
+    public static boolean toBooleanValue(final Object obj, boolean def) {
+        Boolean booleanObject = toBoolean(obj);
         if (booleanObject == null) {
-            return defaultValue;
+            return def;
         }
         return booleanObject;
     }
-    
+
     /**
-     * Gets a Byte from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The Byte is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @return the value of Object as a Byte, <code>null</code> if null object input
+     * 转换为 Byte
+     *
+     * @param obj 数据
+     * @return Byte
      */
-    public static Byte getAsByte(final Object obj) {
-        Number answer = getAsNumber(obj);
+    public static Byte toByte(final Object obj) {
+        Number answer = toNumber(obj);
         if (answer == null) {
             return null;
         } else if (answer instanceof Byte) {
@@ -198,68 +157,59 @@ public class ConvertUtil {
         }
         return answer.byteValue();
     }
-    
+
     /**
-     * Gets a Byte from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The Byte is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of Object as a Byte, <code>defaultValue</code> if null object input
+     * 转换为 Byte
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return Byte
      */
-    public static Byte getAsByte(final Object obj, Byte defaultValue) {
-        Byte answer = getAsByte(obj);
+    public static Byte toByte(final Object obj, Byte def) {
+        Byte answer = toByte(obj);
         if (answer == null) {
-            answer = defaultValue;
+            answer = def;
         }
         return answer;
     }
-    
+
     /**
-     * Gets a byte from a Object in a null-safe manner.
-     * <p>
-     * The byte is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a byte, <code>0</code> if null object input
+     * 转换为 byte
+     *
+     * @param obj 数据
+     * @return byte
      */
-    public static byte getAsByteValue(final Object obj) {
-        Byte byteObject = getAsByte(obj);
+    public static byte toByteValue(final Object obj) {
+        Byte byteObject = toByte(obj);
         if (byteObject == null) {
             return 0;
         }
         return byteObject;
     }
-    
+
     /**
-     * Gets a byte from a Object in a null-safe manner.
-     * <p>
-     * The byte is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of the Object as a byte, <code>defaultValue</code> if null object input
+     * 转换为 byte
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return byte
      */
-    public static byte getAsByteValue(final Object obj, byte defaultValue) {
-        Byte byteObject = getAsByte(obj);
+    public static byte toByteValue(final Object obj, byte def) {
+        Byte byteObject = toByte(obj);
         if (byteObject == null) {
-            return defaultValue;
+            return def;
         }
         return byteObject;
     }
-    
+
     /**
-     * Gets a Short from a Object in a null-safe manner.
-     * <p>
-     * The Short is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a Short, <code>null</code> if null object input
+     * 转换为 Short
+     *
+     * @param obj 数据
+     * @return Short
      */
-    public static Short getAsShort(final Object obj) {
-        Number answer = getAsNumber(obj);
+    public static Short toShort(final Object obj) {
+        Number answer = toNumber(obj);
         if (answer == null) {
             return null;
         } else if (answer instanceof Short) {
@@ -267,68 +217,59 @@ public class ConvertUtil {
         }
         return answer.shortValue();
     }
-    
+
     /**
-     * Gets a Short from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The Short is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of Object as a Short, <code>defaultValue</code> if null object input
+     * 转换为 Short
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return Short
      */
-    public static Short getAsShort(final Object obj, Short defaultValue) {
-        Short answer = getAsShort(obj);
+    public static Short toShort(final Object obj, Short def) {
+        Short answer = toShort(obj);
         if (answer == null) {
-            answer = defaultValue;
+            answer = def;
         }
         return answer;
     }
-    
+
     /**
-     * Gets a short from a Object in a null-safe manner.
-     * <p>
-     * The short is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a short, <code>0</code> if null object input
+     * 转换为 short
+     *
+     * @param obj 数据
+     * @return short
      */
-    public static short getAsShortValue(final Object obj) {
-        Short shortObject = getAsShort(obj);
+    public static short toShortValue(final Object obj) {
+        Short shortObject = toShort(obj);
         if (shortObject == null) {
             return 0;
         }
         return shortObject;
     }
-    
+
     /**
-     * Gets a short from a Object in a null-safe manner.
-     * <p>
-     * The short is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of the Object as a short, <code>defaultValue</code> if null object input
+     * 转换为 short
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return short
      */
-    public static short getAsShortValue(final Object obj, short defaultValue) {
-        Short shortObject = getAsShort(obj);
+    public static short toShortValue(final Object obj, short def) {
+        Short shortObject = toShort(obj);
         if (shortObject == null) {
-            return defaultValue;
+            return def;
         }
         return shortObject;
     }
-    
+
     /**
-     * Gets a Integer from a Object in a null-safe manner.
-     * <p>
-     * The Integer is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a Integer, <code>null</code> if null object input
+     * 转换为 Integer
+     *
+     * @param obj 数据
+     * @return Integer
      */
-    public static Integer getAsInteger(final Object obj) {
-        Number answer = getAsNumber(obj);
+    public static Integer toInteger(final Object obj) {
+        Number answer = toNumber(obj);
         if (answer == null) {
             return null;
         } else if (answer instanceof Integer) {
@@ -336,68 +277,59 @@ public class ConvertUtil {
         }
         return answer.intValue();
     }
-    
+
     /**
-     * Gets a Integer from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The Integer is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of Object as a Integer, <code>defaultValue</code> if null object input
+     * 转换为 Integer
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return Integer
      */
-    public static Integer getAsInteger(final Object obj, Integer defaultValue) {
-        Integer answer = getAsInteger(obj);
+    public static Integer toInteger(final Object obj, Integer def) {
+        Integer answer = toInteger(obj);
         if (answer == null) {
-            answer = defaultValue;
+            answer = def;
         }
         return answer;
     }
-    
+
     /**
-     * Gets a int from a Object in a null-safe manner.
-     * <p>
-     * The int is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a int, <code>0</code> if null object input
+     * 转换为 int
+     *
+     * @param obj 数据
+     * @return int
      */
-    public static int getAsIntValue(final Object obj) {
-        Integer integerObject = getAsInteger(obj);
+    public static int toIntValue(final Object obj) {
+        Integer integerObject = toInteger(obj);
         if (integerObject == null) {
             return 0;
         }
         return integerObject;
     }
-    
+
     /**
-     * Gets a int from a Object in a null-safe manner.
-     * <p>
-     * The int is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of the Object as a int, <code>defaultValue</code> if null object input
+     * 转换为 int
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return int
      */
-    public static int getAsIntValue(final Object obj, int defaultValue) {
-        Integer integerObject = getAsInteger(obj);
+    public static int toIntValue(final Object obj, int def) {
+        Integer integerObject = toInteger(obj);
         if (integerObject == null) {
-            return defaultValue;
+            return def;
         }
         return integerObject;
     }
-    
+
     /**
-     * Gets a Long from a Object in a null-safe manner.
-     * <p>
-     * The Long is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a Long, <code>null</code> if null object input
+     * 转换为 Long
+     *
+     * @param obj 数据
+     * @return Long
      */
-    public static Long getAsLong(final Object obj) {
-        Number answer = getAsNumber(obj);
+    public static Long toLong(final Object obj) {
+        Number answer = toNumber(obj);
         if (answer == null) {
             return null;
         } else if (answer instanceof Long) {
@@ -405,69 +337,59 @@ public class ConvertUtil {
         }
         return answer.longValue();
     }
-    
+
     /**
-     * Gets a Long from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The Long is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of Object as a Long, <code>defaultValue</code> if null object input
+     * 转换为 Long
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return Long
      */
-    public static Long getAsLong(final Object obj, Long defaultValue) {
-        Long answer = getAsLong(obj);
+    public static Long toLong(final Object obj, Long def) {
+        Long answer = toLong(obj);
         if (answer == null) {
-            answer = defaultValue;
+            answer = def;
         }
         return answer;
     }
-    
+
     /**
-     * Gets a long from a Object in a null-safe manner.
-     * <p>
-     * The long is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a long, <code>0L</code> if null object input
+     * 转换为 long
+     *
+     * @param obj 数据
+     * @return long
      */
-    public static long getAsLongValue(final Object obj) {
-        Long longObject = getAsLong(obj);
+    public static long toLongValue(final Object obj) {
+        Long longObject = toLong(obj);
         if (longObject == null) {
             return 0L;
         }
         return longObject;
     }
-    
+
     /**
-     * Gets a long from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The long is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of Object as a long, <code>defaultValue</code> if null object input
+     * 转换为 long
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return long
      */
-    public static long getAsLongValue(final Object obj, long defaultValue) {
-        Long longObject = getAsLong(obj);
+    public static long toLongValue(final Object obj, long def) {
+        Long longObject = toLong(obj);
         if (longObject == null) {
-            return defaultValue;
+            return def;
         }
         return longObject;
     }
-    
+
     /**
-     * Gets a Float from a Object in a null-safe manner.
-     * <p>
-     * The Float is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a Float, <code>null</code> if null object input
+     * 转换为 Float
+     *
+     * @param obj 数据
+     * @return Float
      */
-    public static Float getAsFloat(final Object obj) {
-        Number answer = getAsNumber(obj);
+    public static Float toFloat(final Object obj) {
+        Number answer = toNumber(obj);
         if (answer == null) {
             return null;
         } else if (answer instanceof Float) {
@@ -475,69 +397,59 @@ public class ConvertUtil {
         }
         return answer.floatValue();
     }
-    
+
     /**
-     * Gets a Float from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The Float is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of Object as a Float, <code>defaultValue</code> if null object input
+     * 转换为 Float
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return Float
      */
-    public static Float getAsFloat(final Object obj, Float defaultValue) {
-        Float answer = getAsFloat(obj);
+    public static Float toFloat(final Object obj, Float def) {
+        Float answer = toFloat(obj);
         if ( answer == null ) {
-            answer = defaultValue;
+            answer = def;
         }
         return answer;
     }
-    
+
     /**
-     * Gets a float from a Object in a null-safe manner.
-     * <p>
-     * The float is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of Object as a float, <code>0.0F</code> if null object input
+     * 转换为 float
+     *
+     * @param obj 数据
+     * @return float
      */
-    public static float getAsFloatValue(final Object obj) {
-        Float floatObject = getAsFloat(obj);
+    public static float toFloatValue(final Object obj) {
+        Float floatObject = toFloat(obj);
         if (floatObject == null) {
             return 0f;
         }
         return floatObject;
     }
-    
+
     /**
-     * Gets a float from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The float is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of Object as a float, <code>defaultValue</code> if null object input
+     * 转换为 float
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return float
      */
-    public static float getAsFloatValue(final Object obj, float defaultValue) {
-        Float floatObject = getAsFloat(obj);
+    public static float toFloatValue(final Object obj, float def) {
+        Float floatObject = toFloat(obj);
         if (floatObject == null) {
-            return defaultValue;
+            return def;
         }
         return floatObject;
     }
-    
+
     /**
-     * Gets a Double from a Object in a null-safe manner.
-     * <p>
-     * The Double is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of the Object as a Double, <code>null</code> if null object input
+     * 转换为 Double
+     *
+     * @param obj 数据
+     * @return Double
      */
-    public static Double getAsDouble(final Object obj) {
-        Number answer = getAsNumber(obj);
+    public static Double toDouble(final Object obj) {
+        Number answer = toNumber(obj);
         if (answer == null) {
             return null;
         } else if (answer instanceof Double) {
@@ -545,193 +457,177 @@ public class ConvertUtil {
         }
         return answer.doubleValue();
     }
-    
+
     /**
-     * Gets a Double from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The Double is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of Object as a Double, <code>defaultValue</code> if null object input
+     * 转换为 Double
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return Double
      */
-    public static Double getAsDouble(final Object obj, Double defaultValue) {
-        Double answer = getAsDouble(obj);
+    public static Double toDouble(final Object obj, Double def) {
+        Double answer = toDouble(obj);
         if ( answer == null ) {
-            answer = defaultValue;
+            answer = def;
         }
         return answer;
     }
-    
+
     /**
-     * Gets a double from a Object in a null-safe manner.
-     * <p>
-     * The double is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of Object as a double, <code>0.0</code> if null object input
+     * 转换为 double
+     *
+     * @param obj 数据
+     * @return double
      */
-    public static double getAsDoubleValue(final Object obj) {
-        Double doubleObject = getAsDouble(obj);
+    public static double toDoubleValue(final Object obj) {
+        Double doubleObject = toDouble(obj);
         if (doubleObject == null) {
             return 0d;
         }
         return doubleObject;
     }
-    
+
     /**
-     * Gets a double from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The double is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of Object as a double, <code>defaultValue</code> if null object input
+     * 转换为 double
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return double
      */
-    public static double getAsDoubleValue(final Object obj, double defaultValue) {
-        Double doubleObject = getAsDouble(obj);
+    public static double toDoubleValue(final Object obj, double def) {
+        Double doubleObject = toDouble(obj);
         if (doubleObject == null) {
-            return defaultValue;
+            return def;
         }
         return doubleObject;
     }
-    
+
     /**
-     * Gets a BigInteger from a Object in a null-safe manner.
-     * <p>
-     * The BigInteger is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of Object as a BigInteger, <code>0</code> if null object input
+     * 转换为 BigInteger
+     *
+     * @param obj 数据
+     * @return BigInteger
      */
-    public static BigInteger getAsBigInteger(final Object obj) {
-        Long longObject = getAsLong(obj);
+    public static BigInteger toBigInteger(final Object obj) {
+        Long longObject = toLong(obj);
         if (longObject == null) {
             return BigInteger.ZERO;
         }
         return BigInteger.valueOf(longObject);
     }
-    
+
     /**
-     * Gets a BigInteger from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The BigInteger is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of Object as a BigInteger, <code>defaultValue</code> if null object input
+     * 转换为 BigInteger
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return BigInteger
      */
-    public static BigInteger getAsBigInteger(final Object obj, BigInteger defaultValue) {
-        Long longObject = getAsLong(obj);
+    public static BigInteger toBigInteger(final Object obj, BigInteger def) {
+        Long longObject = toLong(obj);
         if (longObject == null) {
-            return defaultValue;
+            return def;
         }
         return BigInteger.valueOf(longObject);
     }
-    
+
     /**
-     * Gets a BigDecimal from a Object in a null-safe manner.
-     * <p>
-     * The BigDecimal is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj   the object to use
-     * @return the value of Object as a BigDecimal, <code>0</code> if null object input
+     * 转换为 BigDecimal
+     *
+     * @param obj 数据
+     * @return BigDecimal
      */
-    public static BigDecimal getAsBigDecimal(final Object obj) {
-        Double doubleObject = getAsDouble(obj);
+    public static BigDecimal toBigDecimal(final Object obj) {
+        Double doubleObject = toDouble(obj);
         if (doubleObject == null) {
             return BigDecimal.ZERO;
         }
         return BigDecimal.valueOf(doubleObject);
     }
-    
+
     /**
-     * Gets a BigDecimal from a Object in a null-safe manner,
-     * using the default value if the the conversion fails.
-     * <p>
-     * The BigDecimal is obtained from the results of {@link #getAsNumber(Object)}.
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return the value of Object as a BigDecimal, <code>defaultValue</code> if null object input
+     * 转换为 BigDecimal
+     *
+     * @param obj 数据
+     * @param def 默认值
+     * @return BigDecimal
      */
-    public static BigDecimal getAsBigDecimal(final Object obj, BigDecimal defaultValue) {
-        Double doubleObject = getAsDouble(obj);
+    public static BigDecimal toBigDecimal(final Object obj, BigDecimal def) {
+        Double doubleObject = toDouble(obj);
         if (doubleObject == null) {
-            return defaultValue;
+            return def;
         }
         return BigDecimal.valueOf(doubleObject);
     }
-    
+
     /**
-     * 
-     * 
-     * @param obj           the object to use
-     * @param clz           the type for conversion
-     * @return
+     * 转换数据
+     *
+     * @param obj 数据
+     * @param clz 目标类型类
+     * @param <R> 目标
+     * @return R
      */
     @SuppressWarnings("unchecked")
     public static <R> R cast(final Object obj, final Class<R> clz) {
         R result = null;
         if (Boolean.class.equals(clz) || boolean.class.equals(clz)) {
-            result = (R) getAsBoolean(obj);
+            result = (R) toBoolean(obj);
         } else if (Byte.class.equals(clz) || byte.class.equals(clz)) {
-            result = (R) getAsByte(obj);
+            result = (R) toByte(obj);
         } else if (Short.class.equals(clz) || short.class.equals(clz)) {
-            result = (R) getAsShort(obj);
+            result = (R) toShort(obj);
         } else if (Integer.class.equals(clz) || int.class.equals(clz)) {
-            result = (R) getAsInteger(obj);
+            result = (R) toInteger(obj);
         } else if (Long.class.equals(clz) || long.class.equals(clz)) {
-            result = (R) getAsLong(obj);
+            result = (R) toLong(obj);
         } else if (Float.class.equals(clz) || float.class.equals(clz)) {
-            result = (R) getAsFloat(obj);
+            result = (R) toFloat(obj);
         } else if (Double.class.equals(clz) || double.class.equals(clz)) {
-            result = (R) getAsDouble(obj);
+            result = (R) toDouble(obj);
         } else if (BigInteger.class.equals(clz)) {
-            result = (R) getAsBigInteger(obj);
+            result = (R) toBigInteger(obj);
         } else if (BigDecimal.class.equals(clz)) {
-            result = (R) getAsBigDecimal(obj);
+            result = (R) toBigDecimal(obj);
         } else if (String.class.equals(clz)) {
-            result = (R) getAsString(obj);
+            result = (R) toStr(obj);
         }
         return result;
     }
-    
+
     /**
-     * 
-     * 
-     * @param obj           the object to use
-     * @param defaultValue  return if the value is null or if the conversion fails
-     * @return
+     * 转换数据
+     *
+     * @param obj 数据
+     * @param def 目标类型默认值
+     * @param <R> 目标
+     * @return R
      */
     @SuppressWarnings("unchecked")
-    public static <R> R cast(final Object obj, R defaultValue) {
+    public static <R> R cast(final Object obj, R def) {
         R result = null;
-        if (defaultValue == null) { return result; }
-        Class<?> clz = defaultValue.getClass();
+        if (def == null) { return null; }
+        Class<?> clz = def.getClass();
         if (Boolean.class.equals(clz)) {
-            result = (R) getAsBoolean(obj, (Boolean) defaultValue);
+            result = (R) toBoolean(obj, (Boolean) def);
         } else if (Byte.class.equals(clz)) {
-            result = (R) getAsByte(obj, (Byte) defaultValue);
+            result = (R) toByte(obj, (Byte) def);
         } else if (Short.class.equals(clz)) {
-            result = (R) getAsShort(obj, (Short) defaultValue);
+            result = (R) toShort(obj, (Short) def);
         } else if (Integer.class.equals(clz)) {
-            result = (R) getAsInteger(obj, (Integer) defaultValue);
+            result = (R) toInteger(obj, (Integer) def);
         } else if (Long.class.equals(clz)) {
-            result = (R) getAsLong(obj, (Long) defaultValue);
+            result = (R) toLong(obj, (Long) def);
         } else if (Float.class.equals(clz)) {
-            result = (R) getAsFloat(obj, (Float) defaultValue);
+            result = (R) toFloat(obj, (Float) def);
         } else if (Double.class.equals(clz)) {
-            result = (R) getAsDouble(obj, (Double) defaultValue);
+            result = (R) toDouble(obj, (Double) def);
         } else if (BigInteger.class.equals(clz)) {
-            result = (R) getAsBigInteger(obj, (BigInteger) defaultValue);
+            result = (R) toBigInteger(obj, (BigInteger) def);
         } else if (BigDecimal.class.equals(clz)) {
-            result = (R) getAsBigDecimal(obj, (BigDecimal) defaultValue);
+            result = (R) toBigDecimal(obj, (BigDecimal) def);
         } else if (String.class.equals(clz)) {
-            result = (R) getAsString(obj, (String) defaultValue);
+            result = (R) toStr(obj, (String) def);
         }
         return result;
     }

@@ -27,8 +27,8 @@
         <fastjson.version>1.2.68</fastjson.version>
         <guava.version>27.0.1-jre</guava.version>
 
-        <slf4j-version>1.7.7</slf4j-version>
-        <log-version>1.1.7</log-version>
+        <slf4j.version>1.7.7</slf4j.version>
+        <logback.version>1.1.7</logback.version>
     </properties>
 
     <dependencies>
@@ -107,22 +107,22 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j-version}</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>${log-version}</version>
+            <version>${logback.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-access</artifactId>
-            <version>${log-version}</version>
+            <version>${logback.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${log-version}</version>
+            <version>${logback.version}</version>
         </dependency>
     </dependencies>
 

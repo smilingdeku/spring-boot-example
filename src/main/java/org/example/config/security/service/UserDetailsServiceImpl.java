@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException(MessageUtil.message(MsgKeyConstant.SYSTEM_USER_NOT_EXISTED, username));
         }
-        if (!ConvertUtil.getAsBoolean(user.getStatus(), false)) {
+        if (!ConvertUtil.toBoolean(user.getStatus(), false)) {
             throw new BusinessException(MessageUtil.message(MsgKeyConstant.SYSTEM_USER_IS_DISABLE, username));
         }
         String[] permissions = sysUserService.listPermissionByUsername(username).toArray(new String[]{});
