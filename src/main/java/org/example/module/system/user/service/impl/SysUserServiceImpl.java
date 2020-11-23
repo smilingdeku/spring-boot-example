@@ -2,7 +2,12 @@ package org.example.module.system.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
+import java.util.List;
+import java.util.Objects;
+
 import org.example.common.base.BaseService;
+import org.example.common.exception.BusinessException;
 import org.example.common.util.JwtTokenUtil;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.SysUserRequest;
@@ -18,9 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
-import java.util.List;
-import java.util.Objects;
+import org.springframework.util.StringUtils;
 
 /**
  * <p>
@@ -66,6 +69,9 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
     @Transactional
     @Override
     public SysUser saveUserAndRoles(SysUserRequest request) {
+        if (isExistsUser(request.getUsername())) {
+            throw new BusinessException("用户[" + request.getUsername() + "]已经存在,请修改用户名称");
+        }
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(request, sysUser);
         sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
@@ -81,6 +87,23 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
         return sysUser;
     }
 
+    /**
+     * 判断系统用户名称是否存在
+     *
+     * @param userName 用户名称
+     * @return boolean
+     */
+    private boolean isExistsUser(String userName) {
+        if (StringUtils.isEmpty(userName)) {
+            return true;
+        }
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysUser::getUsername, userName);
+
+        Integer count = baseMapper.selectCount(queryWrapper);
+        return count > 0;
+    }
+
     @Transactional
     @Override
     public SysUser updateUserAndRoles(SysUserRequest request) {
@@ -92,8 +115,8 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
             sysUser.setPassword(newPassword);
         }
         this.updateById(sysUser);
-        List<SysUserRole> userRoleList = sysUserRoleService.list(new LambdaQueryWrapper<SysUserRole>()
-                .eq(SysUserRole::getUserId, sysUser.getId()));
+        List<SysUserRole> userRoleList = sysUserRoleService
+            .list(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, sysUser.getId()));
         userRoleList.stream().filter(item -> !request.getRoleIds().contains(item.getRoleId())).forEach(item -> {
             sysUserRoleService.removeById(item);
             request.getRoleIds().remove(item.getRoleId());
