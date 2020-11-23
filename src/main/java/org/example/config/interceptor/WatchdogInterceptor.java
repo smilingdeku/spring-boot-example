@@ -1,15 +1,6 @@
 package org.example.config.interceptor;
 
 import com.alibaba.fastjson.JSON;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -18,6 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author huapeng.huang
@@ -51,10 +49,10 @@ public class WatchdogInterceptor {
             result = joinPoint.proceed();
 
             long end = System.currentTimeMillis();
-            log.info("Function[{}] spend:{}ms,request:{},response:{}", methodFingerPrint, (end - start), request,
+            log.info("function[{}] spend: {}ms, request: {}, response: {}", methodFingerPrint, (end - start), request,
                 JSON.toJSONString(result));
         } catch (Throwable th) {
-            log.error("Function[" + methodFingerPrint + "] failure,request:" + request, th);
+            log.error("function[" + methodFingerPrint + "] failure, request:" + request, th);
             throw th;
         }
         return result;
