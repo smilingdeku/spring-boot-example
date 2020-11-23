@@ -18,4 +18,9 @@ public class MsgKeyConstant {
     public static final String SYSTEM_USER_IS_DISABLE = "system.user.disable";
     /** 用户名与密码不匹配 */
     public static final String SYSTEM_USERNAME_PASSWORD_NOT_MATCH = "system.user.password-not-match";
+
+    /**
+     * 系统用户已经存在
+     */
+    public static final String SYSTEM_USER_ALREADY_EXISTS="system.user.already-exists";
 }
