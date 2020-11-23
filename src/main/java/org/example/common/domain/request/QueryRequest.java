@@ -12,6 +12,10 @@ import java.util.LinkedHashMap;
 public class QueryRequest extends LinkedHashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
+    public String getKeyword() {
+        return null == super.get("keyword") ? null : String.valueOf(super.get("keyword"));
+    }
+
     public Integer getPageIndex() {
         return ConvertUtil.getAsInteger(super.get("pageIndex"), 1);
     }
@@ -20,12 +24,12 @@ public class QueryRequest extends LinkedHashMap<String, Object> {
         return ConvertUtil.getAsInteger(super.get("pageSize"), 10);
     }
 
-    public String getOrderField() {
-        String field = getHumpOrderField();
+    public String getLineOrderField() {
+        String field = getOrderField();
         return StringUtils.isEmpty(field) ? field : humpToLine(field);
     }
 
-    public String getHumpOrderField() {
+    public String getOrderField() {
         return null == super.get("orderField") ? null : String.valueOf(super.get("orderField"));
     }
 

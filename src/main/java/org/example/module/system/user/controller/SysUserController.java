@@ -4,10 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import java.util.List;
-import java.util.Map;
-
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.Result;
@@ -35,6 +31,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -73,11 +72,11 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     public Result page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = mapToQuery(requestParam);
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        if (!StringUtils.isEmpty(query.get("username"))) {
-            queryWrapper.lambda().like(SysUser::getUsername, query.get("username"));
+        if (!StringUtils.isEmpty(query.getKeyword())) {
+            queryWrapper.lambda().like(SysUser::getUsername, query.getKeyword());
         }
-        if (!StringUtils.isEmpty(query.getOrderField())) {
-            queryWrapper.orderBy(true, query.getIsAsc(), query.getOrderField());
+        if (!StringUtils.isEmpty(query.getLineOrderField())) {
+            queryWrapper.orderBy(true, query.getIsAsc(), query.getLineOrderField());
         }
         IPage<SysUser> page = getBaseService()
             .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);

@@ -57,8 +57,8 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     public Result page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = mapToQuery(requestParam);
         LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
-        if (!StringUtils.isEmpty(query.get("name"))) {
-            queryWrapper.like(SysRole::getName, query.get("name"));
+        if (!StringUtils.isEmpty(query.getKeyword())) {
+            queryWrapper.like(SysRole::getName, query.getKeyword());
         }
         IPage<SysRole> page = getBaseService().page(new Page<>(query.getPageIndex(), query.getPageSize()),
                 queryWrapper);

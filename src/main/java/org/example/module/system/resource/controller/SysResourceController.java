@@ -60,8 +60,8 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
     public Result page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = mapToQuery(requestParam);
         LambdaQueryWrapper<SysResource> queryWrapper = new LambdaQueryWrapper<>();
-        if (!StringUtils.isEmpty(query.get("name"))) {
-            queryWrapper.like(SysResource::getName, query.get("name"));
+        if (!StringUtils.isEmpty(query.getKeyword())) {
+            queryWrapper.like(SysResource::getName, query.getKeyword());
         }
         IPage<SysResource> page = getBaseService().page(new Page<>(query.getPageIndex(), query.getPageSize()),
                 queryWrapper);
