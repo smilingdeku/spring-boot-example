@@ -1,6 +1,7 @@
 package org.example.common.domain.request;
 
 import org.example.common.util.ConvertUtil;
+import org.springframework.util.StringUtils;
 
 import java.util.LinkedHashMap;
 
@@ -17,5 +18,22 @@ public class QueryRequest extends LinkedHashMap<String, Object> {
 
     public Integer getPageSize() {
         return ConvertUtil.getAsInteger(super.get("pageSize"), 10);
+    }
+
+    public String getOrderField() {
+        String field = getHumpOrderField();
+        return StringUtils.isEmpty(field) ? field : humpToLine(field);
+    }
+
+    public String getHumpOrderField() {
+        return null == super.get("orderField") ? null : String.valueOf(super.get("orderField"));
+    }
+
+    public boolean getIsAsc() {
+        return ConvertUtil.getAsBoolean(super.get("isAsc"), true);
+    }
+
+    private String humpToLine(String str) {
+        return str.replaceAll("[A-Z]", "_$0").toLowerCase();
     }
 }

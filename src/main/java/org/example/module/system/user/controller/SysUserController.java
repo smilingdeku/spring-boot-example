@@ -1,6 +1,7 @@
 package org.example.module.system.user.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -71,9 +72,12 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @GetMapping("/page")
     public Result page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = mapToQuery(requestParam);
-        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.get("username"))) {
-            queryWrapper.like(SysUser::getUsername, query.get("username"));
+            queryWrapper.lambda().like(SysUser::getUsername, query.get("username"));
+        }
+        if (!StringUtils.isEmpty(query.getOrderField())) {
+            queryWrapper.orderBy(true, query.getIsAsc(), query.getOrderField());
         }
         IPage<SysUser> page = getBaseService()
             .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
