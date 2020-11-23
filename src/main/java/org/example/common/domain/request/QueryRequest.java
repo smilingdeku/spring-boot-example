@@ -17,11 +17,11 @@ public class QueryRequest extends LinkedHashMap<String, Object> {
     }
 
     public Integer getPageIndex() {
-        return ConvertUtil.getAsInteger(super.get("pageIndex"), 1);
+        return ConvertUtil.toInteger(super.get("pageIndex"), 1);
     }
 
     public Integer getPageSize() {
-        return ConvertUtil.getAsInteger(super.get("pageSize"), 10);
+        return ConvertUtil.toInteger(super.get("pageSize"), 10);
     }
 
     public String getLineOrderField() {
@@ -34,7 +34,7 @@ public class QueryRequest extends LinkedHashMap<String, Object> {
     }
 
     public boolean getIsAsc() {
-        return ConvertUtil.getAsBoolean(super.get("isAsc"), true);
+        return ConvertUtil.toBoolean(super.get("isAsc"), true);
     }
 
     private String humpToLine(String str) {
