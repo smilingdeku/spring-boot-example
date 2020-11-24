@@ -50,6 +50,7 @@ public class JsonFormatConfig {
             builder.deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(pattern)));
             // Long 表示范围比 js 中的数值要大，转换为 String 防止精度丢失
             builder.serializerByType(Long.class, ToStringSerializer.instance);
+            builder.serializerByType(Long.TYPE, ToStringSerializer.instance);
         };
     }
 }
