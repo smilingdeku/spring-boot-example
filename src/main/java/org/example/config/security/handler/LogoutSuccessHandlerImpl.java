@@ -1,8 +1,7 @@
 package org.example.config.security.handler;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.example.common.domain.response.Result;
+import org.example.common.util.JSONUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -26,6 +25,6 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
         response.setStatus(HttpStatus.OK.value());
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
-        response.getWriter().print(JSON.toJSONString(Result.success(), SerializerFeature.WriteMapNullValue));
+        response.getWriter().print(JSONUtil.toJSONString(Result.success()));
     }
 }

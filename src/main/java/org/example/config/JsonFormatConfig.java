@@ -1,9 +1,9 @@
 package org.example.config;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.jackson.JsonComponent;
@@ -16,23 +16,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
 /**
- * 解决 LocalDateTime 返回数据为 JSON 数组 & String 转化为 LocalDateTime 报异常
- *
  * @author linzhaoming
  * @since 2020/11/14
  **/
 @JsonComponent
-public class DateFormatConfig {
+public class JsonFormatConfig {
 
     @Value("${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}")
     private String pattern;
     @Value("${spring.jackson.time-zone:GMT+8}")
     private String timeZone;
-
-    @Autowired
-    private LocalDateTimeSerializer serializer;
-    @Autowired
-    private LocalDateTimeDeserializer deserializer;
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilder() {
@@ -47,21 +40,16 @@ public class DateFormatConfig {
         };
     }
 
-    @Bean
-    public LocalDateTimeSerializer localDateTimeSerializer() {
-        return new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(pattern));
-    }
-
-    @Bean
-    public LocalDateTimeDeserializer localDateTimeDeserializer() {
-        return new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(pattern));
-    }
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
         return builder -> {
-            builder.serializerByType(LocalDateTime.class, serializer);
-            builder.deserializerByType(LocalDateTime.class, deserializer);
+            // LocalDateTime 转化为 String
+            builder.serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(pattern)));
+            // 防止 String 转化为 LocalDateTime 报异常
+            builder.deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(pattern)));
+            // Long 表示范围比 js 中的数值要大，转换为 String 防止精度丢失
+            builder.serializerByType(Long.class, ToStringSerializer.instance);
         };
     }
 }
