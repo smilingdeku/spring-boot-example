@@ -1,10 +1,9 @@
 package org.example.config.security.handler;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.domain.response.Result;
+import org.example.common.util.JSONUtil;
 import org.example.common.util.MessageUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -25,8 +24,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
-        response.getWriter().print(JSON.toJSONString(Result.failure(
-                MessageUtil.message(MsgKeyConstant.UNAUTHORIZED, request.getRequestURI())),
-                SerializerFeature.WriteMapNullValue));
+        response.getWriter().print(JSONUtil.toJSONString(Result.failure(
+                MessageUtil.message(MsgKeyConstant.UNAUTHORIZED, request.getRequestURI()))));
     }
 }
