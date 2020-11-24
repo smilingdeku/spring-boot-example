@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Objects;
 
 import org.example.common.base.BaseService;
+import org.example.common.constant.MsgKeyConstant;
 import org.example.common.exception.BusinessException;
 import org.example.common.util.JwtTokenUtil;
+import org.example.common.util.MessageUtil;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.SysUserRequest;
 import org.example.module.system.user.mapper.SysUserMapper;
@@ -70,7 +72,8 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
     @Override
     public SysUser saveUserAndRoles(SysUserRequest request) {
         if (isExistsUser(request.getUsername())) {
-            throw new BusinessException("用户[" + request.getUsername() + "]已经存在,请修改用户名称");
+            String message = MessageUtil.message(MsgKeyConstant.SYSTEM_USER_ALREADY_EXISTS, request.getUsername());
+            throw new BusinessException(message);
         }
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(request, sysUser);
