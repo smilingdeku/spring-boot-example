@@ -58,8 +58,8 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         if (!StringUtils.isEmpty(query.getKeyword())) {
             queryWrapper.like(SysRole::getName, query.getKeyword());
         }
-        IPage<SysRole> page = getBaseService().page(new Page<>(query.getPageIndex(), query.getPageSize()),
-                queryWrapper);
+        IPage<SysRole> page = getBaseService()
+                .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
         return Result.success(page);
     }
 
