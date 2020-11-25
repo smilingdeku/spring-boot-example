@@ -9,9 +9,9 @@
 
     <appender name="ROLLING"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/sys.log</file>
+        <file>logs/app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/sys%d{yyyyMMdd}-%i.log</fileNamePattern>
+            <fileNamePattern>logs/app_%d{yyyyMMdd}_%i.log</fileNamePattern>
             <!-- each file capacity 10mb -->
             <maxFileSize>10MB</maxFileSize>
             <!-- keep 7 days -->
