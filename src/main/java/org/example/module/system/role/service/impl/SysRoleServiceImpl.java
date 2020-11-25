@@ -2,6 +2,7 @@ package org.example.module.system.role.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.example.common.base.BaseService;
+import org.example.common.util.BeanCopyUtil;
 import org.example.module.system.role.domain.entity.SysRole;
 import org.example.module.system.role.domain.request.SysRoleRequest;
 import org.example.module.system.role.mapper.SysRoleMapper;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -33,9 +33,7 @@ public class SysRoleServiceImpl extends BaseService<SysRoleMapper, SysRole> impl
     @Transactional
     @Override
     public SysRole saveRoleAndResources(SysRoleRequest request) {
-        SysRole sysRole = new SysRole();
-        sysRole.setName(request.getName());
-        sysRole.setMemo(request.getMemo());
+        SysRole sysRole = BeanCopyUtil.map(request, SysRole.class);
         this.save(sysRole);
         if (!CollectionUtils.isEmpty(request.getResourceIds())) {
             request.getResourceIds().forEach(resourceId -> {
@@ -51,11 +49,7 @@ public class SysRoleServiceImpl extends BaseService<SysRoleMapper, SysRole> impl
     @Transactional
     @Override
     public SysRole updateRoleAndResources(SysRoleRequest request) {
-        SysRole sysRole = new SysRole();
-        sysRole.setId(request.getId());
-        sysRole.setName(request.getName());
-        sysRole.setMemo(request.getMemo());
-        sysRole.setUpdatedAt(LocalDateTime.now());
+        SysRole sysRole = BeanCopyUtil.map(request, SysRole.class);
         this.updateById(sysRole);
         List<SysRoleResource> roleResourceList = sysRoleResourceService.list(new LambdaQueryWrapper<SysRoleResource>()
                 .eq(SysRoleResource::getRoleId, sysRole.getId()));

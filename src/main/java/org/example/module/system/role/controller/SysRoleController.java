@@ -12,9 +12,7 @@ import org.example.module.system.role.domain.entity.SysRole;
 import org.example.module.system.role.domain.request.SysRoleRequest;
 import org.example.module.system.role.mapper.SysRoleMapper;
 import org.example.module.system.role.service.impl.SysRoleServiceImpl;
-import org.example.module.system.roleresource.domain.entity.SysRoleResource;
 import org.example.module.system.roleresource.service.ISysRoleResourceService;
-import org.example.module.system.userrole.domain.entity.SysUserRole;
 import org.example.module.system.userrole.service.ISysUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -92,10 +90,8 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         List<Long> idList = Arrays.asList(ids);
         idList.forEach(id -> {
             getBaseService().removeById(id);
-            sysUserRoleService.remove(new LambdaQueryWrapper<SysUserRole>()
-                    .eq(SysUserRole::getRoleId, id));
-            sysRoleResourceService.remove(new LambdaQueryWrapper<SysRoleResource>()
-                    .eq(SysRoleResource::getRoleId, id));
+            sysUserRoleService.deleteByRoleId(id);
+            sysRoleResourceService.deleteByRoleId(id);
         });
         return Result.success();
     }

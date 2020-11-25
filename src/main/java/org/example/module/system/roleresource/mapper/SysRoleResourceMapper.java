@@ -13,10 +13,4 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysRoleResourceMapper extends BaseMapper<SysRoleResource> {
 
-    /**
-     * 根据角色 ID 删除资源
-     *
-     * @param roleId 角色 ID
-     */
-    void deleteByRoleId(Long roleId);
 }

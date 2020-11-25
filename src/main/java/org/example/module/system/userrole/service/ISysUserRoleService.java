@@ -19,8 +19,17 @@ public interface ISysUserRoleService extends IService<SysUserRole> {
      * 删除用户角色
      *
      * @param userId 用户 ID
+     * @return boolean
      */
-    void deleteByUserId(Long userId);
+    boolean deleteByUserId(Long userId);
+
+    /**
+     * 删除用户角色
+     *
+     * @param roleId 角色 ID
+     * @return boolean
+     */
+    boolean deleteByRoleId(Long roleId);
 
     /**
      * 获取用户角色 ID 列表

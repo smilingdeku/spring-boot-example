@@ -2,13 +2,10 @@ package org.example.module.system.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-
-import java.util.List;
-import java.util.Objects;
-
 import org.example.common.base.BaseService;
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.exception.BusinessException;
+import org.example.common.util.BeanCopyUtil;
 import org.example.common.util.JwtTokenUtil;
 import org.example.common.util.MessageUtil;
 import org.example.module.system.user.domain.entity.SysUser;
@@ -17,7 +14,6 @@ import org.example.module.system.user.mapper.SysUserMapper;
 import org.example.module.system.user.service.ISysUserService;
 import org.example.module.system.userrole.domain.entity.SysUserRole;
 import org.example.module.system.userrole.service.ISysUserRoleService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -75,8 +74,7 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
             String message = MessageUtil.message(MsgKeyConstant.SYSTEM_USER_ALREADY_EXISTS, request.getUsername());
             throw new BusinessException(message);
         }
-        SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(request, sysUser);
+        SysUser sysUser = BeanCopyUtil.map(request, SysUser.class);
         sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         this.save(sysUser);
         if (!CollectionUtils.isEmpty(request.getRoleIds())) {
@@ -110,8 +108,7 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
     @Transactional
     @Override
     public SysUser updateUserAndRoles(SysUserRequest request) {
-        SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(request, sysUser);
+        SysUser sysUser = BeanCopyUtil.map(request, SysUser.class);
         SysUser old = getById(request.getId());
         if (Objects.nonNull(old) && !old.getPassword().equals(sysUser.getPassword())) {
             String newPassword = passwordEncoder.encode(sysUser.getPassword());

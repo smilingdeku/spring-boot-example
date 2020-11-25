@@ -10,7 +10,6 @@ import org.example.common.domain.response.Result;
 import org.example.module.system.resource.domain.entity.SysResource;
 import org.example.module.system.resource.mapper.SysResourceMapper;
 import org.example.module.system.resource.service.impl.SysResourceServiceImpl;
-import org.example.module.system.roleresource.domain.entity.SysRoleResource;
 import org.example.module.system.roleresource.service.ISysRoleResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -63,8 +62,8 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         if (!StringUtils.isEmpty(query.getKeyword())) {
             queryWrapper.like(SysResource::getName, query.getKeyword());
         }
-        IPage<SysResource> page = getBaseService().page(new Page<>(query.getPageIndex(), query.getPageSize()),
-                queryWrapper);
+        IPage<SysResource> page = getBaseService()
+                .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
         return Result.success(page);
     }
 
@@ -88,8 +87,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         List<Long> idList = Arrays.asList(ids);
         idList.forEach(id -> {
             getBaseService().removeById(id);
-            sysRoleResourceService.remove(new LambdaQueryWrapper<SysRoleResource>()
-                    .eq(SysRoleResource::getResourceId, id));
+            sysRoleResourceService.deleteByResourceId(id);
         });
         return Result.success();
     }
