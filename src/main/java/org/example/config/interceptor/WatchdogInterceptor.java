@@ -4,7 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.example.common.util.JSONUtil;
+import org.example.common.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -44,13 +44,13 @@ public class WatchdogInterceptor {
 
             String[] parameterNames = signature.getParameterNames();
             List<Object> args = dealWithArgs(parameterNames, joinPoint.getArgs());
-            request = JSONUtil.toJSONString(args);
+            request = JsonUtil.toJSONString(args);
 
             result = joinPoint.proceed();
 
             long end = System.currentTimeMillis();
             log.info("function[{}] spend: {}ms, request: {}, response: {}", methodFingerPrint, (end - start), request,
-                JSONUtil.toJSONString(result));
+                JsonUtil.toJSONString(result));
         } catch (Throwable th) {
             log.error("function[" + methodFingerPrint + "] failure, request:" + request, th);
             throw th;

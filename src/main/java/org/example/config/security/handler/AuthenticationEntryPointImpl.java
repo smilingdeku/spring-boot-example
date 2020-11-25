@@ -3,7 +3,7 @@ package org.example.config.security.handler;
 
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.domain.response.Result;
-import org.example.common.util.JSONUtil;
+import org.example.common.util.JsonUtil;
 import org.example.common.util.MessageUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -24,7 +24,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
-        response.getWriter().print(JSONUtil.toJSONString(Result.failure(
+        response.getWriter().print(JsonUtil.toJSONString(Result.failure(
                 MessageUtil.message(MsgKeyConstant.UNAUTHORIZED, request.getRequestURI()))));
     }
 }
