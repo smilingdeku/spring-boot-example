@@ -1,4 +1,4 @@
-package org.example.config.interceptor;
+package org.example.config.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -24,7 +24,7 @@ import java.util.Objects;
  */
 @Aspect
 @Component
-public class WatchdogInterceptor {
+public class ControllerLogAspect {
 
     private static final String ASPECT_CONTROLLER_EXP = "execution(* org.example.module.*.*.controller..*(..))";
 
@@ -49,10 +49,10 @@ public class WatchdogInterceptor {
             result = joinPoint.proceed();
 
             long end = System.currentTimeMillis();
-            log.info("function[{}] spend: {}ms, request: {}, response: {}", methodFingerPrint, (end - start), request,
+            log.info("Function[{}] spend: {}ms, request: {}, response: {}", methodFingerPrint, (end - start), request,
                 JsonUtil.toJSONString(result));
         } catch (Throwable th) {
-            log.error("function[" + methodFingerPrint + "] failure, request:" + request, th);
+            log.error("Function[" + methodFingerPrint + "] happen error, request:" + request, th);
             throw th;
         }
         return result;
