@@ -48,13 +48,13 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
             routerList.add(router);
         }
 
-        return TreeUtil.build(routerList, null);
+        return TreeUtil.build(routerList, "0");
     }
 
     @Override
     public List<ResourceTreeNode> listResourceTreeNode(Long roleId) {
         List<ResourceTreeNode> nodeList = this.getBaseMapper().listResourceTreeNode(roleId);
-        return TreeUtil.build(nodeList, null);
+        return TreeUtil.build(nodeList, "0");
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
         Type<SysResource> resourceType = BeanCopyUtil.getType(SysResource.class);
         Type<ResourceTreeNode> treeNodeType = BeanCopyUtil.getType(ResourceTreeNode.class);
         List<ResourceTreeNode> treeNodeList = BeanCopyUtil.mapList(resourceList, resourceType, treeNodeType);
-        return TreeUtil.build(treeNodeList, null);
+        return TreeUtil.build(treeNodeList, "0");
     }
 
     @Override
