@@ -16,17 +16,11 @@ import java.util.List;
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 
     /**
-     * 删除用户角色
-     *
-     * @param userId 用户 ID
-     */
-    void deleteByUserId(Long userId);
-
-    /**
      * 获取用户角色 ID 列表
      *
      * @param userId 用户 ID
      * @return List<Long>
      */
     List<Long> listRoleIdByUserId(Long userId);
+
 }

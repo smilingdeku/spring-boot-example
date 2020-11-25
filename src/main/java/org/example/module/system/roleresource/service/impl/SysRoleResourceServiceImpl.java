@@ -1,5 +1,6 @@
 package org.example.module.system.roleresource.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.example.common.base.BaseService;
 import org.example.module.system.roleresource.domain.entity.SysRoleResource;
 import org.example.module.system.roleresource.mapper.SysRoleResourceMapper;
@@ -18,7 +19,12 @@ import org.springframework.stereotype.Service;
 public class SysRoleResourceServiceImpl extends BaseService<SysRoleResourceMapper, SysRoleResource> implements ISysRoleResourceService {
 
     @Override
-    public void deleteByRoleId(Long roleId) {
-        getBaseMapper().deleteByRoleId(roleId);
+    public boolean deleteByRoleId(Long roleId) {
+        return this.remove(new LambdaQueryWrapper<SysRoleResource>().eq(SysRoleResource::getRoleId, roleId));
+    }
+
+    @Override
+    public boolean deleteByResourceId(Long resourceId) {
+        return this.remove(new LambdaQueryWrapper<SysRoleResource>().eq(SysRoleResource::getResourceId, resourceId));
     }
 }

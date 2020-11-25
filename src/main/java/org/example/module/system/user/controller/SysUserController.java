@@ -1,12 +1,12 @@
 package org.example.module.system.user.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.Result;
+import org.example.common.util.BeanCopyUtil;
 import org.example.common.util.ListUtil;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.LoginRequest;
@@ -15,9 +15,7 @@ import org.example.module.system.user.domain.response.LoginResponse;
 import org.example.module.system.user.domain.response.UserResponse;
 import org.example.module.system.user.mapper.SysUserMapper;
 import org.example.module.system.user.service.impl.SysUserServiceImpl;
-import org.example.module.system.userrole.domain.entity.SysUserRole;
 import org.example.module.system.userrole.service.ISysUserRoleService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
@@ -60,9 +58,8 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
 
     @GetMapping
     public Result info() {
-        UserResponse response = new UserResponse();
         SysUser user = getBaseService().getByUsername(getCurrentUsername());
-        BeanUtils.copyProperties(user, response);
+        UserResponse response = BeanCopyUtil.map(user, UserResponse.class);
         response.setPermissions(getBaseService().listPermissionByUsername(getCurrentUsername()));
         return Result.success(response);
     }
@@ -107,7 +104,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         if (ListUtil.isNotEmpty(idList)) {
             idList.forEach(id -> {
                 getBaseService().removeById(id);
-                sysUserRoleService.remove(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, id));
+                sysUserRoleService.deleteByUserId(id);
             });
         }
         return Result.success();

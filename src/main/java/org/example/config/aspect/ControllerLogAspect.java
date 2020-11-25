@@ -1,10 +1,10 @@
-package org.example.config.interceptor;
+package org.example.config.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.example.common.util.JSONUtil;
+import org.example.common.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ import java.util.Objects;
  */
 @Aspect
 @Component
-public class WatchdogInterceptor {
+public class ControllerLogAspect {
 
     private static final String ASPECT_CONTROLLER_EXP = "execution(* org.example.module.*.*.controller..*(..))";
 
@@ -44,15 +44,15 @@ public class WatchdogInterceptor {
 
             String[] parameterNames = signature.getParameterNames();
             List<Object> args = dealWithArgs(parameterNames, joinPoint.getArgs());
-            request = JSONUtil.toJSONString(args);
+            request = JsonUtil.toJSONString(args);
 
             result = joinPoint.proceed();
 
             long end = System.currentTimeMillis();
-            log.info("function[{}] spend: {}ms, request: {}, response: {}", methodFingerPrint, (end - start), request,
-                JSONUtil.toJSONString(result));
+            log.info("Function[{}] spend: {}ms, request: {}, response: {}", methodFingerPrint, (end - start), request,
+                JsonUtil.toJSONString(result));
         } catch (Throwable th) {
-            log.error("function[" + methodFingerPrint + "] failure, request:" + request, th);
+            log.error("Function[" + methodFingerPrint + "] happen error, request:" + request, th);
             throw th;
         }
         return result;

@@ -1,11 +1,7 @@
 package org.example.module.system.resource.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+import ma.glasnost.orika.metadata.Type;
 import org.example.common.base.BaseService;
 import org.example.common.domain.entity.Router;
 import org.example.common.domain.entity.RouterMeta;
@@ -17,6 +13,10 @@ import org.example.module.system.resource.domain.entity.SysResource;
 import org.example.module.system.resource.mapper.SysResourceMapper;
 import org.example.module.system.resource.service.ISysResourceService;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -48,33 +48,22 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
             routerList.add(router);
         }
 
-        return TreeUtil.build(routerList, null);
+        return TreeUtil.build(routerList, "0");
     }
 
     @Override
     public List<ResourceTreeNode> listResourceTreeNode(Long roleId) {
         List<ResourceTreeNode> nodeList = this.getBaseMapper().listResourceTreeNode(roleId);
-        return TreeUtil.build(nodeList, null);
+        return TreeUtil.build(nodeList, "0");
     }
 
     @Override
     public List<ResourceTreeNode> listResourceTreeNode(Wrapper<SysResource> queryWrapper) {
         List<SysResource> resourceList = this.list(queryWrapper);
-        List<ResourceTreeNode> treeNodeList = new ArrayList<>();
-        for (SysResource resource : resourceList) {
-            ResourceTreeNode treeNode = new ResourceTreeNode();
-            treeNode.setId(Long.toString(resource.getId()));
-            treeNode.setParentId(null == resource.getParentId() ? null : Long.toString(resource.getParentId()));
-            treeNode.setType(resource.getType());
-            treeNode.setName(resource.getName());
-            treeNode.setIcon(resource.getIcon());
-            treeNode.setPath(resource.getPath());
-            treeNode.setComponent(resource.getComponent());
-            treeNode.setPermission(resource.getPermission());
-            treeNode.setSortNumber(resource.getSortNumber());
-            treeNodeList.add(treeNode);
-        }
-        return TreeUtil.build(treeNodeList, null);
+        Type<SysResource> resourceType = BeanCopyUtil.getType(SysResource.class);
+        Type<ResourceTreeNode> treeNodeType = BeanCopyUtil.getType(ResourceTreeNode.class);
+        List<ResourceTreeNode> treeNodeList = BeanCopyUtil.mapList(resourceList, resourceType, treeNodeType);
+        return TreeUtil.build(treeNodeList, "0");
     }
 
     @Override

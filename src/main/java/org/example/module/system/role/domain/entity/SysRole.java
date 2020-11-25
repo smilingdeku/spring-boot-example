@@ -1,6 +1,8 @@
 package org.example.module.system.role.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -31,28 +33,20 @@ public class SysRole implements Serializable {
     private String name;
 
     /**
-     * 排序号
-     */
-    private Integer sortNumber;
-
-    /**
      * 备注
      */
     private String memo;
 
     /**
-     * 状态 [0-禁用] [1-启用]
-     */
-    private Integer status;
-
-    /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updatedAt;
 
     public Long getId() {
@@ -71,28 +65,12 @@ public class SysRole implements Serializable {
         this.name = name;
     }
 
-    public Integer getSortNumber() {
-        return sortNumber;
-    }
-
-    public void setSortNumber(Integer sortNumber) {
-        this.sortNumber = sortNumber;
-    }
-
     public String getMemo() {
         return memo;
     }
 
     public void setMemo(String memo) {
         this.memo = memo;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -116,9 +94,7 @@ public class SysRole implements Serializable {
         return "SysRole{" +
         ", id=" + id +
         ", name=" + name +
-        ", sortNumber=" + sortNumber +
         ", memo=" + memo +
-        ", status=" + status +
         ", createdAt=" + createdAt +
         ", updatedAt=" + updatedAt +
         "}";

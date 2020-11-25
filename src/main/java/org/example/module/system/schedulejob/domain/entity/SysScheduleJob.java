@@ -1,4 +1,4 @@
-package org.example.module.system.user.domain.entity;
+package org.example.module.system.schedulejob.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -10,14 +10,14 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 /**
  * <p>
- * 系统用户
+ * 系统定时任务
  * </p>
  *
  * @author linzhaoming
- * @since 2020-10-23
+ * @since 2020-11-25
  */
-@TableName("t_sys_user")
-public class SysUser implements Serializable {
+@TableName("t_sys_schedule_job")
+public class SysScheduleJob implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,34 +28,39 @@ public class SysUser implements Serializable {
     private Long id;
 
     /**
-     * 用户名
+     * 任务名称
      */
-    private String username;
+    private String name;
 
     /**
-     * 密码
+     * 任务组
      */
-    private String password;
+    private String group;
 
     /**
-     * 头像
+     * bean 名称
      */
-    private String avatar;
+    private String beanName;
 
     /**
-     * 真实姓名
+     * 方法名称
      */
-    private String realName;
+    private String methodName;
 
     /**
-     * 邮箱
+     * cron 表达式
      */
-    private String email;
+    private String cron;
 
     /**
-     * 电话
+     * 允许并发 [0-不允许] [1-允许]
      */
-    private String phone;
+    private Boolean allowConcurrent;
+
+    /**
+     * 任务策略
+     */
+    private Integer misfirePolicy;
 
     /**
      * 备注
@@ -87,52 +92,60 @@ public class SysUser implements Serializable {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getRealName() {
-        return realName;
+    public String getGroup() {
+        return group;
     }
 
-    public void setRealName(String realName) {
-        this.realName = realName;
+    public void setGroup(String group) {
+        this.group = group;
     }
 
-    public String getPassword() {
-        return password;
+    public String getBeanName() {
+        return beanName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getMethodName() {
+        return methodName;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCron() {
+        return cron;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCron(String cron) {
+        this.cron = cron;
     }
 
-    public String getPhone() {
-        return phone;
+    public Boolean getAllowConcurrent() {
+        return allowConcurrent;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setAllowConcurrent(Boolean allowConcurrent) {
+        this.allowConcurrent = allowConcurrent;
+    }
+
+    public Integer getMisfirePolicy() {
+        return misfirePolicy;
+    }
+
+    public void setMisfirePolicy(Integer misfirePolicy) {
+        this.misfirePolicy = misfirePolicy;
     }
 
     public String getMemo() {
@@ -169,14 +182,15 @@ public class SysUser implements Serializable {
 
     @Override
     public String toString() {
-        return "SysUser{" +
+        return "SysScheduleJob{" +
         ", id=" + id +
-        ", username=" + username +
-        ", realName=" + realName +
-        ", password=" + password +
-        ", avatar=" + avatar +
-        ", email=" + email +
-        ", phone=" + phone +
+        ", name=" + name +
+        ", group=" + group +
+        ", beanName=" + beanName +
+        ", methodName=" + methodName +
+        ", cron=" + cron +
+        ", allowConcurrent=" + allowConcurrent +
+        ", misfirePolicy=" + misfirePolicy +
         ", memo=" + memo +
         ", status=" + status +
         ", createdAt=" + createdAt +
