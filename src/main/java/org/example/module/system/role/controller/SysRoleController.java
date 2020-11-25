@@ -2,6 +2,7 @@ package org.example.module.system.role.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.common.base.BaseController;
@@ -54,9 +55,12 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     @GetMapping("/page")
     public Result page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = mapToQuery(requestParam);
-        LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
+        QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
-            queryWrapper.like(SysRole::getName, query.getKeyword());
+            queryWrapper.lambda().like(SysRole::getName, query.getKeyword());
+        }
+        if (!StringUtils.isEmpty(query.getOrderField())) {
+            queryWrapper.orderBy(true, query.getIsAsc(), query.getLineOrderField());
         }
         IPage<SysRole> page = getBaseService()
                 .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
