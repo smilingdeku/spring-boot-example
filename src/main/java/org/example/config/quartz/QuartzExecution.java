@@ -3,13 +3,12 @@ package org.example.config.quartz;
 import org.example.common.constant.CommonConstant;
 import org.example.common.util.SpringUtil;
 import org.example.module.system.schedulejob.domain.entity.SysScheduleJob;
+import org.example.task.ITask;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Method;
 
 /**
  * @author linzhaoming
@@ -22,11 +21,9 @@ public class QuartzExecution implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         SysScheduleJob job = (SysScheduleJob) context.getMergedJobDataMap().get(CommonConstant.SCHEDULE_JOB_KEY);
-
-        Object bean = SpringUtil.getBean(job.getBeanName());
+        ITask task = SpringUtil.getBean(job.getBeanName());
         try {
-            Method method = bean.getClass().getMethod(job.getMethodName(), String.class);
-            method.invoke(bean, job.getParams());
+            task.execute(job.getParams());
         } catch (Exception e){
             log.error(e.getMessage(), e);
         }

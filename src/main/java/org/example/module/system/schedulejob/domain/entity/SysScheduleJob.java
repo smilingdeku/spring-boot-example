@@ -44,11 +44,6 @@ public class SysScheduleJob implements Serializable {
     private String beanName;
 
     /**
-     * 方法名称
-     */
-    private String methodName;
-
-    /**
      * 参数
      */
     private String params;
@@ -122,14 +117,6 @@ public class SysScheduleJob implements Serializable {
         this.beanName = beanName;
     }
 
-    public String getMethodName() {
-        return methodName;
-    }
-
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
-    }
-
     public String getParams() {
         return params;
     }
@@ -201,7 +188,6 @@ public class SysScheduleJob implements Serializable {
         ", name=" + name +
         ", group=" + group +
         ", beanName=" + beanName +
-        ", methodName=" + methodName +
         ", params=" + params +
         ", cron=" + cron +
         ", allowConcurrent=" + allowConcurrent +
