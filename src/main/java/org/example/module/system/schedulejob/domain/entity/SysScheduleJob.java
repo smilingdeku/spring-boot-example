@@ -35,6 +35,7 @@ public class SysScheduleJob implements Serializable {
     /**
      * 任务组
      */
+    @TableField("`group`")
     private String group;
 
     /**
@@ -46,6 +47,11 @@ public class SysScheduleJob implements Serializable {
      * 方法名称
      */
     private String methodName;
+
+    /**
+     * 参数
+     */
+    private String params;
 
     /**
      * cron 表达式
@@ -124,6 +130,14 @@ public class SysScheduleJob implements Serializable {
         this.methodName = methodName;
     }
 
+    public String getParams() {
+        return params;
+    }
+
+    public void setParams(String params) {
+        this.params = params;
+    }
+
     public String getCron() {
         return cron;
     }
@@ -188,6 +202,7 @@ public class SysScheduleJob implements Serializable {
         ", group=" + group +
         ", beanName=" + beanName +
         ", methodName=" + methodName +
+        ", params=" + params +
         ", cron=" + cron +
         ", allowConcurrent=" + allowConcurrent +
         ", misfirePolicy=" + misfirePolicy +
