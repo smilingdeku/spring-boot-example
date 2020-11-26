@@ -1,8 +1,8 @@
 package org.example.common.constant;
 
 public class MsgKeyConstant {
-    private MsgKeyConstant() {
-    }
+
+    private MsgKeyConstant() {}
 
     /**
      * 请求成功

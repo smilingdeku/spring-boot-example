@@ -3,6 +3,7 @@ package org.example.module.system.resource.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import ma.glasnost.orika.metadata.Type;
 import org.example.common.base.BaseService;
+import org.example.common.constant.CommonConstant;
 import org.example.common.domain.entity.Router;
 import org.example.common.domain.entity.RouterMeta;
 import org.example.common.util.BeanCopyUtil;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>
@@ -39,7 +39,8 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
         List<SysResource> resourceList = this.listByUsernameAndType(username, SysResource.TYPE_MENU);
         List<Router> routerList = new ArrayList<>();
         for (SysResource resource : resourceList) {
-            boolean isTopResource = Objects.isNull(resource.getParentId());
+            boolean isTopResource = CommonConstant.TOP_RESOURCE_PARENT_ID
+                    .equals(Long.toString(resource.getParentId()));
 
             Router router = BeanCopyUtil.map(resource, Router.class);
             router.setAlwaysShow(isTopResource);
@@ -47,14 +48,13 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
 
             routerList.add(router);
         }
-
-        return TreeUtil.build(routerList, "0");
+        return TreeUtil.build(routerList, CommonConstant.TOP_RESOURCE_PARENT_ID);
     }
 
     @Override
     public List<ResourceTreeNode> listResourceTreeNode(Long roleId) {
         List<ResourceTreeNode> nodeList = this.getBaseMapper().listResourceTreeNode(roleId);
-        return TreeUtil.build(nodeList, "0");
+        return TreeUtil.build(nodeList, CommonConstant.TOP_RESOURCE_PARENT_ID);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
         Type<SysResource> resourceType = BeanCopyUtil.getType(SysResource.class);
         Type<ResourceTreeNode> treeNodeType = BeanCopyUtil.getType(ResourceTreeNode.class);
         List<ResourceTreeNode> treeNodeList = BeanCopyUtil.mapList(resourceList, resourceType, treeNodeType);
-        return TreeUtil.build(treeNodeList, "0");
+        return TreeUtil.build(treeNodeList, CommonConstant.TOP_RESOURCE_PARENT_ID);
     }
 
     @Override
