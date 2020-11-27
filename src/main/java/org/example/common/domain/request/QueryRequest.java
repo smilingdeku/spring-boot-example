@@ -1,9 +1,10 @@
 package org.example.common.domain.request;
 
+import java.util.LinkedHashMap;
+import java.util.Objects;
+
 import org.example.common.util.ConvertUtil;
 import org.springframework.util.StringUtils;
-
-import java.util.LinkedHashMap;
 
 /**
  * @author cark
@@ -13,7 +14,9 @@ public class QueryRequest extends LinkedHashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
     public String getKeyword() {
-        return ConvertUtil.toStr(super.get("keyword"), null);
+        Object keyword = super.get("keyword");
+        String keywordStr = ConvertUtil.toStr(keyword, null);
+        return Objects.isNull(keywordStr) ? null : keywordStr.trim();
     }
 
     public Integer getPageIndex() {

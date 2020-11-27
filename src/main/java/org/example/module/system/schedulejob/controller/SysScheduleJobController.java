@@ -7,14 +7,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.example.common.base.BaseController;
-import org.example.common.constant.MsgKeyConstant;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.Result;
-import org.example.common.exception.BusinessException;
-import org.example.common.util.MessageUtil;
-import org.example.common.util.SpringUtil;
 import org.example.module.system.schedulejob.domain.entity.SysScheduleJob;
 import org.example.module.system.schedulejob.mapper.SysScheduleJobMapper;
 import org.example.module.system.schedulejob.service.impl.SysScheduleJobServiceImpl;
@@ -50,6 +47,11 @@ public class SysScheduleJobController
         if (!StringUtils.isEmpty(query.getKeyword())) {
             queryWrapper.lambda().like(SysScheduleJob::getName, query.getKeyword());
         }
+
+        String beanName = String.valueOf(query.get("beanName"));
+        if (Objects.nonNull(beanName) && !StringUtils.isEmpty(beanName.trim())) {
+            queryWrapper.lambda().like(SysScheduleJob::getBeanName, beanName);
+        }
         if (!StringUtils.isEmpty(query.getLineOrderField())) {
             queryWrapper.orderBy(true, query.getIsAsc(), query.getLineOrderField());
         }
@@ -66,12 +68,12 @@ public class SysScheduleJobController
     @PostMapping
     public Result save(@RequestBody SysScheduleJob sysScheduleJob) {
         // 检查任务是否存在
-        checkJobArgs(sysScheduleJob);
+        // checkJobArgs(sysScheduleJob);
         boolean success = getBaseService().save(sysScheduleJob);
         return success ? Result.success(sysScheduleJob) : Result.failure();
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) throws SchedulerException {
         List<Long> idList = Arrays.asList(ids);
         getBaseService().deleteJobByIdList(idList);
@@ -81,23 +83,23 @@ public class SysScheduleJobController
     @PutMapping
     public Result update(@RequestBody SysScheduleJob sysScheduleJob) {
         // 检查任务是否存在
-        checkJobArgs(sysScheduleJob);
+        // checkJobArgs(sysScheduleJob);
         boolean success = getBaseService().updateById(sysScheduleJob);
         return success ? Result.success(sysScheduleJob) : Result.failure();
     }
 
-    /**
-     * 检查任务是否合法
-     *
-     * @param jobInfo 定时任务信息
-     */
-    private void checkJobArgs(SysScheduleJob jobInfo) {
-        try {
-            SpringUtil.getBean(jobInfo.getBeanName());
-        } catch (Exception e) {
-            String message = MessageUtil.message(MsgKeyConstant.QUARTZ_JOB_NOT_EXISTS, jobInfo.getBeanName());
-            throw new BusinessException(message);
-        }
-    }
+//    /**
+//     * 检查任务是否合法
+//     *
+//     * @param jobInfo 定时任务信息
+//     */
+//    private void checkJobArgs(SysScheduleJob jobInfo) {
+//        try {
+//            SpringUtil.getBean(jobInfo.getBeanName());
+//        } catch (Exception e) {
+//            String message = MessageUtil.message(MsgKeyConstant.QUARTZ_JOB_NOT_EXISTS, jobInfo.getBeanName());
+//            throw new BusinessException(message);
+//        }
+//    }
 
 }
