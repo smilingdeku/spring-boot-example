@@ -6,6 +6,7 @@ import org.example.config.quartz.QuartzDisallowConcurrentExecution;
 import org.example.config.quartz.QuartzExecution;
 import org.example.config.quartz.QuartzManager;
 import org.example.module.system.schedulejob.domain.entity.SysScheduleJob;
+import org.example.module.system.schedulejob.enums.ScheduleJobMisfirePolicy;
 import org.example.module.system.schedulejob.enums.ScheduleJobStatus;
 import org.example.module.system.schedulejob.mapper.SysScheduleJobMapper;
 import org.example.module.system.schedulejob.service.ISysScheduleJobService;
@@ -46,6 +47,10 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
         JobKey jobKey = JobKey.jobKey(Long.toString(job.getId()), job.getGroup());
         TriggerKey triggerKey = TriggerKey.triggerKey(Long.toString(job.getId()), job.getGroup());
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCron());
+        ScheduleJobMisfirePolicy misfirePolicy = ScheduleJobMisfirePolicy.toMisFirePolicy(job.getMisfirePolicy());
+        if (Objects.nonNull(misfirePolicy)) {
+            this.handleMisfirePolicy(cronScheduleBuilder, misfirePolicy);
+        }
         try {
             quartzManager.addJob(jobClass, job, jobKey, triggerKey, cronScheduleBuilder);
         } catch (SchedulerException e) {
@@ -132,5 +137,21 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
         }
     }
 
+    private void handleMisfirePolicy(CronScheduleBuilder cronScheduleBuilder, ScheduleJobMisfirePolicy policy) {
+        switch (policy) {
+            case DO_NOTHING:
+                cronScheduleBuilder.withMisfireHandlingInstructionDoNothing();
+                break;
+            case IGNORE_MISFIRES:
+                cronScheduleBuilder.withMisfireHandlingInstructionIgnoreMisfires();
+                break;
+            case FIRE_AND_PROCEED:
+                cronScheduleBuilder.withMisfireHandlingInstructionFireAndProceed();
+                break;
+            case DEFAULT:
+            default:
+                break;
+        }
+    }
 
 }
