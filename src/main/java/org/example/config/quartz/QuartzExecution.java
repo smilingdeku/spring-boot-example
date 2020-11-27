@@ -9,6 +9,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 /**
  * @author linzhaoming
@@ -21,11 +22,15 @@ public class QuartzExecution implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         SysScheduleJob job = (SysScheduleJob) context.getMergedJobDataMap().get(CommonConstant.SCHEDULE_JOB_KEY);
-        ITask task = SpringUtil.getBean(job.getBeanName());
         try {
+            ITask task = SpringUtil.getBean(job.getBeanName());
             task.execute(job.getParams());
-        } catch (Exception e){
-            log.error(e.getMessage(), e);
+        } catch (Exception e) {
+            if (e instanceof NoSuchBeanDefinitionException) {
+                log.error("JobId: {}, JobName: {}, Bean: {} not exist", job.getId(), job.getName(), job.getBeanName());
+            } else {
+                log.error(e.getMessage(), e);
+            }
         }
     }
 

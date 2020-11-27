@@ -10,6 +10,7 @@ import org.example.common.domain.response.Result;
 import org.example.module.system.schedulejob.domain.entity.SysScheduleJob;
 import org.example.module.system.schedulejob.mapper.SysScheduleJobMapper;
 import org.example.module.system.schedulejob.service.impl.SysScheduleJobServiceImpl;
+import org.quartz.SchedulerException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,9 @@ public class SysScheduleJobController extends BaseController<SysScheduleJobServi
         if (!StringUtils.isEmpty(query.getKeyword())) {
             queryWrapper.lambda().like(SysScheduleJob::getName, query.getKeyword());
         }
+        if (!StringUtils.isEmpty(query.getLineOrderField())) {
+            queryWrapper.orderBy(true, query.getIsAsc(), query.getLineOrderField());
+        }
         IPage<SysScheduleJob> page = getBaseService()
                 .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
         return Result.success(page);
@@ -56,20 +60,20 @@ public class SysScheduleJobController extends BaseController<SysScheduleJobServi
 
     @PostMapping
     public Result save(@RequestBody SysScheduleJob sysScheduleJob) {
-        boolean success = getBaseService().save(sysScheduleJob);
+        boolean success = getBaseService().saveJob(sysScheduleJob);
         return success ? Result.success(sysScheduleJob) : Result.failure();
     }
 
     @DeleteMapping
-    public Result delete(@PathVariable Long[] ids) {
+    public Result delete(@PathVariable Long[] ids) throws SchedulerException {
         List<Long> idList = Arrays.asList(ids);
-        getBaseService().removeByIds(idList);
+        getBaseService().deleteJobByIdList(idList);
         return Result.success();
     }
 
     @PutMapping
-    public Result update(@RequestBody SysScheduleJob sysScheduleJob) {
-        boolean success = getBaseService().updateById(sysScheduleJob);
+    public Result update(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
+        boolean success = getBaseService().updateJob(sysScheduleJob);
         return success ? Result.success(sysScheduleJob) : Result.failure();
     }
 
