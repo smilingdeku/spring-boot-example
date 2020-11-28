@@ -2,6 +2,9 @@ package org.example.module.system.schedulejob.service.impl;
 
 import org.example.common.base.BaseService;
 import org.example.common.constant.CommonConstant;
+import org.example.common.constant.MsgKeyConstant;
+import org.example.common.exception.BusinessException;
+import org.example.common.util.MessageUtil;
 import org.example.config.quartz.QuartzDisallowConcurrentExecution;
 import org.example.config.quartz.QuartzExecution;
 import org.example.config.quartz.QuartzManager;
@@ -10,6 +13,7 @@ import org.example.module.system.schedulejob.enums.ScheduleJobMisfirePolicy;
 import org.example.module.system.schedulejob.enums.ScheduleJobStatus;
 import org.example.module.system.schedulejob.mapper.SysScheduleJobMapper;
 import org.example.module.system.schedulejob.service.ISysScheduleJobService;
+import org.quartz.CronExpression;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -69,6 +73,7 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
     @Transactional
     @Override
     public boolean saveJob(SysScheduleJob job) throws SchedulerException {
+        this.checkCronExpression(job.getCron());
         boolean success = this.save(job);
         if (success) {
             this.addJob(job);
@@ -79,6 +84,7 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
     @Transactional
     @Override
     public boolean updateJob(SysScheduleJob job) throws SchedulerException {
+        this.checkCronExpression(job.getCron());
         boolean success = this.updateById(job);
         if (success) {
             JobKey jobKey = JobKey.jobKey(Long.toString(job.getId()), job.getGroup());
@@ -160,6 +166,13 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
             case DEFAULT:
             default:
                 break;
+        }
+    }
+
+    private void checkCronExpression(String cron) {
+        if (!CronExpression.isValidExpression(cron)) {
+            String msg = MessageUtil.message(MsgKeyConstant.QUARTZ_JOB_INVALID_CRON, cron);
+            throw new BusinessException(msg);
         }
     }
 
