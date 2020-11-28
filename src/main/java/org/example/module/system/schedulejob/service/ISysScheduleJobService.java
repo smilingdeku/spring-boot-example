@@ -21,7 +21,7 @@ public interface ISysScheduleJobService extends IService<SysScheduleJob> {
      *
      * @param job 定时任务
      */
-    void addJob(SysScheduleJob job);
+    void addJob(SysScheduleJob job) throws SchedulerException;
 
     /**
      * 初始化定时任务
@@ -34,7 +34,7 @@ public interface ISysScheduleJobService extends IService<SysScheduleJob> {
      * @param job 定时任务
      * @return boolean
      */
-    boolean saveJob(SysScheduleJob job);
+    boolean saveJob(SysScheduleJob job) throws SchedulerException;
 
     /**
      * 更新定时任务

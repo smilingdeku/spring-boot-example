@@ -43,7 +43,7 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
     private QuartzManager quartzManager;
 
     @Override
-    public void addJob(SysScheduleJob job) {
+    public void addJob(SysScheduleJob job) throws SchedulerException {
         Class<? extends Job> jobClass = job.getAllowConcurrent() ? QuartzExecution.class : QuartzDisallowConcurrentExecution.class;
         JobKey jobKey = JobKey.jobKey(Long.toString(job.getId()), job.getGroup());
         TriggerKey triggerKey = TriggerKey.triggerKey(Long.toString(job.getId()), job.getGroup());
@@ -52,11 +52,7 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
         if (Objects.nonNull(misfirePolicy)) {
             this.handleMisfirePolicy(cronScheduleBuilder, misfirePolicy);
         }
-        try {
-            quartzManager.addJob(jobClass, job, jobKey, triggerKey, cronScheduleBuilder);
-        } catch (SchedulerException e) {
-            log.error(e.getMessage(), e);
-        }
+        quartzManager.addJob(jobClass, job, jobKey, triggerKey, cronScheduleBuilder);
     }
 
     @Override
@@ -64,12 +60,15 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
         quartzManager.getScheduler().clear();
         List<SysScheduleJob> jobList = this.list();
         if (!CollectionUtils.isEmpty(jobList)) {
-            jobList.forEach(this::addJob);
+            for (SysScheduleJob job : jobList) {
+                this.addJob(job);
+            }
         }
     }
 
+    @Transactional
     @Override
-    public boolean saveJob(SysScheduleJob job) {
+    public boolean saveJob(SysScheduleJob job) throws SchedulerException {
         boolean success = this.save(job);
         if (success) {
             this.addJob(job);

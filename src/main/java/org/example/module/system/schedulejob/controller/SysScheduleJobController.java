@@ -70,7 +70,7 @@ public class SysScheduleJobController
     }
 
     @PostMapping
-    public Result save(@RequestBody SysScheduleJob sysScheduleJob) {
+    public Result save(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
         // 检查任务是否存在
         // checkJobArgs(sysScheduleJob);
         boolean success = getBaseService().saveJob(sysScheduleJob);
