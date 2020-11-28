@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -55,6 +56,15 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
             quartzManager.addJob(jobClass, job, jobKey, triggerKey, cronScheduleBuilder);
         } catch (SchedulerException e) {
             log.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void initJobs() throws SchedulerException {
+        quartzManager.getScheduler().clear();
+        List<SysScheduleJob> jobList = this.list();
+        if (!CollectionUtils.isEmpty(jobList)) {
+            jobList.forEach(this::addJob);
         }
     }
 

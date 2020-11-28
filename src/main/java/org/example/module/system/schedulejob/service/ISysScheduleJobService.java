@@ -24,6 +24,11 @@ public interface ISysScheduleJobService extends IService<SysScheduleJob> {
     void addJob(SysScheduleJob job);
 
     /**
+     * 初始化定时任务
+     */
+    void initJobs() throws SchedulerException;
+
+    /**
      * 保存定时任务
      *
      * @param job 定时任务
