@@ -2,7 +2,8 @@ package org.example.common.constant;
 
 public class MsgKeyConstant {
 
-    private MsgKeyConstant() {}
+    private MsgKeyConstant() {
+    }
 
     /**
      * 请求成功
@@ -40,4 +41,9 @@ public class MsgKeyConstant {
      * 系统用户已经存在
      */
     public static final String SYSTEM_USER_ALREADY_EXISTS = "system.user.already-exists";
+
+    /**
+     * 定时任务不存在
+     */
+    public static final String QUARTZ_JOB_NOT_EXISTS = "quartz.job.not.exists";
 }

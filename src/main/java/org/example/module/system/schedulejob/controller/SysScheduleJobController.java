@@ -1,9 +1,14 @@
 package org.example.module.system.schedulejob.controller;
 
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.Result;
@@ -22,10 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 /**
  * <p>
  * 系统定时任务 前端控制器
@@ -36,7 +37,8 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/sys/schedule-job")
-public class SysScheduleJobController extends BaseController<SysScheduleJobServiceImpl, SysScheduleJobMapper, SysScheduleJob> {
+public class SysScheduleJobController
+    extends BaseController<SysScheduleJobServiceImpl, SysScheduleJobMapper, SysScheduleJob> {
 
     @GetMapping("/page")
     public Result page(@RequestParam Map<String, Object> requestParam) {
@@ -45,11 +47,16 @@ public class SysScheduleJobController extends BaseController<SysScheduleJobServi
         if (!StringUtils.isEmpty(query.getKeyword())) {
             queryWrapper.lambda().like(SysScheduleJob::getName, query.getKeyword());
         }
+
+        String beanName = String.valueOf(query.get("beanName"));
+        if (Objects.nonNull(beanName) && !StringUtils.isEmpty(beanName.trim())) {
+            queryWrapper.lambda().like(SysScheduleJob::getBeanName, beanName);
+        }
         if (!StringUtils.isEmpty(query.getLineOrderField())) {
             queryWrapper.orderBy(true, query.getIsAsc(), query.getLineOrderField());
         }
         IPage<SysScheduleJob> page = getBaseService()
-                .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
+            .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
         return Result.success(page);
     }
 
@@ -60,11 +67,13 @@ public class SysScheduleJobController extends BaseController<SysScheduleJobServi
 
     @PostMapping
     public Result save(@RequestBody SysScheduleJob sysScheduleJob) {
-        boolean success = getBaseService().saveJob(sysScheduleJob);
+        // 检查任务是否存在
+        // checkJobArgs(sysScheduleJob);
+        boolean success = getBaseService().save(sysScheduleJob);
         return success ? Result.success(sysScheduleJob) : Result.failure();
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) throws SchedulerException {
         List<Long> idList = Arrays.asList(ids);
         getBaseService().deleteJobByIdList(idList);
@@ -72,9 +81,25 @@ public class SysScheduleJobController extends BaseController<SysScheduleJobServi
     }
 
     @PutMapping
-    public Result update(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
-        boolean success = getBaseService().updateJob(sysScheduleJob);
+    public Result update(@RequestBody SysScheduleJob sysScheduleJob) {
+        // 检查任务是否存在
+        // checkJobArgs(sysScheduleJob);
+        boolean success = getBaseService().updateById(sysScheduleJob);
         return success ? Result.success(sysScheduleJob) : Result.failure();
     }
+
+//    /**
+//     * 检查任务是否合法
+//     *
+//     * @param jobInfo 定时任务信息
+//     */
+//    private void checkJobArgs(SysScheduleJob jobInfo) {
+//        try {
+//            SpringUtil.getBean(jobInfo.getBeanName());
+//        } catch (Exception e) {
+//            String message = MessageUtil.message(MsgKeyConstant.QUARTZ_JOB_NOT_EXISTS, jobInfo.getBeanName());
+//            throw new BusinessException(message);
+//        }
+//    }
 
 }
