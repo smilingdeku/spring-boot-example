@@ -63,6 +63,12 @@ public class SysScheduleJobController
         return Result.success(getBaseService().getById(id));
     }
 
+    @GetMapping("/{id}/run")
+    public Result run(@PathVariable Long id) throws SchedulerException {
+        getBaseService().runJob(id);
+        return Result.success();
+    }
+
     @PostMapping
     public Result save(@RequestBody SysScheduleJob sysScheduleJob) {
         // 检查任务是否存在
