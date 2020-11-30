@@ -1,6 +1,7 @@
 package org.example.module.system.schedulejoblog.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.example.common.util.ConvertUtil;
 import org.example.module.system.schedulejob.domain.entity.SysScheduleJob;
 import org.example.module.system.schedulejoblog.domain.entity.SysScheduleJobLog;
 import org.example.module.system.schedulejoblog.mapper.SysScheduleJobLogMapper;
@@ -27,7 +28,7 @@ public class SysScheduleJobLogServiceImpl extends ServiceImpl<SysScheduleJobLogM
         log.setParams(job.getParams());
         log.setSpendTime(spendTime);
         log.setMessage(message);
-        log.setStatus(success ? 1 : 0);
+        log.setStatus(ConvertUtil.toInteger(success));
         this.save(log);
     }
 }
