@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class TestTask implements ITask {
 
     @Override
-    public void execute(String params) {
+    public void execute(String params) throws Exception {
 
     }
 

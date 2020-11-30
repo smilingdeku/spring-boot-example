@@ -8,6 +8,6 @@ package org.example.task;
  **/
 public interface ITask {
 
-    void execute(String params);
+    void execute(String params) throws Exception;
 
 }
