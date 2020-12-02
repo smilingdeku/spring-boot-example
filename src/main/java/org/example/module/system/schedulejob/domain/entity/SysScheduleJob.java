@@ -59,7 +59,7 @@ public class SysScheduleJob implements Serializable {
     private Boolean allowConcurrent;
 
     /**
-     * 任务策略
+     * 超时策略 [0-默认] [1-不触发] [2-立刻触发] [3-立刻触发一次]
      */
     private Integer misfirePolicy;
 
