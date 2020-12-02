@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.validation.ConstraintViolationException;
 
 
-
 @RestControllerAdvice
 @Order(value = Ordered.HIGHEST_PRECEDENCE)
 public class GlobalExceptionHandler {
@@ -31,6 +30,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleException(Exception e) {
         log.error(e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.failure());
+    }
+
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Result.failure(e.getMessage()));
     }
 
     @ExceptionHandler(value = BusinessException.class)
