@@ -24,4 +24,12 @@ public interface ISysScheduleJobLogService extends IService<SysScheduleJobLog> {
      */
     void saveLog(SysScheduleJob job, boolean success, String message, Integer spendTime);
 
+    /**
+     * 根据任务 ID 删除调度日志
+     *
+     * @param jobId 任务 ID
+     * @return boolean
+     */
+    boolean deleteByJobId(Long jobId);
+
 }
