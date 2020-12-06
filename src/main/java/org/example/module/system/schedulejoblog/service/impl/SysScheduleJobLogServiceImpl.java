@@ -1,6 +1,7 @@
 package org.example.module.system.schedulejoblog.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.example.common.base.BaseService;
 import org.example.common.util.ConvertUtil;
 import org.example.module.system.schedulejob.domain.entity.SysScheduleJob;
 import org.example.module.system.schedulejoblog.domain.entity.SysScheduleJobLog;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @since 2020-11-30
  */
 @Service
-public class SysScheduleJobLogServiceImpl extends ServiceImpl<SysScheduleJobLogMapper, SysScheduleJobLog> implements ISysScheduleJobLogService {
+public class SysScheduleJobLogServiceImpl extends BaseService<SysScheduleJobLogMapper, SysScheduleJobLog> implements ISysScheduleJobLogService {
 
     @Override
     public void saveLog(SysScheduleJob job, boolean success, String message, Integer spendTime) {
@@ -30,5 +31,10 @@ public class SysScheduleJobLogServiceImpl extends ServiceImpl<SysScheduleJobLogM
         log.setMessage(message);
         log.setStatus(ConvertUtil.toInteger(success));
         this.save(log);
+    }
+
+    @Override
+    public boolean deleteByJobId(Long jobId) {
+        return this.remove(new LambdaQueryWrapper<SysScheduleJobLog>().eq(SysScheduleJobLog::getJobId, jobId));
     }
 }

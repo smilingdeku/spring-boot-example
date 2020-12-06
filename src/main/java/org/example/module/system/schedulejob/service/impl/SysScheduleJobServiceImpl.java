@@ -1,8 +1,10 @@
 package org.example.module.system.schedulejob.service.impl;
 
+import com.google.common.base.Preconditions;
 import org.example.common.base.BaseService;
 import org.example.common.constant.CommonConstant;
 import org.example.common.constant.MsgKeyConstant;
+import org.example.common.enums.ResultCode;
 import org.example.common.exception.BusinessException;
 import org.example.common.util.MessageUtil;
 import org.example.config.quartz.QuartzDisallowConcurrentExecution;
@@ -13,6 +15,7 @@ import org.example.module.system.schedulejob.enums.ScheduleJobMisfirePolicy;
 import org.example.module.system.schedulejob.enums.ScheduleJobStatus;
 import org.example.module.system.schedulejob.mapper.SysScheduleJobMapper;
 import org.example.module.system.schedulejob.service.ISysScheduleJobService;
+import org.example.module.system.schedulejoblog.service.ISysScheduleJobLogService;
 import org.quartz.CronExpression;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
@@ -45,6 +48,9 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
 
     @Autowired
     private QuartzManager quartzManager;
+
+    @Autowired
+    private ISysScheduleJobLogService scheduleJobLogService;
 
     @Override
     public void addJob(SysScheduleJob job) throws SchedulerException {
@@ -102,10 +108,11 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
         SysScheduleJob job = this.getById(id);
         if (Objects.nonNull(job)) {
             boolean success = this.removeById(job.getId());
-            if (success) {
-                JobKey jobKey = JobKey.jobKey(Long.toString(job.getId()), job.getGroup());
-                quartzManager.getScheduler().deleteJob(jobKey);
-            }
+            Preconditions.checkState(success, ResultCode.FAILURE.getMsg());
+            JobKey jobKey = JobKey.jobKey(Long.toString(job.getId()), job.getGroup());
+            quartzManager.getScheduler().deleteJob(jobKey);
+            success = scheduleJobLogService.deleteByJobId(job.getId());
+            Preconditions.checkState(success, ResultCode.FAILURE.getMsg());
         }
     }
 
