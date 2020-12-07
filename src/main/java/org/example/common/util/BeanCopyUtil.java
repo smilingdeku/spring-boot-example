@@ -1,14 +1,13 @@
 package org.example.common.util;
 
+import java.util.List;
+
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeFactory;
 
-import java.util.List;
-
 /**
- * @author huapeng.huang
  * @version V1.0
  * @since 2020-11-23 21:32
  */

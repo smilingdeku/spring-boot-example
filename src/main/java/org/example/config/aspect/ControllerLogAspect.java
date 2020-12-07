@@ -1,5 +1,12 @@
 package org.example.config.aspect;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,15 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-
 /**
- * @author huapeng.huang
  * @version V1.0
  * @since 2020-11-21 15:05
  */
@@ -43,26 +42,27 @@ public class ControllerLogAspect {
             long start = System.currentTimeMillis();
 
             String[] parameterNames = signature.getParameterNames();
-            List<Object> args = dealWithArgs(parameterNames, joinPoint.getArgs());
-            request = JsonUtil.toJSONString(args);
+            Map<String, Object> argMap = dealWithArgs(parameterNames, joinPoint.getArgs());
+            request = JsonUtil.toJSONString(argMap);
 
             result = joinPoint.proceed();
 
             long end = System.currentTimeMillis();
-            log.info("Function[{}] spend: {}ms, request: {}, response: {}", methodFingerPrint, (end - start), request,
+            log.info("Function[{}] spend: {} ms, request: {}, response: {}", methodFingerPrint, (end - start), request,
                 JsonUtil.toJSONString(result));
         } catch (Throwable th) {
-            log.error("Function[" + methodFingerPrint + "] happen error, request:" + request, th);
+            log.error("Function[" + methodFingerPrint + "] failure, request:" + request, th);
             throw th;
         }
         return result;
     }
 
-    private List<Object> dealWithArgs(String[] parameters, Object[] args) {
+    private Map<String, Object> dealWithArgs(String[] parameters, Object[] args) {
         if (Objects.isNull(args) || args.length == 0) {
             return null;
         }
-        List<Object> values = new ArrayList<>();
+
+        Map<String, Object> valueMap = new HashMap<>(16);
         for (int index = 0, len = args.length; index < len; index++) {
             Object arg = args[index];
             if (arg instanceof MultipartFile) {
@@ -75,12 +75,9 @@ public class ControllerLogAspect {
                 continue;
             }
 
-            HashMap<Object, Object> valueMap = new HashMap<>(4);
             valueMap.put(parameters[index], arg);
-
-            values.add(valueMap);
         }
-        return values;
+        return valueMap;
     }
 
     private String buildMethodFingerPrint(MethodSignature signature) {

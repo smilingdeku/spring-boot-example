@@ -12,7 +12,21 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: Qwe#123456
+  servlet:
+    # 设置文件上传大小控制
+    multipart:
+      max-file-size: 128MB
+      max-request-size: 256MB
 
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+oss:
+  # 七牛云配置
+  qiniu:
+    access-key: fMSA1fhr2LNv_93_aiZqI8ONM9JrF_iGnMlasT26
+    secret-key: UOhvNlIAfoBf9Ar0bF3vu46YwXefN2OiWJdlguYG
+    bucket-name: my-blog-bucket
+    prefix-link: http://img.cdn.linzhaoming.com/
