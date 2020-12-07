@@ -1,7 +1,5 @@
 package org.example.common.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
@@ -21,7 +19,6 @@ public class FileUtil {
      */
     public static final String[] COMPLEX_FILE_SUFFIX_NAME_ARR = { "tar.gz" };
 
-
     /**
      * 创建唯一文件名称(fake news)
      *
@@ -29,18 +26,15 @@ public class FileUtil {
      * @return String
      */
     public static String buildUniqueFileName(String originalFileName) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        // 时间戳格式化
+        String actionNow = DateUtil.formatNow(DateUtil.DATE_FORMAT_WITH_MILL);
+
+        // 文件后缀命
         String suffix = FileUtil.getSuffix(originalFileName);
+        String randomNum = String.format("%04d", RANDOM.nextInt(1000));
 
-        StringBuilder nameBuilder = new StringBuilder();
-        nameBuilder.append(sdf.format(new Date()));
-        nameBuilder.append(String.format("%04d", RANDOM.nextInt(1000)));
-        nameBuilder.append(".");
-        nameBuilder.append(suffix);
-
-        return nameBuilder.toString();
+        return actionNow + randomNum + "." + suffix;
     }
-
 
     /**
      * 获取文件后缀名称
