@@ -32,8 +32,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.failure());
     }
 
-    @ExceptionHandler(value = IllegalArgumentException.class)
-    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e) {
+    @ExceptionHandler(value = {IllegalArgumentException.class, NullPointerException.class, IllegalStateException.class})
+    public ResponseEntity<?> handlePreconditionsException(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Result.failure(e.getMessage()));
     }
