@@ -4,6 +4,7 @@ package org.example.module.system.schedulejoblog.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.Result;
@@ -60,6 +61,7 @@ public class SysScheduleJobLogController
         return Result.success(getBaseService().getById(id));
     }
 
+    @Log
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) {
         List<Long> idList = Arrays.asList(ids);

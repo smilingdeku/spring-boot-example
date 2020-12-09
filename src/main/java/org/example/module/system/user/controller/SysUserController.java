@@ -3,6 +3,7 @@ package org.example.module.system.user.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.Result;
@@ -48,6 +49,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @Autowired
     private ISysUserRoleService sysUserRoleService;
 
+    @Log
     @PostMapping("/login")
     public Result login(@RequestBody @Validated LoginRequest request) {
         String token = getBaseService().login(request.getUsername(), request.getPassword());
@@ -87,6 +89,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         return Result.success(sysUser);
     }
 
+    @Log
     @PreAuthorize("hasAuthority('system:user:add')")
     @PostMapping
     public Result save(@RequestBody SysUserRequest request) {
@@ -94,6 +97,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         return Result.success(sysUser);
     }
 
+    @Log
     @PreAuthorize("hasAuthority('system:user:delete')")
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) {
@@ -110,6 +114,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         return Result.success();
     }
 
+    @Log
     @PreAuthorize("hasAuthority('system:user:edit')")
     @PutMapping
     public Result update(@RequestBody SysUserRequest request) {

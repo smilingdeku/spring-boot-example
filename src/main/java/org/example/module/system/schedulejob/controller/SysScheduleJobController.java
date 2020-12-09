@@ -3,6 +3,7 @@ package org.example.module.system.schedulejob.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.Result;
@@ -63,12 +64,14 @@ public class SysScheduleJobController
         return Result.success(getBaseService().getById(id));
     }
 
+    @Log
     @GetMapping("/{id}/run")
     public Result run(@PathVariable Long id) throws SchedulerException {
         getBaseService().runJob(id);
         return Result.success();
     }
 
+    @Log
     @PostMapping
     public Result save(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
         // 检查任务是否存在
@@ -77,6 +80,7 @@ public class SysScheduleJobController
         return success ? Result.success(sysScheduleJob) : Result.failure();
     }
 
+    @Log
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) throws SchedulerException {
         List<Long> idList = Arrays.asList(ids);
@@ -84,6 +88,7 @@ public class SysScheduleJobController
         return Result.success();
     }
 
+    @Log
     @PutMapping
     public Result update(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
         // 检查任务是否存在
