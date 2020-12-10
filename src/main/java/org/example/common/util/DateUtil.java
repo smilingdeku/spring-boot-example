@@ -23,6 +23,11 @@ public class DateUtil {
     public static final String DATE_FORMAT_WITH_MILL = "yyyyMMddHHmmssSSS";
 
     /**
+     * yyyyMMdd
+     */
+    public static final String DATE_FORMAT = "yyyyMMdd";
+
+    /**
      * 格式化当前日期数据
      *
      * @param format 格式化
