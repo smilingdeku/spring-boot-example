@@ -23,10 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * JSON 工具类
- *
- * @author linzhaoming
- * @since 2020/11/24
+ * Json 工具类
  **/
 public class JsonUtil {
 
@@ -54,6 +51,13 @@ public class JsonUtil {
         objectMapper.registerModule(simpleModule);
     }
 
+    /**
+     * 转换实体
+     *
+     * @param json  JSON 字符串
+     * @param clazz 实体类
+     * @return 实体
+     */
     public static <T>T parseObject(String json, Class<T> clazz) {
         try {
             return objectMapper.readValue(json, clazz);
@@ -62,6 +66,12 @@ public class JsonUtil {
         }
     }
 
+    /**
+     * 转换为 JSON 字符串
+     *
+     * @param object 对象
+     * @return JSON 字符串
+     */
     public static String toJSONString(Object object){
         try {
             return objectMapper.writeValueAsString(object);
@@ -70,6 +80,13 @@ public class JsonUtil {
         }
     }
 
+    /**
+     * 转换为实体列表
+     *
+     * @param json  JSON 字符串
+     * @param clazz 实体类
+     * @return 实体列表
+     */
     public static <T> List<T> parseList(String json, Class<T> clazz) {
         JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, clazz);
         try {

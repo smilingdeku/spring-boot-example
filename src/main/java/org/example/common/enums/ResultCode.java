@@ -21,6 +21,6 @@ public enum ResultCode {
     }
 
     public String getMsg() {
-        return MessageUtil.message(msgKey);
+        return MessageUtil.get(msgKey);
     }
 }

@@ -178,7 +178,7 @@ public class SysScheduleJobServiceImpl extends BaseService<SysScheduleJobMapper,
 
     private void checkCronExpression(String cron) {
         if (!CronExpression.isValidExpression(cron)) {
-            String msg = MessageUtil.message(MsgKeyConstant.QUARTZ_JOB_INVALID_CRON, cron);
+            String msg = MessageUtil.get(MsgKeyConstant.QUARTZ_JOB_INVALID_CRON, cron);
             throw new BusinessException(msg);
         }
     }

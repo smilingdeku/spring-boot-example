@@ -31,10 +31,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser user = sysUserService.getUserByUsername(username);
         if (Objects.isNull(user)) {
-            throw new UsernameNotFoundException(MessageUtil.message(MsgKeyConstant.SYSTEM_USER_NOT_EXISTED, username));
+            throw new UsernameNotFoundException(MessageUtil.get(MsgKeyConstant.SYSTEM_USER_NOT_EXISTED, username));
         }
         if (!ConvertUtil.toBoolean(user.getStatus(), false)) {
-            throw new BusinessException(MessageUtil.message(MsgKeyConstant.SYSTEM_USER_IS_DISABLE, username));
+            throw new BusinessException(MessageUtil.get(MsgKeyConstant.SYSTEM_USER_IS_DISABLE, username));
         }
         String[] permissions = sysUserService.listPermissionByUsername(username).toArray(new String[]{});
         List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(permissions);

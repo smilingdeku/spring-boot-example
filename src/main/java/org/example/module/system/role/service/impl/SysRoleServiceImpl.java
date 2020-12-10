@@ -2,7 +2,7 @@ package org.example.module.system.role.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.example.common.base.BaseService;
-import org.example.common.util.BeanCopyUtil;
+import org.example.common.util.MapperUtil;
 import org.example.module.system.role.domain.entity.SysRole;
 import org.example.module.system.role.domain.request.SysRoleRequest;
 import org.example.module.system.role.mapper.SysRoleMapper;
@@ -33,7 +33,7 @@ public class SysRoleServiceImpl extends BaseService<SysRoleMapper, SysRole> impl
     @Transactional
     @Override
     public SysRole saveRoleAndResources(SysRoleRequest request) {
-        SysRole sysRole = BeanCopyUtil.map(request, SysRole.class);
+        SysRole sysRole = MapperUtil.map(request, SysRole.class);
         this.save(sysRole);
         if (!CollectionUtils.isEmpty(request.getResourceIds())) {
             request.getResourceIds().forEach(resourceId -> {
@@ -49,7 +49,7 @@ public class SysRoleServiceImpl extends BaseService<SysRoleMapper, SysRole> impl
     @Transactional
     @Override
     public SysRole updateRoleAndResources(SysRoleRequest request) {
-        SysRole sysRole = BeanCopyUtil.map(request, SysRole.class);
+        SysRole sysRole = MapperUtil.map(request, SysRole.class);
         this.updateById(sysRole);
         List<SysRoleResource> roleResourceList = sysRoleResourceService.list(new LambdaQueryWrapper<SysRoleResource>()
                 .eq(SysRoleResource::getRoleId, sysRole.getId()));
