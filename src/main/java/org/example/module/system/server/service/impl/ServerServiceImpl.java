@@ -3,6 +3,8 @@ package org.example.module.system.server.service.impl;
 import org.example.module.system.server.domain.entity.CpuInfo;
 import org.example.module.system.server.domain.entity.JvmInfo;
 import org.example.module.system.server.domain.entity.MemoryInfo;
+import org.example.module.system.server.domain.entity.SysInfo;
+import org.example.module.system.server.domain.entity.ThreadInfo;
 import org.example.module.system.server.service.IServerService;
 import org.springframework.stereotype.Service;
 import oshi.SystemInfo;
@@ -12,6 +14,7 @@ import oshi.hardware.HardwareAbstractionLayer;
 import oshi.software.os.OperatingSystem;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -22,11 +25,13 @@ public class ServerServiceImpl implements IServerService {
     private static final SystemInfo systemInfo;
     private static final HardwareAbstractionLayer hardware;
     private static final OperatingSystem os;
+    public static final Properties props;
 
     static {
         systemInfo = new SystemInfo();
         hardware = systemInfo.getHardware();
         os = systemInfo.getOperatingSystem();
+        props = System.getProperties();
     }
 
     @Override
@@ -84,7 +89,6 @@ public class ServerServiceImpl implements IServerService {
     public JvmInfo getJvmInfo() {
         JvmInfo jvmInfo = new JvmInfo();
 
-        Properties properties = System.getProperties();
         Runtime runtime = Runtime.getRuntime();
 
         long total = runtime.totalMemory();
@@ -92,13 +96,36 @@ public class ServerServiceImpl implements IServerService {
         long used = total - free;
         final DecimalFormat format = new DecimalFormat("#.00");
 
-        jvmInfo.setJdkVersion(properties.getProperty("java.version"));
+        jvmInfo.setJdkVersion(props.getProperty("java.version"));
         jvmInfo.setTotal(total);
         jvmInfo.setAvailable(free);
         jvmInfo.setUsed(used);
         jvmInfo.setUsage(Double.parseDouble(format.format(used <= 0 ? 0 : (100d * used / total))));
 
         return jvmInfo;
+    }
+
+    @Override
+    public ThreadInfo getThreadInfo() {
+        ThreadInfo threadInfo = new ThreadInfo();
+
+        ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+        while (Objects.nonNull(currentGroup.getParent())) {
+            currentGroup = currentGroup.getParent();
+        }
+        threadInfo.setActiveCount(currentGroup.activeCount());
+
+        return threadInfo;
+    }
+
+    @Override
+    public SysInfo getSysInfo() {
+        SysInfo sysInfo = new SysInfo();
+
+        sysInfo.setOsName(props.getProperty("os.name"));
+        sysInfo.setOsArch(props.getProperty("os.arch"));
+
+        return sysInfo;
     }
 
 }
