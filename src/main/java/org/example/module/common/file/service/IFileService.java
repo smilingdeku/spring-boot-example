@@ -1,9 +1,9 @@
-package org.example.module.system.files.service;
+package org.example.module.common.file.service;
+
+import org.example.module.common.file.domain.dto.FileInfoDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
-import org.example.module.system.files.domain.dto.FileInfoDTO;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @version V1.0

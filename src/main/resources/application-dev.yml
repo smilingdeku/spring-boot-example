@@ -11,7 +11,7 @@ spring:
     url: jdbc:mysql://47.103.195.154:3306/base?useUnicode=true&characterEncoding=utf8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: Qwe#123456
+    password: 123456
   servlet:
     # 设置文件上传大小控制
     multipart:

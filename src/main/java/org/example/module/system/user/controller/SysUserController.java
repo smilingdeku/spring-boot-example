@@ -7,7 +7,7 @@ import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.Result;
-import org.example.common.util.BeanCopyUtil;
+import org.example.common.util.MapperUtil;
 import org.example.common.util.ListUtil;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.LoginRequest;
@@ -61,7 +61,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @GetMapping
     public Result info() {
         SysUser user = getBaseService().getByUsername(getCurrentUsername());
-        UserResponse response = BeanCopyUtil.map(user, UserResponse.class);
+        UserResponse response = MapperUtil.map(user, UserResponse.class);
         response.setPermissions(getBaseService().listPermissionByUsername(getCurrentUsername()));
         return Result.success(response);
     }

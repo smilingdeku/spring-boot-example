@@ -1,27 +1,25 @@
-package org.example.module.system.files.service.impl;
+package org.example.module.common.file.service.impl;
 
 import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
-import javax.annotation.Resource;
-
 import org.example.common.util.FileUtil;
 import org.example.common.util.JsonUtil;
 import org.example.config.oss.QiniuConfig;
-import org.example.module.system.files.domain.dto.FileInfoDTO;
-import org.example.module.system.files.service.IFileService;
+import org.example.module.common.file.domain.dto.FileInfoDTO;
+import org.example.module.common.file.service.IFileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author walle

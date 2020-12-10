@@ -1,4 +1,4 @@
-package org.example.module.system.files.domain.dto;
+package org.example.module.common.file.domain.dto;
 
 import org.example.common.util.JsonUtil;
 

@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.example.common.base.BaseService;
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.exception.BusinessException;
-import org.example.common.util.BeanCopyUtil;
-import org.example.common.util.JwtTokenUtil;
+import org.example.common.util.MapperUtil;
+import org.example.common.util.TokenUtil;
 import org.example.common.util.MessageUtil;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.SysUserRequest;
@@ -38,7 +38,7 @@ import java.util.Objects;
 public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> implements ISysUserService {
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private TokenUtil tokenUtil;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -54,7 +54,7 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
     @Override
     public String login(String username, String password) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        return jwtTokenUtil.generateToken(username);
+        return tokenUtil.generateToken(username);
     }
 
     @Override
@@ -71,10 +71,10 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
     @Override
     public SysUser saveUserAndRoles(SysUserRequest request) {
         if (isExistsUser(request.getUsername())) {
-            String message = MessageUtil.message(MsgKeyConstant.SYSTEM_USER_ALREADY_EXISTS, request.getUsername());
+            String message = MessageUtil.get(MsgKeyConstant.SYSTEM_USER_ALREADY_EXISTS, request.getUsername());
             throw new BusinessException(message);
         }
-        SysUser sysUser = BeanCopyUtil.map(request, SysUser.class);
+        SysUser sysUser = MapperUtil.map(request, SysUser.class);
         sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         this.save(sysUser);
         if (!CollectionUtils.isEmpty(request.getRoleIds())) {
@@ -108,7 +108,7 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
     @Transactional
     @Override
     public SysUser updateUserAndRoles(SysUserRequest request) {
-        SysUser sysUser = BeanCopyUtil.map(request, SysUser.class);
+        SysUser sysUser = MapperUtil.map(request, SysUser.class);
         SysUser old = getById(request.getId());
         if (Objects.nonNull(old) && !old.getPassword().equals(sysUser.getPassword())) {
             String newPassword = passwordEncoder.encode(sysUser.getPassword());

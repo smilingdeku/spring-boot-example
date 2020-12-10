@@ -40,7 +40,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = BusinessException.class)
     public ResponseEntity<?> handleBusinessException(BusinessException e) {
-        log.error(e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new Result(e.getCode(), e.getMessage(), (Object) null));
     }
@@ -49,14 +48,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleAuthenticationExceptionException(AuthenticationException e) {
         String msg = e.getMessage();
         if (e instanceof BadCredentialsException) {
-            msg = MessageUtil.message(MsgKeyConstant.SYSTEM_USERNAME_PASSWORD_NOT_MATCH);
+            msg = MessageUtil.get(MsgKeyConstant.SYSTEM_USERNAME_PASSWORD_NOT_MATCH);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Result.failure(msg));
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)
     public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException e) {
-        String msg = MessageUtil.message(MsgKeyConstant.PERMISSION_DENIED);
+        String msg = MessageUtil.get(MsgKeyConstant.PERMISSION_DENIED);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.failure(msg));
     }
 

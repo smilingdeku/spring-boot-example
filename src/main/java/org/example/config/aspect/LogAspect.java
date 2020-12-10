@@ -22,9 +22,9 @@ import java.util.Objects;
 @Component
 public class LogAspect {
 
-    public static final String LOG_TEMPLATE_WITHOUT_DESC = "Func [{}], params: {}, result: {}, time: {}ms";
-    public static final String LOG_TEMPLATE_WITH_DESC = "Func [{}], desc: {}, params: {}, result: {}, time: {}ms";
-    public static final String LOG_FAILURE_TEMPLATE = "Func [%s] occur exception, params: %s";
+    public static final String LOG_TEMPLATE_WITHOUT_DESC = "Func[{}], params: {}, result: {}, time: {}ms";
+    public static final String LOG_TEMPLATE_WITH_DESC = "Func[{}], desc: {}, params: {}, result: {}, time: {}ms";
+    public static final String LOG_FAILURE_TEMPLATE = "Func[%s] occur exception, params: %s";
 
     @Around("@annotation(log)")
     public Object around(ProceedingJoinPoint joinPoint, Log log) throws Throwable {

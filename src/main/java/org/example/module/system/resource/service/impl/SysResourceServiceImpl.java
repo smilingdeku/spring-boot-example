@@ -6,7 +6,7 @@ import org.example.common.base.BaseService;
 import org.example.common.constant.CommonConstant;
 import org.example.common.domain.entity.Router;
 import org.example.common.domain.entity.RouterMeta;
-import org.example.common.util.BeanCopyUtil;
+import org.example.common.util.MapperUtil;
 import org.example.common.util.TreeUtil;
 import org.example.module.system.resource.domain.dto.ResourceTreeNode;
 import org.example.module.system.resource.domain.dto.SysResourceDTO;
@@ -42,7 +42,7 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
             boolean isTopResource = CommonConstant.TOP_RESOURCE_PARENT_ID
                     .equals(Long.toString(resource.getParentId()));
 
-            Router router = BeanCopyUtil.map(resource, Router.class);
+            Router router = MapperUtil.map(resource, Router.class);
             router.setAlwaysShow(isTopResource);
             router.setMeta(new RouterMeta(resource.getName(), resource.getIcon(), !isTopResource));
 
@@ -60,9 +60,9 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
     @Override
     public List<ResourceTreeNode> listResourceTreeNode(Wrapper<SysResource> queryWrapper) {
         List<SysResource> resourceList = this.list(queryWrapper);
-        Type<SysResource> resourceType = BeanCopyUtil.getType(SysResource.class);
-        Type<ResourceTreeNode> treeNodeType = BeanCopyUtil.getType(ResourceTreeNode.class);
-        List<ResourceTreeNode> treeNodeList = BeanCopyUtil.mapList(resourceList, resourceType, treeNodeType);
+        Type<SysResource> resourceType = MapperUtil.getType(SysResource.class);
+        Type<ResourceTreeNode> treeNodeType = MapperUtil.getType(ResourceTreeNode.class);
+        List<ResourceTreeNode> treeNodeList = MapperUtil.mapList(resourceList, resourceType, treeNodeType);
         return TreeUtil.build(treeNodeList, CommonConstant.TOP_RESOURCE_PARENT_ID);
     }
 
