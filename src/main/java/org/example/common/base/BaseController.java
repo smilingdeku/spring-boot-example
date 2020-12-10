@@ -2,7 +2,7 @@ package org.example.common.base;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.example.common.domain.request.QueryRequest;
-import org.example.common.util.JwtTokenUtil;
+import org.example.common.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +18,7 @@ public abstract class BaseController<S extends BaseService<M, E>, M extends Base
     @Autowired
     private HttpServletRequest request;
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private TokenUtil tokenUtil;
     @Autowired
     protected S baseService;
 
@@ -28,8 +28,8 @@ public abstract class BaseController<S extends BaseService<M, E>, M extends Base
     }
 
     protected String getCurrentUsername() {
-        String token = jwtTokenUtil.getToken(request);
-        return jwtTokenUtil.getSubjectByToken(token);
+        String token = tokenUtil.getToken(request);
+        return tokenUtil.getSubjectByToken(token);
     }
 
     protected QueryRequest mapToQuery(Map<String, Object> map)  {

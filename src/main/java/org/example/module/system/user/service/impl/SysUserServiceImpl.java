@@ -6,7 +6,7 @@ import org.example.common.base.BaseService;
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.exception.BusinessException;
 import org.example.common.util.BeanCopyUtil;
-import org.example.common.util.JwtTokenUtil;
+import org.example.common.util.TokenUtil;
 import org.example.common.util.MessageUtil;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.SysUserRequest;
@@ -38,7 +38,7 @@ import java.util.Objects;
 public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> implements ISysUserService {
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private TokenUtil tokenUtil;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -54,7 +54,7 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
     @Override
     public String login(String username, String password) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        return jwtTokenUtil.generateToken(username);
+        return tokenUtil.generateToken(username);
     }
 
     @Override

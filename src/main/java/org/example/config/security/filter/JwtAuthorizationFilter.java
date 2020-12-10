@@ -4,7 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import org.example.common.util.JwtTokenUtil;
+import org.example.common.util.TokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private static final Logger log = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private TokenUtil tokenUtil;
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -36,10 +36,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {
-        final String token = jwtTokenUtil.getToken(request);
+        final String token = tokenUtil.getToken(request);
         if (!StringUtils.isEmpty(token)) {
             try {
-               String subject = jwtTokenUtil.getSubjectByToken(token);
+               String subject = tokenUtil.getSubjectByToken(token);
                 if (!StringUtils.isEmpty(subject)) {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
