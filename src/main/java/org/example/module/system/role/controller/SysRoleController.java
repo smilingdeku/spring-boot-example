@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.Result;
@@ -81,6 +82,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         return Result.success(getBaseService().getById(id));
     }
 
+    @Log
     @PreAuthorize("hasAuthority('system:role:add')")
     @PostMapping
     public Result save(@RequestBody SysRoleRequest request) {
@@ -88,6 +90,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         return Result.success(sysRole);
     }
 
+    @Log
     @PreAuthorize("hasAuthority('system:role:delete')")
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) {
@@ -100,6 +103,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         return Result.success();
     }
 
+    @Log
     @PreAuthorize("hasAuthority('system:role:edit')")
     @PutMapping
     public Result update(@RequestBody SysRoleRequest request) {

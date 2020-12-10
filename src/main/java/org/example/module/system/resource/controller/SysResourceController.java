@@ -3,6 +3,7 @@ package org.example.module.system.resource.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.entity.Router;
 import org.example.common.domain.request.QueryRequest;
@@ -74,6 +75,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
                 new LambdaQueryWrapper<SysResource>().orderByAsc(SysResource::getSortNumber)));
     }
 
+    @Log
     @PreAuthorize("hasAuthority('system:resource:add')")
     @PostMapping
     public Result save(@RequestBody SysResource sysResource) {
@@ -81,6 +83,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         return success ? Result.success(sysResource) : Result.failure();
     }
 
+    @Log
     @PreAuthorize("hasAuthority('system:resource:delete')")
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) {
@@ -92,6 +95,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         return Result.success();
     }
 
+    @Log
     @PreAuthorize("hasAuthority('system:resource:edit')")
     @PutMapping
     public Result update(@RequestBody SysResource sysResource) {
