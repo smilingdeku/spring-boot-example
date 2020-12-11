@@ -13,7 +13,10 @@ import org.example.module.system.resource.domain.dto.SysResourceDTO;
 import org.example.module.system.resource.domain.entity.SysResource;
 import org.example.module.system.resource.mapper.SysResourceMapper;
 import org.example.module.system.resource.service.ISysResourceService;
+import org.example.module.system.roleresource.service.ISysRoleResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,9 @@ import java.util.List;
  */
 @Service
 public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysResource> implements ISysResourceService {
+
+    @Autowired
+    private ISysRoleResourceService sysRoleResourceService;
 
     @Override
     public List<SysResource> listByUsernameAndType(String username, int type) {
@@ -69,6 +75,13 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
     @Override
     public SysResourceDTO getById(Long id) {
         return getBaseMapper().getById(id);
+    }
+
+    @Transactional
+    @Override
+    public void deleteResource(Long id) {
+        this.removeById(id);
+        sysRoleResourceService.deleteByResourceId(id);
     }
 
 }

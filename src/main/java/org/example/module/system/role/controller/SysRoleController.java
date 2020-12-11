@@ -95,11 +95,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) {
         List<Long> idList = Arrays.asList(ids);
-        idList.forEach(id -> {
-            getBaseService().removeById(id);
-            sysUserRoleService.deleteByRoleId(id);
-            sysRoleResourceService.deleteByRoleId(id);
-        });
+        idList.forEach(getBaseService()::deleteRoleAndResources);
         return Result.success();
     }
 

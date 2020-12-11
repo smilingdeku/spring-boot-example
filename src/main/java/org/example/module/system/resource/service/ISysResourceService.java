@@ -59,4 +59,11 @@ public interface ISysResourceService extends IService<SysResource> {
      * @return SysResourceDTO
      */
     SysResourceDTO getById(Long id);
+
+    /**
+     * 删除资源及其关联
+     *
+     * @param id 资源 ID
+     */
+    void deleteResource(Long id);
 }

@@ -30,4 +30,10 @@ public interface ISysRoleService extends IService<SysRole> {
      */
     SysRole updateRoleAndResources(SysRoleRequest request);
 
+    /**
+     * 删除角色以及角色资源
+     *
+     * @param id 角色 ID
+     */
+    void deleteRoleAndResources(Long id);
 }
