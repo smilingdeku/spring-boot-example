@@ -16,6 +16,18 @@ public class SysInfo {
      * 操作系统架构
      */
     private String osArch;
+    /**
+     * 主机名称
+     */
+    private String hostName;
+    /**
+     * 主机地址
+     */
+    private String hostAddress;
+    /**
+     * 运行时间
+     */
+    private long uptime;
 
     public String getOsName() {
         return osName;
@@ -31,6 +43,30 @@ public class SysInfo {
 
     public void setOsArch(String osArch) {
         this.osArch = osArch;
+    }
+
+    public String getHostName() {
+        return hostName;
+    }
+
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
+    }
+
+    public String getHostAddress() {
+        return hostAddress;
+    }
+
+    public void setHostAddress(String hostAddress) {
+        this.hostAddress = hostAddress;
+    }
+
+    public long getUptime() {
+        return uptime;
+    }
+
+    public void setUptime(long uptime) {
+        this.uptime = uptime;
     }
 
     @Override
