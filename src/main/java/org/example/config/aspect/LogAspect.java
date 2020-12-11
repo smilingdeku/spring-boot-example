@@ -22,10 +22,6 @@ import java.util.Objects;
 @Component
 public class LogAspect {
 
-    public static final String LOG_TEMPLATE_WITHOUT_DESC = "Func[{}], params: {}, result: {}, time: {}ms";
-    public static final String LOG_TEMPLATE_WITH_DESC = "Func[{}], desc: {}, params: {}, result: {}, time: {}ms";
-    public static final String LOG_FAILURE_TEMPLATE = "Func[%s] occur exception, params: %s";
-
     @Around("@annotation(log)")
     public Object around(ProceedingJoinPoint joinPoint, Log log) throws Throwable {
         MethodSignature signature = ((MethodSignature) joinPoint.getSignature());
@@ -41,12 +37,14 @@ public class LogAspect {
             result = joinPoint.proceed();
             long end = System.currentTimeMillis();
             if (StringUtils.isEmpty(log.desc())) {
-                logger.info(LOG_TEMPLATE_WITHOUT_DESC, methodName, params, JsonUtil.toJSONString(result), end - start);
+                logger.info("Func[{}], params: {}, result: {}, time: {}ms",
+                        methodName, params, JsonUtil.toJSONString(result), end - start);
             } else {
-                logger.info(LOG_TEMPLATE_WITH_DESC, methodName, log.desc(), params, JsonUtil.toJSONString(result), end - start);
+                logger.info("Func[{}], desc: {}, params: {}, result: {}, time: {}ms",
+                        methodName, log.desc(), params, JsonUtil.toJSONString(result), end - start);
             }
         } catch (Throwable throwable) {
-            logger.error(String.format(LOG_FAILURE_TEMPLATE, methodName, params), throwable);
+            logger.error(String.format("Func[%s] occur exception, params: %s", methodName, params), throwable);
             throw throwable;
         }
         return result;

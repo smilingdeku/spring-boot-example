@@ -1,10 +1,5 @@
 package org.example.module.common.diplomat.service.impl;
 
-import java.util.Map;
-import java.util.Objects;
-
-import javax.annotation.Resource;
-
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.exception.BusinessException;
 import org.example.common.util.JsonUtil;
@@ -19,6 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.Resource;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author walle
@@ -37,7 +36,7 @@ public class DiplomatServiceImpl implements IDiplomatService {
     public <T> T post(String url, Object requestBody, Class<T> valueClazz) {
         String requestBodyJsonStr = JsonUtil.toJSONString(requestBody);
         if (logger.isDebugEnabled()) {
-            logger.info("Func[post] url: {},params: {}", url, requestBodyJsonStr);
+            logger.info("Func[post] url: {}, params: {}", url, requestBodyJsonStr);
         }
         try {
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -53,13 +52,13 @@ public class DiplomatServiceImpl implements IDiplomatService {
             T value = rpcResult.getBody();
 
             if (logger.isDebugEnabled()) {
-                logger.info("Func[post] url: {},params: {}, result: {}", url, requestBodyJsonStr,
+                logger.info("Func[post] url: {}, params: {}, result: {}", url, requestBodyJsonStr,
                     JsonUtil.toJSONString(value));
             }
 
             return value;
         } catch (Exception e) {
-            logger.error("Func[post] url: " + url + " ,params: " + requestBodyJsonStr, e);
+            logger.error("Func[post] url: " + url + ", params: " + requestBodyJsonStr, e);
             String tips = MessageUtil.get(MsgKeyConstant.RPC_FAILURE);
             throw new BusinessException(tips);
         }
@@ -69,7 +68,7 @@ public class DiplomatServiceImpl implements IDiplomatService {
     public <T> T get(String url, Class<T> valueClazz, Map<String, Object> params) {
         String requestJsonStr = JsonUtil.toJSONString(params);
         if (logger.isDebugEnabled()) {
-            logger.info("Func[get] url: {},params: {}", url, requestJsonStr);
+            logger.info("Func[get] url: {}, params: {}", url, requestJsonStr);
         }
         try {
             // 请求接口
@@ -83,12 +82,12 @@ public class DiplomatServiceImpl implements IDiplomatService {
             T value = rpcResult.getBody();
 
             if (logger.isDebugEnabled()) {
-                logger.info("Func[get] url: {},params: {}, result: {}", url, requestJsonStr,
+                logger.info("Func[get] url: {}, params: {}, result: {}", url, requestJsonStr,
                     JsonUtil.toJSONString(value));
             }
             return value;
         } catch (Exception e) {
-            logger.error("Func[get] url: " + url + " ,params: " + requestJsonStr, e);
+            logger.error("Func[get] url: " + url + ", params: " + requestJsonStr, e);
             String tips = MessageUtil.get(MsgKeyConstant.RPC_FAILURE);
             throw new BusinessException(tips);
         }
