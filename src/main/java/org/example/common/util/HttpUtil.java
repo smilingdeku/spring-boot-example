@@ -1,10 +1,7 @@
-package org.example.module.common.diplomat.service.impl;
+package org.example.common.util;
 
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.exception.BusinessException;
-import org.example.common.util.JsonUtil;
-import org.example.common.util.MessageUtil;
-import org.example.module.common.diplomat.service.IDiplomatService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -12,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -20,19 +17,19 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
+ * Http 工具类
+ *
  * @author walle
  * @version V1.0
  * @since 2020-12-10 21:47
  */
-@Service
-public class DiplomatServiceImpl implements IDiplomatService {
-
-    private static Logger logger = LoggerFactory.getLogger(DiplomatServiceImpl.class);
+@Component
+public class HttpUtil {
+    private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
 
     @Resource
     private RestTemplate restTemplate;
 
-    @Override
     public <T> T post(String url, Object requestBody, Class<T> valueClazz) {
         String requestBodyJsonStr = JsonUtil.toJSONString(requestBody);
         if (logger.isDebugEnabled()) {
@@ -53,7 +50,7 @@ public class DiplomatServiceImpl implements IDiplomatService {
 
             if (logger.isDebugEnabled()) {
                 logger.info("Func[post] url: {}, params: {}, result: {}", url, requestBodyJsonStr,
-                    JsonUtil.toJSONString(value));
+                        JsonUtil.toJSONString(value));
             }
 
             return value;
@@ -64,7 +61,6 @@ public class DiplomatServiceImpl implements IDiplomatService {
         }
     }
 
-    @Override
     public <T> T get(String url, Class<T> valueClazz, Map<String, Object> params) {
         String requestJsonStr = JsonUtil.toJSONString(params);
         if (logger.isDebugEnabled()) {
@@ -83,7 +79,7 @@ public class DiplomatServiceImpl implements IDiplomatService {
 
             if (logger.isDebugEnabled()) {
                 logger.info("Func[get] url: {}, params: {}, result: {}", url, requestJsonStr,
-                    JsonUtil.toJSONString(value));
+                        JsonUtil.toJSONString(value));
             }
             return value;
         } catch (Exception e) {
@@ -105,5 +101,4 @@ public class DiplomatServiceImpl implements IDiplomatService {
         }
         return rpcResult.getStatusCodeValue() != HttpStatus.OK.value();
     }
-
 }
