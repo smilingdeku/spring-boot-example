@@ -64,4 +64,11 @@ public interface ISysUserService extends IService<SysUser> {
      * @return SysUser
      */
     SysUser updateUserAndRoles(SysUserRequest request);
+
+    /**
+     * 删除用户及其角色
+     *
+     * @param id 用户 ID
+     */
+    void deleteUserAndRoles(Long id);
 }

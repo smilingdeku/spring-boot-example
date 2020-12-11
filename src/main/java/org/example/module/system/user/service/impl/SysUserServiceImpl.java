@@ -6,8 +6,8 @@ import org.example.common.base.BaseService;
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.exception.BusinessException;
 import org.example.common.util.MapperUtil;
-import org.example.common.util.TokenUtil;
 import org.example.common.util.MessageUtil;
+import org.example.common.util.TokenUtil;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.SysUserRequest;
 import org.example.module.system.user.mapper.SysUserMapper;
@@ -132,6 +132,13 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
             });
         }
         return sysUser;
+    }
+
+    @Transactional
+    @Override
+    public void deleteUserAndRoles(Long id) {
+        this.removeById(id);
+        sysUserRoleService.deleteByUserId(id);
     }
 
 }

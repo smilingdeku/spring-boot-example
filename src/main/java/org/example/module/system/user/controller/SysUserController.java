@@ -106,10 +106,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         ListUtil.removeIf(idList, (e) -> e.equals(1L));
 
         if (ListUtil.isNotEmpty(idList)) {
-            idList.forEach(id -> {
-                getBaseService().removeById(id);
-                sysUserRoleService.deleteByUserId(id);
-            });
+            idList.forEach(getBaseService()::deleteUserAndRoles);
         }
         return Result.success();
     }

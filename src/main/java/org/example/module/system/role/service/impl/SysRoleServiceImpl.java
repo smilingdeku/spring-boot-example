@@ -9,6 +9,7 @@ import org.example.module.system.role.mapper.SysRoleMapper;
 import org.example.module.system.role.service.ISysRoleService;
 import org.example.module.system.roleresource.domain.entity.SysRoleResource;
 import org.example.module.system.roleresource.service.ISysRoleResourceService;
+import org.example.module.system.userrole.service.ISysUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,8 @@ public class SysRoleServiceImpl extends BaseService<SysRoleMapper, SysRole> impl
 
     @Autowired
     private ISysRoleResourceService sysRoleResourceService;
+    @Autowired
+    private ISysUserRoleService sysUserRoleService;
 
     @Transactional
     @Override
@@ -68,5 +71,13 @@ public class SysRoleServiceImpl extends BaseService<SysRoleMapper, SysRole> impl
             });
         }
         return sysRole;
+    }
+
+    @Transactional
+    @Override
+    public void deleteRoleAndResources(Long id) {
+        this.removeById(id);
+        sysUserRoleService.deleteByRoleId(id);
+        sysRoleResourceService.deleteByRoleId(id);
     }
 }
