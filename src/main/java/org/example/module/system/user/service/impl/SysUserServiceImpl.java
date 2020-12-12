@@ -88,23 +88,6 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
         return sysUser;
     }
 
-    /**
-     * 判断系统用户名称是否存在
-     *
-     * @param userName 用户名称
-     * @return boolean
-     */
-    private boolean isExistsUser(String userName) {
-        if (StringUtils.isEmpty(userName)) {
-            return true;
-        }
-        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SysUser::getUsername, userName);
-
-        Integer count = baseMapper.selectCount(queryWrapper);
-        return count > 0;
-    }
-
     @Transactional
     @Override
     public SysUser updateUserAndRoles(SysUserRequest request) {
@@ -139,6 +122,23 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
     public void deleteUserAndRoles(Long id) {
         this.removeById(id);
         sysUserRoleService.deleteByUserId(id);
+    }
+
+    /**
+     * 判断系统用户名称是否存在
+     *
+     * @param userName 用户名称
+     * @return boolean
+     */
+    private boolean isExistsUser(String userName) {
+        if (StringUtils.isEmpty(userName)) {
+            return true;
+        }
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysUser::getUsername, userName);
+
+        Integer count = baseMapper.selectCount(queryWrapper);
+        return count > 0;
     }
 
 }
