@@ -72,6 +72,7 @@ public class ServerServiceImpl implements IServerService {
         cpuInfo.setUserUsage(Double.parseDouble(format.format(user <= 0 ? 0 : (100d * user / totalCpu))));
         cpuInfo.setIoWaitRate(totalCpu == 0 ? 0 : Double.parseDouble(format.format(100d * ioWait / totalCpu)));
         cpuInfo.setFreeRate(Double.parseDouble(format.format(idle <= 0 ? 0 : (100d * idle / totalCpu))));
+        cpuInfo.setUsage(Double.parseDouble(format.format(100d - cpuInfo.getFreeRate())));
 
         return cpuInfo;
     }
@@ -144,6 +145,7 @@ public class ServerServiceImpl implements IServerService {
     public List<FileStoreInfo> getFileStoreInfos() {
         OSFileStore[] fileStores = FS.getFileStores();
         List<FileStoreInfo> fileStoreInfoList = Lists.newArrayListWithExpectedSize(fileStores.length);
+        final DecimalFormat format = new DecimalFormat("#.00");
         for (OSFileStore fileStore : fileStores) {
             FileStoreInfo fileStoreInfo = new FileStoreInfo();
             fileStoreInfo.setMount(fileStore.getMount());
@@ -152,6 +154,8 @@ public class ServerServiceImpl implements IServerService {
             fileStoreInfo.setTotal(fileStore.getTotalSpace());
             fileStoreInfo.setAvailable(fileStore.getUsableSpace());
             fileStoreInfo.setUsed(fileStore.getTotalSpace() - fileStore.getUsableSpace());
+            fileStoreInfo.setUsage(Double.parseDouble(
+                    format.format(fileStoreInfo.getUsed() <= 0 ? 0 : (100d * fileStoreInfo.getUsed() / fileStoreInfo.getTotal()))));
             fileStoreInfoList.add(fileStoreInfo);
         }
         return fileStoreInfoList;

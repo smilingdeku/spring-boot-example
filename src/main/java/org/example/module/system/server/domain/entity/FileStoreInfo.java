@@ -31,6 +31,10 @@ public class FileStoreInfo {
      * 已使用
      */
     private long used;
+    /**
+     * 使用率
+     */
+    private double usage;
 
     public String getMount() {
         return mount;
@@ -78,6 +82,14 @@ public class FileStoreInfo {
 
     public void setUsed(long used) {
         this.used = used;
+    }
+
+    public double getUsage() {
+        return usage;
+    }
+
+    public void setUsage(double usage) {
+        this.usage = usage;
     }
 
     @Override

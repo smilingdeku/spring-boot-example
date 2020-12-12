@@ -27,6 +27,10 @@ public class CpuInfo {
      * CPU 当前空闲率
      */
     private double freeRate;
+    /**
+     * CPU 使用率
+     */
+    private double usage;
 
     public int getCoreNum() {
         return coreNum;
@@ -67,6 +71,14 @@ public class CpuInfo {
 
     public void setFreeRate(double freeRate) {
         this.freeRate = freeRate;
+    }
+
+    public double getUsage() {
+        return usage;
+    }
+
+    public void setUsage(double usage) {
+        this.usage = usage;
     }
 
     @Override

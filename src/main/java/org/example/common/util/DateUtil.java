@@ -1,10 +1,10 @@
 package org.example.common.util;
 
+import org.springframework.util.StringUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-
-import org.springframework.util.StringUtils;
 
 /**
  * @version V1.0
@@ -55,4 +55,25 @@ public class DateUtil {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(date);
     }
+
+    /**
+     * 秒转时间
+     *
+     * @param second 秒
+     * @return 时间
+     */
+    public static String secondToTime(long second) {
+        long days = second / 86400;
+        second = second % 86400;
+        long hours = second / 3600;
+        second = second % 3600;
+        long minutes = second / 60;
+        second = second % 60;
+        if (0 < days){
+            return days + " 天 " + hours + " 小时 " + minutes + " 分 " + second + " 秒";
+        }else {
+            return hours + " 小时 " + minutes + " 分 "+ second + " 秒";
+        }
+    }
+
 }
