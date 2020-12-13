@@ -11,7 +11,7 @@ import com.alibaba.excel.event.AnalysisEventListener;
 public class ExcelAnalysisEventListener<T> extends AnalysisEventListener<T> {
 
     @Override
-    public void invoke(Object data, AnalysisContext context) {
+    public void invoke(T value, AnalysisContext context) {
 
     }
 

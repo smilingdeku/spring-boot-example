@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -43,24 +44,27 @@ public class ExcelController {
      */
     @PostMapping("/download")
     public void download(HttpServletResponse response) {
+        ExcelWriter excelWriter = null;
         try {
-
             // 设置头部
             ExcelUtil.setResponseHeader(response, "会员数据");
 
             // 创建excelWriter和writeShell
             ServletOutputStream outputStream = response.getOutputStream();
-            ExcelWriter excelWriter = ExcelUtil.createExcelWriter(outputStream, ExcelTemplateDTO.class);
+
+            excelWriter = ExcelUtil.createExcelWriter(outputStream, ExcelTemplateDTO.class);
             WriteSheet writeSheet = createWriteSheet();
 
             for (int pageNumber = 0; pageNumber < 5; pageNumber++) {
                 List<ExcelTemplateDTO> infos = mock();
                 excelWriter.write(infos, writeSheet);
             }
-
-            excelWriter.finish();
         } catch (Exception e) {
             logger.error("Function[download]", e);
+        } finally {
+            if (Objects.nonNull(excelWriter)) {
+                excelWriter.finish();
+            }
         }
     }
 

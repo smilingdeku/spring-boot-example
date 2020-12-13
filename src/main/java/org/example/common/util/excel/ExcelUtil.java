@@ -67,10 +67,7 @@ public class ExcelUtil {
     public static WriteSheet createWriteSheet(String sheetName, SelectorSheetWriteHandler selectorSheetWriteHandler,
         CommentWriteHandler commentWriteHandler, Set<String> excludeColumns) {
 
-        ExcelWriterBuilder write = EasyExcel.write();
-        write.autoCloseStream(false);
-
-        ExcelWriterSheetBuilder writerSheetBuilder = write.sheet(sheetName);
+        ExcelWriterSheetBuilder writerSheetBuilder = EasyExcel.writerSheet(sheetName);
 
         // 设置下拉选择数据
         if (Objects.nonNull(selectorSheetWriteHandler)) {
