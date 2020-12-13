@@ -8,13 +8,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.example.common.util.excel.ExcelUtil;
-import org.example.common.util.excel.handler.CommentWriteHandler;
-import org.example.common.util.excel.handler.SelectorSheetWriteHandler;
+import org.example.common.util.ExcelUtil;
 import org.example.module.common.file.domain.dto.ExcelTemplateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,24 +42,27 @@ public class ExcelController {
      */
     @PostMapping("/download")
     public void download(HttpServletResponse response) {
+        ExcelWriter excelWriter = null;
         try {
-
             // 设置头部
             ExcelUtil.setResponseHeader(response, "会员数据");
 
             // 创建excelWriter和writeShell
             ServletOutputStream outputStream = response.getOutputStream();
-            ExcelWriter excelWriter = ExcelUtil.createExcelWriter(outputStream, ExcelTemplateDTO.class);
+
+            excelWriter = ExcelUtil.createExcelWriter(outputStream, ExcelTemplateDTO.class);
             WriteSheet writeSheet = createWriteSheet();
 
             for (int pageNumber = 0; pageNumber < 5; pageNumber++) {
                 List<ExcelTemplateDTO> infos = mock();
                 excelWriter.write(infos, writeSheet);
             }
-
-            excelWriter.finish();
         } catch (Exception e) {
             logger.error("Function[download]", e);
+        } finally {
+            if (Objects.nonNull(excelWriter)) {
+                excelWriter.finish();
+            }
         }
     }
 
@@ -72,18 +74,19 @@ public class ExcelController {
 
         selectorMap.put(1, idTypeArr);
         selectorMap.put(5, genderArr);
-        SelectorSheetWriteHandler selectorSheetWriteHandler = new SelectorSheetWriteHandler(selectorMap);
+        ExcelUtil.SelectorSheetWriteHandler selectorSheetWriteHandler = new ExcelUtil.SelectorSheetWriteHandler(
+            selectorMap);
 
-        List<CommentWriteHandler.Remark> remarkList = new ArrayList<>();
+        List<ExcelUtil.ExcelCellComment> remarkList = new ArrayList<>();
         for (int index = 0; index < 6; index++) {
-            CommentWriteHandler.Remark remark = new CommentWriteHandler.Remark();
-            remark.setRowNum(0);
-            remark.setCellNum(index);
-            remark.setComment("备注" + index);
+            ExcelUtil.ExcelCellComment cellComment = new ExcelUtil.ExcelCellComment();
+            cellComment.setRowNum(0);
+            cellComment.setCellNum(index);
+            cellComment.setComment("备注" + index);
 
-            remarkList.add(remark);
+            remarkList.add(cellComment);
         }
-        CommentWriteHandler commentWriteHandler = new CommentWriteHandler(remarkList);
+        ExcelUtil.CommentWriteHandler commentWriteHandler = new ExcelUtil.CommentWriteHandler(remarkList);
 
         return ExcelUtil
             .createWriteSheet("成员数据", selectorSheetWriteHandler, commentWriteHandler, Collections.emptySet());
