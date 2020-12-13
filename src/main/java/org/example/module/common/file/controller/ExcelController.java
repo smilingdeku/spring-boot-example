@@ -13,9 +13,7 @@ import java.util.Objects;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.example.common.util.excel.ExcelUtil;
-import org.example.common.util.excel.handler.CommentWriteHandler;
-import org.example.common.util.excel.handler.SelectorSheetWriteHandler;
+import org.example.common.util.ExcelUtil;
 import org.example.module.common.file.domain.dto.ExcelTemplateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,18 +74,19 @@ public class ExcelController {
 
         selectorMap.put(1, idTypeArr);
         selectorMap.put(5, genderArr);
-        SelectorSheetWriteHandler selectorSheetWriteHandler = new SelectorSheetWriteHandler(selectorMap);
+        ExcelUtil.SelectorSheetWriteHandler selectorSheetWriteHandler = new ExcelUtil.SelectorSheetWriteHandler(
+            selectorMap);
 
-        List<CommentWriteHandler.Remark> remarkList = new ArrayList<>();
+        List<ExcelUtil.ExcelCellComment> remarkList = new ArrayList<>();
         for (int index = 0; index < 6; index++) {
-            CommentWriteHandler.Remark remark = new CommentWriteHandler.Remark();
-            remark.setRowNum(0);
-            remark.setCellNum(index);
-            remark.setComment("备注" + index);
+            ExcelUtil.ExcelCellComment cellComment = new ExcelUtil.ExcelCellComment();
+            cellComment.setRowNum(0);
+            cellComment.setCellNum(index);
+            cellComment.setComment("备注" + index);
 
-            remarkList.add(remark);
+            remarkList.add(cellComment);
         }
-        CommentWriteHandler commentWriteHandler = new CommentWriteHandler(remarkList);
+        ExcelUtil.CommentWriteHandler commentWriteHandler = new ExcelUtil.CommentWriteHandler(remarkList);
 
         return ExcelUtil
             .createWriteSheet("成员数据", selectorSheetWriteHandler, commentWriteHandler, Collections.emptySet());
