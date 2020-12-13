@@ -33,7 +33,7 @@ public class ServerController {
         SysInfo sysInfo = serverService.getSysInfo();
         response.setHostAddress(sysInfo.getHostAddress());
         response.setUptime(DateUtil.secondToTime(sysInfo.getUptime()));
-        response.setTime(DateUtil.formatNow(DateUtil.DEF_FORMAT));
+        response.setTime(DateUtil.formatNow("yyyy-MM-dd HH:mm"));
 
         MemoryInfo memoryInfo = serverService.getMemoryInfo();
         response.setMemory(FormatUtil.formatBytes(memoryInfo.getTotal()));
@@ -42,6 +42,7 @@ public class ServerController {
         CpuInfo cpuInfo = serverService.getCpuInfo();
         response.setCoreNum(cpuInfo.getCoreNum());
         response.setCpuUsage(cpuInfo.getUsage());
+
         List<FileStoreInfo> fileStoreInfoList = serverService.getFileStoreInfos();
         Optional<FileStoreInfo> fileStoreInfoOptional = fileStoreInfoList.stream()
                 .filter(item -> item.getMount().equals("/")).findFirst();
