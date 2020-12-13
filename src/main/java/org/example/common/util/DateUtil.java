@@ -68,11 +68,11 @@ public class DateUtil {
         long hours = second / 3600;
         second = second % 3600;
         long minutes = second / 60;
-        second = second % 60;
+//        second = second % 60;
         if (0 < days){
-            return days + " 天 " + hours + " 小时 " + minutes + " 分 " + second + " 秒";
+            return days + " 天 " + hours + " 小时 " + minutes + " 分 ";
         }else {
-            return hours + " 小时 " + minutes + " 分 "+ second + " 秒";
+            return hours + " 小时 " + minutes + " 分 ";
         }
     }
 

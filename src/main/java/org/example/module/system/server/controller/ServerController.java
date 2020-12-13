@@ -17,6 +17,7 @@ import oshi.util.FormatUtil;
 import java.net.UnknownHostException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/sys/server")
@@ -32,7 +33,7 @@ public class ServerController {
         SysInfo sysInfo = serverService.getSysInfo();
         response.setHostAddress(sysInfo.getHostAddress());
         response.setUptime(DateUtil.secondToTime(sysInfo.getUptime()));
-        response.setTime(DateUtil.formatNow(DateUtil.DEF_FORMAT));
+        response.setTime(DateUtil.formatNow("yyyy-MM-dd HH:mm"));
 
         MemoryInfo memoryInfo = serverService.getMemoryInfo();
         response.setMemory(FormatUtil.formatBytes(memoryInfo.getTotal()));
@@ -43,7 +44,10 @@ public class ServerController {
         response.setCpuUsage(cpuInfo.getUsage());
 
         List<FileStoreInfo> fileStoreInfoList = serverService.getFileStoreInfos();
-        long storage = fileStoreInfoList.stream().mapToLong(FileStoreInfo::getTotal).sum();
+        Optional<FileStoreInfo> fileStoreInfoOptional = fileStoreInfoList.stream()
+                .filter(item -> item.getMount().equals("/")).findFirst();
+        long storage = fileStoreInfoOptional.map(FileStoreInfo::getTotal)
+                .orElseGet(() -> fileStoreInfoList.stream().mapToLong(FileStoreInfo::getTotal).sum());
         response.setStorage(FormatUtil.formatBytes(storage));
         fileStoreInfoList.stream().max(Comparator.comparingLong(FileStoreInfo::getTotal))
                 .ifPresent(item -> response.setMaxSizePartitionUsage(item.getUsage()));
