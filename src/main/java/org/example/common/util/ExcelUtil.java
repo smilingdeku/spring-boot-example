@@ -4,33 +4,23 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
-import com.alibaba.excel.write.handler.AbstractRowWriteHandler;
-import com.alibaba.excel.write.handler.SheetWriteHandler;
+import com.alibaba.excel.write.handler.WriteHandler;
 import com.alibaba.excel.write.metadata.WriteSheet;
-import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
-import com.alibaba.excel.write.metadata.holder.WriteTableHolder;
-import com.alibaba.excel.write.metadata.holder.WriteWorkbookHolder;
+import org.example.common.domain.entity.ExcelCellComment;
+import org.example.config.excel.handler.CommentRowWriteHandler;
+import org.example.config.excel.handler.SelectorSheetWriteHandler;
+import org.example.config.excel.listener.ExcelReadListener;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.poi.ss.usermodel.Comment;
-import org.apache.poi.ss.usermodel.DataValidation;
-import org.apache.poi.ss.usermodel.DataValidationConstraint;
-import org.apache.poi.ss.usermodel.DataValidationHelper;
-import org.apache.poi.ss.usermodel.Drawing;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.CellRangeAddressList;
-import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
-import org.apache.poi.xssf.usermodel.XSSFDataValidation;
-import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import java.util.function.Consumer;
 
 /**
  * excel工具类
@@ -44,154 +34,6 @@ import org.apache.poi.xssf.usermodel.XSSFRichTextString;
  * @since 2020-12-12 22:04
  */
 public class ExcelUtil {
-
-    /**
-     * excel下面选择Handler
-     *
-     * @author walle
-     * @version V1.0
-     * @since 2020-12-12 22:55
-     */
-    public static class SelectorSheetWriteHandler implements SheetWriteHandler {
-
-        private Map<Integer, String[]> columnSelectorMap;
-
-        /**
-         * 下拉选择框
-         * <p>
-         * key: 对应excelTemplate的@ExcelProperty注解的index值
-         * <p>
-         * value: 该下拉选择框的下拉内容
-         *
-         * @param columnSelectorMap 下拉选择框数据
-         */
-        public SelectorSheetWriteHandler(Map<Integer, String[]> columnSelectorMap) {
-            this.columnSelectorMap = columnSelectorMap;
-        }
-
-        @Override
-        public void beforeSheetCreate(WriteWorkbookHolder writeWorkbookHolder, WriteSheetHolder writeSheetHolder) {
-
-        }
-
-        @Override
-        public void afterSheetCreate(WriteWorkbookHolder writeWorkbookHolder, WriteSheetHolder writeSheetHolder) {
-            Sheet sheet = writeSheetHolder.getSheet();
-
-            //开始设置下拉框
-            DataValidationHelper helper = sheet.getDataValidationHelper();
-            for (Map.Entry<Integer, String[]> entry : columnSelectorMap.entrySet()) {
-                /* 起始行、终止行、起始列、终止列 */
-                int maxExcelRow = 1048575;
-                CellRangeAddressList addressList = new CellRangeAddressList(1, maxExcelRow, entry.getKey(),
-                    entry.getKey());
-                /* 设置下拉框数据 */
-                DataValidationConstraint constraint = helper.createExplicitListConstraint(entry.getValue());
-                DataValidation dataValidation = helper.createValidation(constraint, addressList);
-                /* 处理Excel兼容性问题 */
-                if (dataValidation instanceof XSSFDataValidation) {
-                    dataValidation.setSuppressDropDownArrow(true);
-                    dataValidation.setShowErrorBox(true);
-                } else {
-                    dataValidation.setSuppressDropDownArrow(false);
-                }
-                sheet.addValidationData(dataValidation);
-            }
-
-        }
-    }
-
-    /**
-     * excel批注对象
-     */
-    public static class ExcelCellComment {
-        /**
-         * 行号,从0开始
-         */
-        private int rowNum;
-        /**
-         * 单元格,从0开始
-         */
-        private int cellNum;
-        /**
-         * 备注
-         */
-        private String comment;
-
-        public int getRowNum() {
-            return rowNum;
-        }
-
-        public void setRowNum(int rowNum) {
-            this.rowNum = rowNum;
-        }
-
-        public int getCellNum() {
-            return cellNum;
-        }
-
-        public void setCellNum(int cellNum) {
-            this.cellNum = cellNum;
-        }
-
-        public String getComment() {
-            return comment;
-        }
-
-        public void setComment(String comment) {
-            this.comment = comment;
-        }
-    }
-
-    /**
-     * @author walle
-     * @version V1.0
-     * @since 2020-12-12 23:09
-     */
-    public static class CommentWriteHandler extends AbstractRowWriteHandler {
-
-        private List<ExcelCellComment> remarkList;
-
-        public CommentWriteHandler(List<ExcelCellComment> remarkList) {
-            this.remarkList = remarkList;
-        }
-
-        @Override
-        public void afterRowDispose(WriteSheetHolder writeSheetHolder, WriteTableHolder writeTableHolder, Row row,
-            Integer relativeRowIndex, Boolean isHead) {
-            if (isHead) {
-                Sheet sheet = writeSheetHolder.getSheet();
-                Drawing<?> drawingPatriarch = sheet.createDrawingPatriarch();
-
-                /*
-                 * Creates a new client anchor and sets the top-left and bottom-right
-                 * coordinates of the anchor by cell references and offsets.
-                 * Sets the type to {@link org.apache.poi.ss.usermodel.ClientAnchor.AnchorType#MOVE_AND_RESIZE}.
-                 *
-                 * @param dx1  the x coordinate within the first cell.
-                 * @param dy1  the y coordinate within the first cell.
-                 * @param dx2  the x coordinate within the second cell.
-                 * @param dy2  the y coordinate within the second cell.
-                 * @param col1 the column (0 based) of the first cell.
-                 * @param row1 the row (0 based) of the first cell.
-                 * @param col2 the column (0 based) of the second cell.
-                 * @param row2 the row (0 based) of the second cell.
-                 */
-
-                for (ExcelCellComment excelCellComment : remarkList) {
-                    XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) excelCellComment.getCellNum(), 0,
-                        (short) excelCellComment.getCellNum() + 1, 0);
-                    Comment comment = drawingPatriarch.createCellComment(anchor);
-                    // 输入批注信息
-                    comment.setString(new XSSFRichTextString(excelCellComment.getComment()));
-
-                    // 将批注添加到单元格对象中
-                    sheet.getRow(excelCellComment.getRowNum()).getCell(excelCellComment.getCellNum())
-                        .setCellComment(comment);
-                }
-            }
-        }
-    }
 
     /**
      * 设置头部信息
@@ -209,45 +51,165 @@ public class ExcelUtil {
     }
 
     /**
-     * 创建excel write
+     * 读取 Excel 进行批量操作
      *
-     * @param outputStream 输出流
+     * @param file       上传文件
+     * @param head       头部信息
+     * @param sheetNo    工作表序号
+     * @param sheetName  工作表名称
+     * @param batchCount 批量处理数量
+     * @param consumer   批量操作
+     */
+    public static <T> void readExcel(MultipartFile file, Class<T> head, Integer sheetNo, String sheetName, int batchCount, Consumer<List<T>> consumer) throws IOException {
+        ExcelReadListener<T> readListener = new ExcelReadListener<>(batchCount, consumer);
+        EasyExcel.read(file.getInputStream(), head, readListener).sheet(sheetNo, sheetName).doRead();;
+    }
+
+    /**
+     * 读取 Excel 进行批量操作
+     *
+     * @param file       上传文件
+     * @param head       头部信息
+     * @param sheetNo    工作表序号
+     * @param batchCount 批量处理数量
+     * @param consumer   批量操作
+     */
+    public static <T> void readExcel(MultipartFile file, Class<T> head, Integer sheetNo, int batchCount, Consumer<List<T>> consumer) throws IOException {
+        readExcel(file, head, sheetNo, null, batchCount, consumer);
+    }
+
+    /**
+     * 读取 Excel 进行批量操作
+     *
+     * @param file       上传文件
+     * @param head       头部信息
+     * @param sheetName  工作表名称
+     * @param batchCount 批量处理数量
+     * @param consumer   批量操作
+     */
+    public static <T> void readExcel(MultipartFile file, Class<T> head, String sheetName, int batchCount, Consumer<List<T>> consumer) throws IOException {
+        readExcel(file, head, null, sheetName, batchCount, consumer);
+    }
+
+    /**
+     * 读取 Excel 进行批量操作
+     *
+     * @param file       上传文件
+     * @param head       头部信息
+     * @param batchCount 批量处理数量
+     * @param consumer   批量操作
+     */
+    public static <T> void readExcel(MultipartFile file, Class<T> head, int batchCount, Consumer<List<T>> consumer) throws IOException {
+        readExcel(file, head, null, null, batchCount, consumer);
+    }
+
+    /**
+     * 读取 Excel 进行批量操作
+     *
+     * @param pathName   文件路径
+     * @param head       头部信息
+     * @param sheetNo    工作表序号
+     * @param sheetName  工作表名称
+     * @param batchCount 批量处理数量
+     * @param consumer   批量操作
+     */
+    public static <T> void readExcel(String pathName, Class<T> head, Integer sheetNo, String sheetName, int batchCount, Consumer<List<T>> consumer) {
+        ExcelReadListener<T> readListener = new ExcelReadListener<>(batchCount, consumer);
+        EasyExcel.read(pathName, head, readListener).sheet(sheetNo, sheetName).doRead();;
+    }
+
+    /**
+     * 读取 Excel 进行批量操作
+     *
+     * @param pathName   文件路径
+     * @param head       头部信息
+     * @param sheetNo    工作表序号
+     * @param batchCount 批量处理数量
+     * @param consumer   批量操作
+     */
+    public static <T> void readExcel(String pathName, Class<T> head, Integer sheetNo, int batchCount, Consumer<List<T>> consumer) {
+        readExcel(pathName, head, sheetNo, null, batchCount, consumer);
+    }
+
+    /**
+     * 读取 Excel 进行批量操作
+     *
+     * @param pathName   文件路径
+     * @param head       头部信息
+     * @param sheetName  工作表名称
+     * @param batchCount 批量处理数量
+     * @param consumer   批量操作
+     */
+    public static <T> void readExcel(String pathName, Class<T> head, String sheetName, int batchCount, Consumer<List<T>> consumer) {
+        readExcel(pathName, head, null, sheetName, batchCount, consumer);
+    }
+
+    /**
+     * 读取 Excel 进行批量操作
+     *
+     * @param pathName   文件路径
+     * @param head       头部信息
+     * @param batchCount 批量处理数量
+     * @param consumer   批量操作
+     */
+    public static <T> void readExcel(String pathName, Class<T> head, int batchCount, Consumer<List<T>> consumer) {
+        readExcel(pathName, head, null, null, batchCount, consumer);
+    }
+
+
+    /**
+     * 创建 ExcelWriter
+     *
+     * @param os   输出流
+     * @param head 头部信息
      * @return ExcelWriter
      */
-    public static ExcelWriter createExcelWriter(ServletOutputStream outputStream, Class<?> excelTemplateClass) {
+    public static ExcelWriter createExcelWriter(OutputStream os, Class<?> head) {
         ExcelWriterBuilder excelWriterBuilder = new ExcelWriterBuilder();
+
         excelWriterBuilder.autoCloseStream(true);
-        excelWriterBuilder.file(outputStream);
-        excelWriterBuilder.head(excelTemplateClass);
+        excelWriterBuilder.file(os);
+        excelWriterBuilder.head(head);
 
         return excelWriterBuilder.build();
     }
 
     /**
-     * 创建writeSheet
+     * 创建 WriteSheet
      *
+     * @param sheetName 工作表名
+     * @param handlers  写入处理
      * @return WriteSheet
      */
-    public static WriteSheet createWriteSheet(String sheetName, SelectorSheetWriteHandler selectorSheetWriteHandler,
-        CommentWriteHandler commentWriteHandler, Set<String> excludeColumns) {
-
+    public static WriteSheet createWriteSheet(String sheetName, WriteHandler ...handlers) {
         ExcelWriterSheetBuilder writerSheetBuilder = EasyExcel.writerSheet(sheetName);
-
-        // 设置下拉选择数据
-        if (Objects.nonNull(selectorSheetWriteHandler)) {
-            writerSheetBuilder.registerWriteHandler(selectorSheetWriteHandler);
+        for (WriteHandler handler : handlers) {
+            if (Objects.nonNull(handler)) {
+                writerSheetBuilder.registerWriteHandler(handler);
+            }
         }
-
-        // 设置备注
-        if (Objects.nonNull(commentWriteHandler)) {
-            writerSheetBuilder.registerWriteHandler(commentWriteHandler);
-        }
-
-        // 设置忽略字段属性
-        if (Objects.nonNull(excludeColumns) && !excludeColumns.isEmpty()) {
-            writerSheetBuilder.excludeColumnFiledNames(excludeColumns);
-        }
-
         return writerSheetBuilder.build();
     }
+
+    /**
+     * 创建 WriteSheet
+     *
+     * @param sheetName   工作表名
+     * @param commentList 批注列表
+     * @param selectorMap 下拉框 Map
+     * @return WriteSheet
+     */
+    public static WriteSheet createWriteSheet(String sheetName, List<ExcelCellComment> commentList, Map<Integer, String[]> selectorMap) {
+        CommentRowWriteHandler commentRowWriteHandler = null;
+        if (!CollectionUtils.isEmpty(commentList)) {
+            commentRowWriteHandler = new CommentRowWriteHandler(commentList);
+        }
+        SelectorSheetWriteHandler selectorSheetWriteHandler = null;
+        if (!CollectionUtils.isEmpty(selectorMap)) {
+            selectorSheetWriteHandler = new SelectorSheetWriteHandler(1, selectorMap);
+        }
+        return createWriteSheet(sheetName, commentRowWriteHandler, selectorSheetWriteHandler);
+    }
+
+
 }
