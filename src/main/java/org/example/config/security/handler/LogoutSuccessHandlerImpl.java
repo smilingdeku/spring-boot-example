@@ -1,7 +1,6 @@
 package org.example.config.security.handler;
 
 import org.example.common.domain.response.Result;
-import org.example.common.util.JsonUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -25,6 +24,6 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
         response.setStatus(HttpStatus.OK.value());
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
-        response.getWriter().print(JsonUtil.toJSONString(Result.success()));
+        response.getWriter().print(Result.success().toString());
     }
 }

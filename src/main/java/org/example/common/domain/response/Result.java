@@ -2,6 +2,7 @@ package org.example.common.domain.response;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.example.common.enums.ResultCode;
+import org.example.common.util.JsonUtil;
 
 import java.util.HashMap;
 
@@ -56,5 +57,9 @@ public class Result extends HashMap<String, Object> {
     public static Result failure(String msg) {
         return new Result(ResultCode.FAILURE.getCode(), msg, (Object) null);
     }
-    
+
+    @Override
+    public String toString() {
+        return JsonUtil.toJSONString(this);
+    }
 }

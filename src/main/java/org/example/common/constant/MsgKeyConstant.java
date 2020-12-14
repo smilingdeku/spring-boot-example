@@ -22,6 +22,10 @@ public class MsgKeyConstant {
      */
     public static final String PERMISSION_DENIED = "permission.denied";
     /**
+     * 请求方式不支持
+     */
+    public static final String REQUEST_METHOD_NOT_SUPPORTED = "request-method.not-supported";
+    /**
      * 用户不存在
      */
     public static final String SYSTEM_USER_NOT_EXISTED = "system.user.not-existed";
@@ -49,7 +53,6 @@ public class MsgKeyConstant {
      * 无效 Cron 表达式
      */
     public static final String QUARTZ_JOB_INVALID_CRON = "quartz.job.invalid-cron";
-
     /**
      * rpc请求失败
      */
