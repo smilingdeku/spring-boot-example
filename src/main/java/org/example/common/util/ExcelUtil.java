@@ -6,12 +6,14 @@ import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.alibaba.excel.write.handler.AbstractRowWriteHandler;
 import com.alibaba.excel.write.handler.SheetWriteHandler;
+import com.alibaba.excel.write.handler.WriteHandler;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteTableHolder;
 import com.alibaba.excel.write.metadata.holder.WriteWorkbookHolder;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -224,23 +226,44 @@ public class ExcelUtil {
     }
 
     /**
-     * 创建writeSheet
+     * 构建WriteSheet
      *
+     * @param sheetName                 sheet名称
+     * @param selectorSheetWriteHandler 下拉选择handler,{@link SelectorSheetWriteHandler}
+     * @param commentWriteHandler       批注handler,{@link CommentWriteHandler}
+     * @param excludeColumns            排除属性set
      * @return WriteSheet
      */
     public static WriteSheet createWriteSheet(String sheetName, SelectorSheetWriteHandler selectorSheetWriteHandler,
         CommentWriteHandler commentWriteHandler, Set<String> excludeColumns) {
 
+        List<WriteHandler> handlerList = new ArrayList<>(2);
+        handlerList.add(selectorSheetWriteHandler);
+        handlerList.add(commentWriteHandler);
+
+        return createWriteSheet(sheetName, handlerList, excludeColumns);
+    }
+
+    /**
+     * 创建writeSheet
+     *
+     * @param sheetName        表格名称
+     * @param writeHandlerList 输出handler列表
+     * @param excludeColumns   排除属性列
+     * @return WriteSheet
+     */
+    public static WriteSheet createWriteSheet(String sheetName, List<WriteHandler> writeHandlerList,
+        Set<String> excludeColumns) {
         ExcelWriterSheetBuilder writerSheetBuilder = EasyExcel.writerSheet(sheetName);
 
-        // 设置下拉选择数据
-        if (Objects.nonNull(selectorSheetWriteHandler)) {
-            writerSheetBuilder.registerWriteHandler(selectorSheetWriteHandler);
-        }
-
-        // 设置备注
-        if (Objects.nonNull(commentWriteHandler)) {
-            writerSheetBuilder.registerWriteHandler(commentWriteHandler);
+        // 设置WriteHandler
+        if (ListUtil.isNotEmpty(writeHandlerList)) {
+            for (WriteHandler h : writeHandlerList) {
+                if (Objects.isNull(h)) {
+                    continue;
+                }
+                writerSheetBuilder.registerWriteHandler(h);
+            }
         }
 
         // 设置忽略字段属性
