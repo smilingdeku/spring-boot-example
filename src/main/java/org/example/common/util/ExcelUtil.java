@@ -2,6 +2,7 @@ package org.example.common.util;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.alibaba.excel.write.handler.WriteHandler;
@@ -41,13 +42,13 @@ public class ExcelUtil {
      * @param response HttpServletResponse
      * @param fileName 文件名称
      */
-    public static void setResponseHeader(HttpServletResponse response, String fileName) throws Exception {
+    public static void setResponseHeader(HttpServletResponse response, String fileName, ExcelTypeEnum excelType) throws Exception {
         String encodeName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
 
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         response.addHeader("Access-Control-Expose-Headers", "Content-Disposition");
-        response.setHeader("Content-Disposition", "attachment;filename*=utf-8''" + encodeName + ".xlsx");
+        response.setHeader("Content-Disposition", "attachment;filename*=utf-8''" + encodeName + excelType.getValue());
     }
 
     /**

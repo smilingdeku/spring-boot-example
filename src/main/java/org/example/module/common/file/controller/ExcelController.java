@@ -1,6 +1,7 @@
 package org.example.module.common.file.controller;
 
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import org.example.common.domain.entity.ExcelCellComment;
 import org.example.common.util.ExcelUtil;
@@ -43,7 +44,7 @@ public class ExcelController {
         ExcelWriter excelWriter = null;
         try {
             // 设置头部
-            ExcelUtil.setResponseHeader(response, "会员数据");
+            ExcelUtil.setResponseHeader(response, "会员数据", ExcelTypeEnum.XLSX);
 
             // 创建excelWriter和writeShell
             ServletOutputStream outputStream = response.getOutputStream();
