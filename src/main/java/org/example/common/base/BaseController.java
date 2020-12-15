@@ -22,7 +22,6 @@ public abstract class BaseController<S extends BaseService<M, E>, M extends Base
     @Autowired
     protected S baseService;
 
-    @Autowired
     public S getBaseService() {
         return baseService;
     }
