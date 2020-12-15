@@ -12,6 +12,7 @@ import org.example.common.util.ConvertUtil;
 import org.example.module.system.schedulejoblog.domain.entity.SysScheduleJobLog;
 import org.example.module.system.schedulejoblog.mapper.SysScheduleJobLogMapper;
 import org.example.module.system.schedulejoblog.service.impl.SysScheduleJobLogServiceImpl;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,7 @@ import java.util.Map;
 public class SysScheduleJobLogController
         extends BaseController<SysScheduleJobLogServiceImpl, SysScheduleJobLogMapper, SysScheduleJobLog> {
 
+    @PreAuthorize("hasAuthority('monitor:schedule-job-log')")
     @GetMapping("/page")
     public Result page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = mapToQuery(requestParam);
@@ -56,12 +58,14 @@ public class SysScheduleJobLogController
         return Result.success(page);
     }
 
+    @PreAuthorize("hasAuthority('monitor:schedule-job-log')")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         return Result.success(getBaseService().getById(id));
     }
 
     @Log
+    @PreAuthorize("hasAuthority('monitor:schedule-job-log:delete')")
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) {
         List<Long> idList = Arrays.asList(ids);

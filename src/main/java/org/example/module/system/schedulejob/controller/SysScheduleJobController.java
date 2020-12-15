@@ -12,6 +12,7 @@ import org.example.module.system.schedulejob.domain.entity.SysScheduleJob;
 import org.example.module.system.schedulejob.mapper.SysScheduleJobMapper;
 import org.example.module.system.schedulejob.service.impl.SysScheduleJobServiceImpl;
 import org.quartz.SchedulerException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +41,7 @@ import java.util.Map;
 public class SysScheduleJobController
     extends BaseController<SysScheduleJobServiceImpl, SysScheduleJobMapper, SysScheduleJob> {
 
+    @PreAuthorize("hasAuthority('monitor:schedule-job')")
     @GetMapping("/page")
     public Result page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = mapToQuery(requestParam);
@@ -59,12 +61,14 @@ public class SysScheduleJobController
         return Result.success(page);
     }
 
+    @PreAuthorize("hasAuthority('monitor:schedule-job:edit')")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         return Result.success(getBaseService().getById(id));
     }
 
     @Log
+    @PreAuthorize("hasAuthority('monitor:schedule-job:run')")
     @GetMapping("/{id}/run")
     public Result run(@PathVariable Long id) throws SchedulerException {
         getBaseService().runJob(id);
@@ -72,6 +76,7 @@ public class SysScheduleJobController
     }
 
     @Log
+    @PreAuthorize("hasAuthority('monitor:schedule-job:add')")
     @PostMapping
     public Result save(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
         // 检查任务是否存在
@@ -81,6 +86,7 @@ public class SysScheduleJobController
     }
 
     @Log
+    @PreAuthorize("hasAuthority('monitor:schedule-job:delete')")
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) throws SchedulerException {
         List<Long> idList = Arrays.asList(ids);
@@ -89,6 +95,7 @@ public class SysScheduleJobController
     }
 
     @Log
+    @PreAuthorize("hasAuthority('monitor:schedule-job:edit')")
     @PutMapping
     public Result update(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
         // 检查任务是否存在
