@@ -32,13 +32,13 @@ public class QuartzManager {
 
     public void addJob(Class<? extends Job> jobClass, SysScheduleJob job,
                        JobKey jobKey, TriggerKey triggerKey, CronScheduleBuilder cronScheduleBuilder) throws SchedulerException {
+        if (scheduler.checkExists(jobKey)) {
+            scheduler.deleteJob(jobKey);
+        }
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobKey).build();
         CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerKey)
                 .withSchedule(cronScheduleBuilder).build();
         jobDetail.getJobDataMap().put(CommonConstant.SCHEDULE_JOB_KEY, job);
-        if (scheduler.checkExists(jobKey)) {
-            scheduler.deleteJob(jobKey);
-        }
         scheduler.scheduleJob(jobDetail, trigger);
         if (ScheduleJobStatus.DISABLE.getStatus().equals(job.getStatus())) {
             scheduler.pauseJob(jobKey);
