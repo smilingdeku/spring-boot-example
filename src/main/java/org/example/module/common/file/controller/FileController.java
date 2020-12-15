@@ -20,18 +20,13 @@ import java.util.List;
 @RequestMapping("/common/file")
 public class FileController {
 
-    @Resource
+    @Resource(name = "qiniuFileService")
     private IFileService filesService;
 
-    /**
-     * 上传文件
-     *
-     * @param files files
-     * @return Result
-     */
     @PostMapping("/upload")
     public Result upload(@RequestParam("files") MultipartFile[] files) {
         List<FileInfoDTO> list = filesService.upload(files);
         return Result.success(list);
     }
+
 }
