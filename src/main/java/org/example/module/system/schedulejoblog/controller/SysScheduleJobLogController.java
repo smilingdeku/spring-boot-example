@@ -53,7 +53,7 @@ public class SysScheduleJobLogController
         if (!StringUtils.isEmpty(query.getLineOrderField())) {
             queryWrapper.orderBy(true, query.getIsAsc(), query.getLineOrderField());
         }
-        IPage<SysScheduleJobLog> page = getBaseService()
+        IPage<SysScheduleJobLog> page = getService()
                 .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
         return Result.success(page);
     }
@@ -61,7 +61,7 @@ public class SysScheduleJobLogController
     @PreAuthorize("hasAuthority('monitor:schedule-job-log')")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
-        return Result.success(getBaseService().getById(id));
+        return Result.success(getService().getById(id));
     }
 
     @Log
@@ -69,7 +69,7 @@ public class SysScheduleJobLogController
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) {
         List<Long> idList = Arrays.asList(ids);
-        boolean success = getBaseService().removeByIds(idList);
+        boolean success = getService().removeByIds(idList);
         return success ? Result.success() : Result.failure();
     }
 

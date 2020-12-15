@@ -56,7 +56,7 @@ public class SysScheduleJobController
         if (!StringUtils.isEmpty(query.getLineOrderField())) {
             queryWrapper.orderBy(true, query.getIsAsc(), query.getLineOrderField());
         }
-        IPage<SysScheduleJob> page = getBaseService()
+        IPage<SysScheduleJob> page = getService()
             .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
         return Result.success(page);
     }
@@ -64,14 +64,14 @@ public class SysScheduleJobController
     @PreAuthorize("hasAuthority('monitor:schedule-job:edit')")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
-        return Result.success(getBaseService().getById(id));
+        return Result.success(getService().getById(id));
     }
 
     @Log
     @PreAuthorize("hasAuthority('monitor:schedule-job:run')")
     @GetMapping("/{id}/run")
     public Result run(@PathVariable Long id) throws SchedulerException {
-        getBaseService().runJob(id);
+        getService().runJob(id);
         return Result.success();
     }
 
@@ -81,7 +81,7 @@ public class SysScheduleJobController
     public Result save(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
         // 检查任务是否存在
         // checkJobArgs(sysScheduleJob);
-        boolean success = getBaseService().saveJob(sysScheduleJob);
+        boolean success = getService().saveJob(sysScheduleJob);
         return success ? Result.success(sysScheduleJob) : Result.failure();
     }
 
@@ -90,7 +90,7 @@ public class SysScheduleJobController
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) throws SchedulerException {
         List<Long> idList = Arrays.asList(ids);
-        getBaseService().deleteJobByIdList(idList);
+        getService().deleteJobByIdList(idList);
         return Result.success();
     }
 
@@ -100,7 +100,7 @@ public class SysScheduleJobController
     public Result update(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
         // 检查任务是否存在
         // checkJobArgs(sysScheduleJob);
-        boolean success = getBaseService().updateJob(sysScheduleJob);
+        boolean success = getService().updateJob(sysScheduleJob);
         return success ? Result.success(sysScheduleJob) : Result.failure();
     }
 

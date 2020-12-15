@@ -63,7 +63,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         if (!StringUtils.isEmpty(query.getOrderField())) {
             queryWrapper.orderBy(true, query.getIsAsc(), query.getLineOrderField());
         }
-        IPage<SysRole> page = getBaseService()
+        IPage<SysRole> page = getService()
                 .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
         return Result.success(page);
     }
@@ -72,21 +72,21 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     @GetMapping("/list")
     public Result list() {
         LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
-        List<SysRole> list = getBaseService().list(queryWrapper);
+        List<SysRole> list = getService().list(queryWrapper);
         return Result.success(list);
     }
 
     @PreAuthorize("hasAuthority('system:role:edit')")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
-        return Result.success(getBaseService().getById(id));
+        return Result.success(getService().getById(id));
     }
 
     @Log
     @PreAuthorize("hasAuthority('system:role:add')")
     @PostMapping
     public Result save(@RequestBody SysRoleRequest request) {
-        SysRole sysRole = getBaseService().saveRoleAndResources(request);
+        SysRole sysRole = getService().saveRoleAndResources(request);
         return Result.success(sysRole);
     }
 
@@ -95,7 +95,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable Long[] ids) {
         List<Long> idList = Arrays.asList(ids);
-        idList.forEach(getBaseService()::deleteRoleAndResources);
+        idList.forEach(getService()::deleteRoleAndResources);
         return Result.success();
     }
 
@@ -103,7 +103,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     @PreAuthorize("hasAuthority('system:role:edit')")
     @PutMapping
     public Result update(@RequestBody SysRoleRequest request) {
-        SysRole sysRole = getBaseService().updateRoleAndResources(request);
+        SysRole sysRole = getService().updateRoleAndResources(request);
         return Result.success(sysRole);
     }
 
