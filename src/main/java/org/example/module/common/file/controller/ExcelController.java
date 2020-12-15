@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 文档地址:
@@ -54,14 +53,12 @@ public class ExcelController {
 
             for (int pageNumber = 0; pageNumber < 5; pageNumber++) {
                 List<ExcelTemplateDTO> infos = mock();
-                excelWriter.write(infos, writeSheet);
+                ExcelUtil.writeExcel(excelWriter, writeSheet, infos);
             }
         } catch (Exception e) {
             logger.error("Function[download]", e);
         } finally {
-            if (Objects.nonNull(excelWriter)) {
-                excelWriter.finish();
-            }
+            ExcelUtil.closeExcelWriter(excelWriter);
         }
     }
 

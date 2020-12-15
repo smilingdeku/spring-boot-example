@@ -159,7 +159,7 @@ public class ExcelUtil {
 
 
     /**
-     * 创建 ExcelWriter
+     * 创建 ExcelWriter (使用完需要关闭)
      *
      * @param os   输出流
      * @param head 头部信息
@@ -173,6 +173,17 @@ public class ExcelUtil {
         excelWriterBuilder.head(head);
 
         return excelWriterBuilder.build();
+    }
+
+    /**
+     * 关闭 ExcelWriter
+     *
+     * @param writer ExcelWriter
+     */
+    public static void closeExcelWriter(ExcelWriter writer) {
+        if (Objects.nonNull(writer)) {
+            writer.finish();
+        }
     }
 
     /**
@@ -212,5 +223,15 @@ public class ExcelUtil {
         return createWriteSheet(sheetName, commentRowWriteHandler, selectorSheetWriteHandler);
     }
 
+    /**
+     * 写入 Excel
+     *
+     * @param writer ExcelWriter
+     * @param sheet  WriteSheet
+     * @param date   写入数据
+     */
+    public static void writeExcel(ExcelWriter writer, WriteSheet sheet, List<?> date) {
+        writer.write(date, sheet);
+    }
 
 }
