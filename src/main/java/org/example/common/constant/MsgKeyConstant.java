@@ -26,6 +26,10 @@ public class MsgKeyConstant {
      */
     public static final String REQUEST_METHOD_NOT_SUPPORTED = "request-method.not-supported";
     /**
+     * 请求参数不存在
+     */
+    public static final String REQUEST_PARAM_NOT_EXISTED = "request-param.not-existed";
+    /**
      * 用户不存在
      */
     public static final String SYSTEM_USER_NOT_EXISTED = "system.user.not-existed";
@@ -57,4 +61,12 @@ public class MsgKeyConstant {
      * rpc请求失败
      */
     public static final String RPC_FAILURE = "rpc.failure";
+    /**
+     * 验证码类型不存在
+     */
+    public static final String CAPTCHA_TYPE_NOT_EXISTED = "captcha-type.not-existed";
+    /**
+     * 验证码不匹配
+     */
+    public static final String CAPTCHA_NOT_MATCH = "captcha.not-match";
 }

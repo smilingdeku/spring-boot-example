@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.example.common.base.BaseService;
 import org.example.common.constant.MsgKeyConstant;
+import org.example.common.enums.ResultCode;
 import org.example.common.exception.BusinessException;
 import org.example.common.util.MapperUtil;
 import org.example.common.util.MessageUtil;
 import org.example.common.util.TokenUtil;
+import org.example.module.common.captcha.enums.CaptchaType;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.SysUserRequest;
 import org.example.module.system.user.mapper.SysUserMapper;
@@ -15,6 +17,7 @@ import org.example.module.system.user.service.ISysUserService;
 import org.example.module.system.userrole.domain.entity.SysUserRole;
 import org.example.module.system.userrole.service.ISysUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +48,8 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ISysUserRoleService sysUserRoleService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Override
     public SysUser getUserByUsername(String username) {
@@ -52,8 +57,15 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public String login(String username, String password) {
+    public String login(String username, String password, String captchaKey, String captcha) {
+        String key = CaptchaType.ADMIN.getKeyPrefix() + captchaKey;
+        String value = redisTemplate.opsForValue().get(CaptchaType.ADMIN.getKeyPrefix() + captchaKey);
+        if (StringUtils.isEmpty(value) || !value.equalsIgnoreCase(captcha)) {
+            String msg = MessageUtil.get(MsgKeyConstant.CAPTCHA_NOT_MATCH);
+            throw new BusinessException(ResultCode.FAILURE.getCode(), msg);
+        }
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        redisTemplate.delete(key);
         return tokenUtil.generateToken(username);
     }
 
