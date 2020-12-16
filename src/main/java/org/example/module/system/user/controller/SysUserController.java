@@ -52,7 +52,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @Log
     @PostMapping("/login")
     public Result login(@RequestBody @Validated LoginRequest request) {
-        String token = getBaseService().login(request.getUsername(), request.getPassword());
+        String token = getService().login(request.getUsername(), request.getPassword());
         LoginResponse response = new LoginResponse();
         response.setToken(token);
         return Result.success(response);
@@ -60,9 +60,9 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
 
     @GetMapping
     public Result info() {
-        SysUser user = getBaseService().getByUsername(getCurrentUsername());
+        SysUser user = getService().getByUsername(getCurrentUsername());
         UserResponse response = MapperUtil.map(user, UserResponse.class);
-        response.setPermissions(getBaseService().listPermissionByUsername(getCurrentUsername()));
+        response.setPermissions(getService().listPermissionByUsername(getCurrentUsername()));
         return Result.success(response);
     }
 
@@ -77,7 +77,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         if (!StringUtils.isEmpty(query.getLineOrderField())) {
             queryWrapper.orderBy(true, query.getIsAsc(), query.getLineOrderField());
         }
-        IPage<SysUser> page = getBaseService()
+        IPage<SysUser> page = getService()
             .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
         return Result.success(page);
     }
@@ -85,7 +85,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @PreAuthorize("hasAuthority('system:user:edit')")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
-        SysUser sysUser = getBaseService().getById(id);
+        SysUser sysUser = getService().getById(id);
         return Result.success(sysUser);
     }
 
@@ -93,7 +93,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @PreAuthorize("hasAuthority('system:user:add')")
     @PostMapping
     public Result save(@RequestBody SysUserRequest request) {
-        SysUser sysUser = getBaseService().saveUserAndRoles(request);
+        SysUser sysUser = getService().saveUserAndRoles(request);
         return Result.success(sysUser);
     }
 
@@ -106,7 +106,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         ListUtil.removeIf(idList, (e) -> e.equals(1L));
 
         if (ListUtil.isNotEmpty(idList)) {
-            idList.forEach(getBaseService()::deleteUserAndRoles);
+            idList.forEach(getService()::deleteUserAndRoles);
         }
         return Result.success();
     }
@@ -115,7 +115,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @PreAuthorize("hasAuthority('system:user:edit')")
     @PutMapping
     public Result update(@RequestBody SysUserRequest request) {
-        SysUser sysUser = getBaseService().updateUserAndRoles(request);
+        SysUser sysUser = getService().updateUserAndRoles(request);
         return Result.success(sysUser);
     }
 
