@@ -1,25 +1,23 @@
 package org.example.module.common.file.controller;
 
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.metadata.WriteSheet;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
+import org.example.common.domain.entity.ExcelCellComment;
 import org.example.common.util.ExcelUtil;
 import org.example.module.common.file.domain.dto.ExcelTemplateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 文档地址:
@@ -40,12 +38,12 @@ public class ExcelController {
     /**
      * 下载excel文件
      */
-    @PostMapping("/download")
+    @GetMapping("/download")
     public void download(HttpServletResponse response) {
         ExcelWriter excelWriter = null;
         try {
             // 设置头部
-            ExcelUtil.setResponseHeader(response, "会员数据");
+            ExcelUtil.setResponseHeader(response, "会员数据", ExcelTypeEnum.XLSX);
 
             // 创建excelWriter和writeShell
             ServletOutputStream outputStream = response.getOutputStream();
@@ -55,14 +53,12 @@ public class ExcelController {
 
             for (int pageNumber = 0; pageNumber < 5; pageNumber++) {
                 List<ExcelTemplateDTO> infos = mock();
-                excelWriter.write(infos, writeSheet);
+                ExcelUtil.writeExcel(excelWriter, writeSheet, infos);
             }
         } catch (Exception e) {
             logger.error("Function[download]", e);
         } finally {
-            if (Objects.nonNull(excelWriter)) {
-                excelWriter.finish();
-            }
+            ExcelUtil.closeExcelWriter(excelWriter);
         }
     }
 
@@ -74,22 +70,20 @@ public class ExcelController {
 
         selectorMap.put(1, idTypeArr);
         selectorMap.put(5, genderArr);
-        ExcelUtil.SelectorSheetWriteHandler selectorSheetWriteHandler = new ExcelUtil.SelectorSheetWriteHandler(
-            selectorMap);
 
-        List<ExcelUtil.ExcelCellComment> remarkList = new ArrayList<>();
+
+        List<ExcelCellComment> commentList = new ArrayList<>();
         for (int index = 0; index < 6; index++) {
-            ExcelUtil.ExcelCellComment cellComment = new ExcelUtil.ExcelCellComment();
-            cellComment.setRowNum(0);
-            cellComment.setCellNum(index);
-            cellComment.setComment("备注" + index);
+            ExcelCellComment cellComment = new ExcelCellComment();
+            cellComment.setRow(0);
+            cellComment.setCol(index);
+            cellComment.setContent("备注" + index);
 
-            remarkList.add(cellComment);
+            commentList.add(cellComment);
         }
-        ExcelUtil.CommentWriteHandler commentWriteHandler = new ExcelUtil.CommentWriteHandler(remarkList);
 
-        return ExcelUtil
-            .createWriteSheet("成员数据", selectorSheetWriteHandler, commentWriteHandler, Collections.emptySet());
+
+        return ExcelUtil.createWriteSheet("成员数据", commentList, selectorMap);
     }
 
     private List<ExcelTemplateDTO> mock() {

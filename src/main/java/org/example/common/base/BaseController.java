@@ -20,11 +20,10 @@ public abstract class BaseController<S extends BaseService<M, E>, M extends Base
     @Autowired
     private TokenUtil tokenUtil;
     @Autowired
-    protected S baseService;
+    protected S service;
 
-    @Autowired
-    public S getBaseService() {
-        return baseService;
+    public S getService() {
+        return service;
     }
 
     protected String getCurrentUsername() {
