@@ -11,8 +11,8 @@ import org.example.module.common.captcha.enums.CaptchaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
@@ -29,8 +29,8 @@ public class CaptchaController {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    @GetMapping
-    public Result captcha(@RequestParam Integer type) {
+    @GetMapping("/{type}")
+    public Result captcha(@PathVariable Integer type) {
         CaptchaType captchaType = CaptchaType.get(type);
         Preconditions.checkNotNull(captchaType, MessageUtil.get(MsgKeyConstant.CAPTCHA_TYPE_NOT_EXISTED));
 
