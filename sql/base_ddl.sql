@@ -13,10 +13,10 @@ CREATE TABLE `t_sys_resource` (
   `icon` varchar(255) NOT NULL DEFAULT '' COMMENT '图标',
   `path` varchar(255) NOT NULL DEFAULT '' COMMENT '路径',
   `component` varchar(255) NOT NULL DEFAULT 'Layout' COMMENT '组件',
+  `permission` varchar(255) NOT NULL COMMENT '权限标志',
   `sort_number` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '排序号',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
-  `permission` varchar(255) NOT NULL COMMENT '权限标志',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统资源';
 
