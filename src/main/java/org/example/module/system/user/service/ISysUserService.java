@@ -27,11 +27,13 @@ public interface ISysUserService extends IService<SysUser> {
     /**
      * 登录
      *
-     * @param username 用户名
-     * @param password 密码
+     * @param username   用户名
+     * @param password   密码
+     * @param captchaKey 验证码 Key
+     * @param captcha    验证码
      * @return String
      */
-    String login(String username, String password);
+    String login(String username, String password, String captchaKey, String captcha);
 
     /**
      * 根据用户名获取用户信息

@@ -16,6 +16,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -65,6 +66,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException e) {
         String msg = MessageUtil.get(MsgKeyConstant.PERMISSION_DENIED);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.failure(msg));
+    }
+
+    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    public ResponseEntity<?> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        String msg = MessageUtil.get(MsgKeyConstant.REQUEST_PARAM_NOT_EXISTED, e.getParameterName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Result.failure(msg));
     }
 
     @ExceptionHandler(value = BindException.class)

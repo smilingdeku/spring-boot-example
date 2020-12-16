@@ -52,7 +52,8 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @Log
     @PostMapping("/login")
     public Result login(@RequestBody @Validated LoginRequest request) {
-        String token = getService().login(request.getUsername(), request.getPassword());
+        String token = getService()
+                .login(request.getUsername(), request.getPassword(), request.getCaptchaKey(), request.getCaptcha());
         LoginResponse response = new LoginResponse();
         response.setToken(token);
         return Result.success(response);
