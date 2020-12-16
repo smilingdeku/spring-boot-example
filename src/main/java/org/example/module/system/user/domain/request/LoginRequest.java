@@ -10,6 +10,10 @@ public class LoginRequest implements Serializable {
     private String username;
     @NotBlank(message = "{system.user.password-can-not-be-blank}")
     private String password;
+    @NotBlank(message = "{system.user.captcha-can-not-be-blank}")
+    private String captchaKey;
+    @NotBlank(message = "{system.user.captcha-can-not-be-blank}")
+    private String captcha;
 
     public LoginRequest() {
     }
@@ -28,5 +32,21 @@ public class LoginRequest implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCaptchaKey() {
+        return captchaKey;
+    }
+
+    public void setCaptchaKey(String captchaKey) {
+        this.captchaKey = captchaKey;
+    }
+
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
     }
 }

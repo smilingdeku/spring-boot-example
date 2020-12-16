@@ -1,11 +1,11 @@
-package org.example.module.common.file.controller;
+package org.example.module.demo.controller;
 
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import org.example.common.domain.entity.ExcelCellComment;
 import org.example.common.util.ExcelUtil;
-import org.example.module.common.file.domain.dto.ExcelTemplateDTO;
+import org.example.module.demo.domain.dto.ExcelTemplateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +30,7 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping("/common/excel")
+@RequestMapping("/demo/excel")
 public class ExcelController {
 
     private static Logger logger = LoggerFactory.getLogger(ExcelController.class);
