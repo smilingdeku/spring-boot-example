@@ -23,7 +23,7 @@
 
         <jjwt.version>0.9.1</jjwt.version>
         <mybatis-plus.version>3.1.0</mybatis-plus.version>
-        <beetl.version>2.9.10</beetl.version>
+<!--        <beetl.version>2.9.10</beetl.version>-->
         <guava.version>27.0.1-jre</guava.version>
 
         <slf4j.version>1.7.7</slf4j.version>
@@ -66,6 +66,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
@@ -85,15 +89,14 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
             <version>${mybatis-plus.version}</version>
-            <scope>provided</scope>
         </dependency>
         <!-- Template engine -->
-        <dependency>
-            <groupId>com.ibeetl</groupId>
-            <artifactId>beetl</artifactId>
-            <version>${beetl.version}</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.ibeetl</groupId>-->
+<!--            <artifactId>beetl</artifactId>-->
+<!--            <version>${beetl.version}</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
         <!-- MySql -->
         <dependency>
             <groupId>mysql</groupId>
