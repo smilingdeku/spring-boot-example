@@ -60,7 +60,7 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
     public String login(String username, String password, String captchaKey, String captcha) {
         String key = CaptchaType.ADMIN.getKeyPrefix() + captchaKey;
         String value = redisTemplate.opsForValue().get(CaptchaType.ADMIN.getKeyPrefix() + captchaKey);
-        if (StringUtils.isEmpty(value) || !value.equals(captcha)) {
+        if (StringUtils.isEmpty(value) || !value.equalsIgnoreCase(captcha)) {
             String msg = MessageUtil.get(MsgKeyConstant.CAPTCHA_NOT_MATCH);
             throw new BusinessException(ResultCode.FAILURE.getCode(), msg);
         }
