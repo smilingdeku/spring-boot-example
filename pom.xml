@@ -32,6 +32,7 @@
         <qiniu.version>7.4.0</qiniu.version>
         <oshi.version>3.9.1</oshi.version>
         <easyexcel.version>2.2.6</easyexcel.version>
+        <easy-captcha.version>1.6.2</easy-captcha.version>
     </properties>
 
     <dependencies>
@@ -160,7 +161,7 @@
         <dependency>
             <groupId>com.github.whvcse</groupId>
             <artifactId>easy-captcha</artifactId>
-            <version>1.6.2</version>
+            <version>${easy-captcha.version}</version>
         </dependency>
     </dependencies>
 
