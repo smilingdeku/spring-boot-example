@@ -180,7 +180,7 @@ CREATE TABLE `t_sys_user` (
 
 LOCK TABLES `t_sys_user` WRITE;
 /*!40000 ALTER TABLE `t_sys_user` DISABLE KEYS */;
-INSERT INTO `t_sys_user` VALUES (1,'admin','$2a$10$NrVl32Jpd9rXePkpcWcAAOmXBUPXPpYqQ0LfKBsuQEL05jVYmV2Te','$2a$10$yJuGVbqhLwbOM2ItzDiPC.a5ExNPggL3BtK81AFP0E9NtS8zozFye','admin','123456@qq.com','13000000000','',1,'2020-12-16 22:40:04','2020-12-16 22:46:01');
+INSERT INTO `t_sys_user` VALUES (1,'admin','$2a$10$NrVl32Jpd9rXePkpcWcAAOmXBUPXPpYqQ0LfKBsuQEL05jVYmV2Te','https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif','admin','123456@qq.com','13000000000','',1,'2020-12-16 22:40:04','2020-12-16 22:46:01');
 /*!40000 ALTER TABLE `t_sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
