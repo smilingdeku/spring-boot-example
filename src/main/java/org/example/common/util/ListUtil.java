@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
+ * @author walle
  * @version V1.0
  * @since 2020-11-21 16:52
  */
@@ -98,6 +99,25 @@ public class ListUtil {
      */
     public static int size(List<?> list) {
         return isEmpty(list) ? 0 : list.size();
+    }
+
+    /**
+     * list转换成数组
+     *
+     * @param values 列表
+     * @return T[]
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T[] toArr(List<T> values) {
+        if (Objects.isNull(values)) {
+            return null;
+        }
+        int index = 0;
+        Object[] arr = new Object[values.size()];
+        for (T element : values) {
+            arr[index++] = element;
+        }
+        return (T[]) arr;
     }
 
 }
