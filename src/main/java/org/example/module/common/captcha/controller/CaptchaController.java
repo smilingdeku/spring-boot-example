@@ -3,9 +3,13 @@ package org.example.module.common.captcha.controller;
 import com.google.common.base.Preconditions;
 import com.wf.captcha.SpecCaptcha;
 import com.wf.captcha.base.Captcha;
+
+import java.util.concurrent.TimeUnit;
+
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.domain.response.Result;
 import org.example.common.util.MessageUtil;
+import org.example.common.util.RandomUtil;
 import org.example.module.common.captcha.domain.response.CaptchaResponse;
 import org.example.module.common.captcha.enums.CaptchaType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author linzhaoming
@@ -38,7 +39,7 @@ public class CaptchaController {
 
         Captcha captcha = new SpecCaptcha(130, 48, 4);
         String verifyCode = captcha.text().toLowerCase();
-        String key = UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+        String key = RandomUtil.uuid();
         redisTemplate.opsForValue().set(captchaType.getKeyPrefix() + key, verifyCode, 30, TimeUnit.MINUTES);
 
         response.setKey(key);
