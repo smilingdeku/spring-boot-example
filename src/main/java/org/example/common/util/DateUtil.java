@@ -70,9 +70,9 @@ public class DateUtil {
         long minutes = second / 60;
 //        second = second % 60;
         if (0 < days){
-            return days + " 天 " + hours + " 小时 " + minutes + " 分 ";
+            return days + "d " + hours + "h " + minutes + "m ";
         }else {
-            return hours + " 小时 " + minutes + " 分 ";
+            return hours + "h " + minutes + "m ";
         }
     }
 
