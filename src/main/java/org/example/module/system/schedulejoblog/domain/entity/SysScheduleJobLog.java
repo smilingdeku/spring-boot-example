@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 /**
  * <p>
- * 系统定时任务执行日志
+ * 系统定时任务日志
  * </p>
  *
  * @author linzhaoming
@@ -53,7 +53,7 @@ public class SysScheduleJobLog implements Serializable {
     private Integer spendTime;
 
     /**
-     * 消息记录
+     * 执行记录
      */
     private String message;
 

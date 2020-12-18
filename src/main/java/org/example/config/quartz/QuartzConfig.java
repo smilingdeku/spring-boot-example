@@ -16,6 +16,7 @@ public class QuartzConfig {
     public SchedulerFactoryBean schedulerFactoryBean(){
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
         // 覆盖已存在的任务
+        schedulerFactoryBean.setStartupDelay(3);
         schedulerFactoryBean.setOverwriteExistingJobs(true);
         return schedulerFactoryBean;
     }
