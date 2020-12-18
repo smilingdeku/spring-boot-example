@@ -1,13 +1,15 @@
 package org.example.config.cache;
 
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 
-import javax.annotation.Resource;
+import java.time.Duration;
 
 /**
  * @author linzhaoming
@@ -15,15 +17,15 @@ import javax.annotation.Resource;
  **/
 @Configuration
 @EnableCaching
-public class CacheConfig extends CachingConfigurerSupport {
+public class CacheConfig {
 
-    @Resource
-    private RedisCacheManager redisCacheManager;
-
+    @Primary
     @Bean
-    @Override
-    public CacheManager cacheManager() {
-        return redisCacheManager;
+    public CacheManager redisCacheManager(RedisConnectionFactory connectionFactory) {
+        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofHours(1))
+                .disableCachingNullValues();
+        return RedisCacheManager.builder(connectionFactory).cacheDefaults(configuration).build();
     }
 
 }
