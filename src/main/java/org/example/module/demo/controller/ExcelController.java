@@ -3,21 +3,25 @@ package org.example.module.demo.controller;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.metadata.WriteSheet;
+import com.baomidou.mybatisplus.extension.api.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
 import org.example.common.domain.entity.ExcelCellComment;
 import org.example.common.util.ExcelUtil;
 import org.example.module.demo.domain.dto.ExcelTemplateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 文档地址:
@@ -34,6 +38,14 @@ import java.util.Map;
 public class ExcelController {
 
     private static Logger logger = LoggerFactory.getLogger(ExcelController.class);
+
+    @Value("${oss.qiniu.access-key}")
+    private String value;
+
+    @RequestMapping("/value")
+    public R<String> get(){
+        return R.ok(value);
+    }
 
     /**
      * 下载excel文件
