@@ -6,8 +6,6 @@ import org.example.common.util.ConvertUtil;
 import org.example.common.util.MessageUtil;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.service.ISysUserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -22,7 +20,6 @@ import java.util.Objects;
 
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Autowired
     private ISysUserService sysUserService;

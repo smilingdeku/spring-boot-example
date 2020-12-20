@@ -65,7 +65,7 @@ public class ExcelUtil {
      */
     public static <T> void readExcel(MultipartFile file, Class<T> head, Integer sheetNo, String sheetName, int batchCount, Consumer<List<T>> consumer) throws IOException {
         ExcelReadListener<T> readListener = new ExcelReadListener<>(batchCount, consumer);
-        EasyExcel.read(file.getInputStream(), head, readListener).sheet(sheetNo, sheetName).doRead();;
+        EasyExcel.read(file.getInputStream(), head, readListener).sheet(sheetNo, sheetName).doRead();
     }
 
     /**
@@ -118,7 +118,7 @@ public class ExcelUtil {
      */
     public static <T> void readExcel(String pathName, Class<T> head, Integer sheetNo, String sheetName, int batchCount, Consumer<List<T>> consumer) {
         ExcelReadListener<T> readListener = new ExcelReadListener<>(batchCount, consumer);
-        EasyExcel.read(pathName, head, readListener).sheet(sheetNo, sheetName).doRead();;
+        EasyExcel.read(pathName, head, readListener).sheet(sheetNo, sheetName).doRead();
     }
 
     /**
