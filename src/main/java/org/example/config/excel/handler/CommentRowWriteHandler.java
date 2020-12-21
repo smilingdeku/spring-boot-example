@@ -3,6 +3,9 @@ package org.example.config.excel.handler;
 import com.alibaba.excel.write.handler.AbstractRowWriteHandler;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteTableHolder;
+
+import java.util.List;
+
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Row;
@@ -11,12 +14,10 @@ import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.example.common.domain.entity.ExcelCellComment;
 
-import java.util.List;
-
 /**
  * Excel 添加批注
  *
- * @author walle
+ * @author walle@eva
  * @version V1.0
  * @since 2020-12-12 23:09
  */
