@@ -16,6 +16,9 @@ import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.example.common.base.BaseController;
+import org.example.common.base.BaseService;
+
 /**
  * 代码生成器
  */
@@ -34,7 +37,6 @@ public class CodeGenerator {
         gc.setBaseColumnList(Boolean.TRUE);
         mpg.setGlobalConfig(gc);
     }
-
 
     private static final String DB_HOST = "47.103.195.154";
     private static final String DB_PORT = "3306";
@@ -62,6 +64,8 @@ public class CodeGenerator {
         sc.setNaming(NamingStrategy.underline_to_camel);
         sc.setColumnNaming(NamingStrategy.underline_to_camel);
         sc.setRestControllerStyle(true);
+        sc.setSuperControllerClass(BaseController.class.getName());
+        sc.setSuperServiceImplClass(BaseService.class.getName());
         mpg.setStrategy(sc);
     }
 
