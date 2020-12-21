@@ -8,7 +8,8 @@ package org.example.common.constant;
  **/
 public class CommonConstant {
 
-    private CommonConstant() {}
+    private CommonConstant() {
+    }
 
     /**
      * 最上层资源父级资源 ID
@@ -18,5 +19,10 @@ public class CommonConstant {
      * ScheduleJob Key
      */
     public static final String SCHEDULE_JOB_KEY = "SCHEDULE_JOB";
+
+    /**
+     * redis用户信息缓存
+     */
+    public static final String REDIS_USER_INFO_HASH_KEY = "sys:user:info";
 
 }

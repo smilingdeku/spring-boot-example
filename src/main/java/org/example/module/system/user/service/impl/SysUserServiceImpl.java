@@ -2,11 +2,18 @@ package org.example.module.system.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
+import java.util.List;
+import java.util.Objects;
+
 import org.example.common.base.BaseService;
+import org.example.common.constant.CommonConstant;
 import org.example.common.constant.MsgKeyConstant;
 import org.example.common.enums.ResultCode;
 import org.example.common.exception.BusinessException;
+import org.example.common.util.JsonUtil;
 import org.example.common.util.MapperUtil;
+import org.example.common.util.Md5Util;
 import org.example.common.util.MessageUtil;
 import org.example.common.util.TokenUtil;
 import org.example.module.common.captcha.enums.CaptchaType;
@@ -25,9 +32,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
-import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>
@@ -66,7 +70,29 @@ public class SysUserServiceImpl extends BaseService<SysUserMapper, SysUser> impl
         }
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         redisTemplate.delete(key);
-        return tokenUtil.generateToken(username);
+
+        // 存入redis
+        String token = cacheUserInfo(username);
+
+        return tokenUtil.generateToken(token);
+    }
+
+    /**
+     * 缓存redis数据,并返回2级key
+     *
+     * @param userName 用户名称
+     * @return String token
+     */
+    private String cacheUserInfo(String userName) {
+        // 获取用户详情
+        SysUser sysUser = getUserByUsername(userName);
+        String token = Md5Util.encode(sysUser.getUsername());
+        String json = JsonUtil.toJSONString(sysUser);
+
+        // 存入redis
+        redisTemplate.opsForHash().put(CommonConstant.REDIS_USER_INFO_HASH_KEY, token, json);
+
+        return token;
     }
 
     @Override
