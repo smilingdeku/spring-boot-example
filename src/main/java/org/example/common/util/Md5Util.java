@@ -2,7 +2,8 @@ package org.example.common.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
+
+import org.springframework.util.StringUtils;
 
 /**
  * @author walle@eva
@@ -14,13 +15,21 @@ public class Md5Util {
 
     private static MessageDigest digest = null;
 
+    static {
+        try {
+            digest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException nsae) {
+            //
+        }
+    }
+
     /**
      * 将数据转成md5字符串
      *
      * @param data 数据
      * @return String
      */
-    public synchronized static String encode(String data) {
+    public static String encode(String data) {
         return encode(data, false);
     }
 
@@ -30,16 +39,9 @@ public class Md5Util {
      * @param data 数据
      * @return String
      */
-    public synchronized static String encode(String data, boolean isUpperCase) {
-        if (Objects.isNull(data)) {
+    public static String encode(String data, boolean isUpperCase) {
+        if (StringUtils.isEmpty(data)) {
             return null;
-        }
-        if (Objects.isNull(digest)) {
-            try {
-                digest = MessageDigest.getInstance("MD5");
-            } catch (NoSuchAlgorithmException nsae) {
-                //
-            }
         }
         digest.update(data.getBytes());
         String value = toHex(digest.digest());
