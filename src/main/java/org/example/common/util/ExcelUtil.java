@@ -32,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
  * easyexcel官方文档: https://www.yuque.com/easyexcel/doc/write
  * </pre>
  *
- * @author walle@eva
+ * @author walle&eva
  * @version V1.0
  * @since 2020-12-12 22:04
  */

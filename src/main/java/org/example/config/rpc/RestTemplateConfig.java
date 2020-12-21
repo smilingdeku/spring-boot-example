@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * RestTemplate 配置类
  *
- * @author walle@eva
+ * @author walle&eva
  * @version V1.0
  * @since 2020-12-10 21:48
  */

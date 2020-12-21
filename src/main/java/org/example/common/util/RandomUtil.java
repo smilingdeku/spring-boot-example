@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * @author walle@eva
+ * @author walle&eva
  * @version V1.0
  * @since 2020-12-14 14:40
  */
