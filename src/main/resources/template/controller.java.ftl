@@ -3,6 +3,11 @@ package ${package.Controller};
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.example.common.base.BaseController;
+import ${package.ServiceImpl}.${table.serviceImplName};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Entity}.${entity};
+
 <#if restControllerStyle>
 import org.springframework.web.bind.annotation.RestController;
 <#else>
@@ -32,7 +37,7 @@ class ${table.controllerName}<#if superControllerClass??> : ${superControllerCla
 <#if superControllerClass??>
 public class ${table.controllerName} extends ${superControllerClass} {
 <#else>
-public class ${table.controllerName} {
+public class ${table.controllerName} extends BaseController<${table.serviceImplName}, ${table.mapperName}, ${entity}> {
 </#if>
 
 }

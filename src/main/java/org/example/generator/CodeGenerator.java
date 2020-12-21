@@ -1,6 +1,5 @@
 package org.example.generator;
 
-
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
@@ -22,23 +21,28 @@ import java.util.List;
  */
 public class CodeGenerator {
 
-    private static AutoGenerator mpg  = new AutoGenerator();
+    private static AutoGenerator mpg = new AutoGenerator();
 
     private static final String AUTHOR = "linzhaoming";
+
     static {
         GlobalConfig gc = new GlobalConfig();
         gc.setAuthor(AUTHOR);
         gc.setOutputDir(System.getProperty("user.dir") + "/src/main/java");
         gc.setOpen(false);
+        gc.setBaseResultMap(Boolean.TRUE);
+        gc.setBaseColumnList(Boolean.TRUE);
         mpg.setGlobalConfig(gc);
     }
 
-    private static final String DB_HOST = "127.0.0.1";
+
+    private static final String DB_HOST = "47.103.195.154";
     private static final String DB_PORT = "3306";
     private static final String DB = "base";
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "123456";
+
     static {
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setUrl(String.format("jdbc:mysql://%s:%s/%s", DB_HOST, DB_PORT, DB));
@@ -49,7 +53,8 @@ public class CodeGenerator {
     }
 
     private static final String TABLE_PREFIX = "t_";
-    private static final String[] TABLES = new String[]{"t_sys_user"};
+    private static final String[] TABLES = new String[] { "t_sys_gen" };
+
     static {
         StrategyConfig sc = new StrategyConfig();
         sc.setTablePrefix(TABLE_PREFIX);
@@ -61,6 +66,7 @@ public class CodeGenerator {
     }
 
     private static final String MODULE_NAME = "org.example.module.xxx.xxx";
+
     static {
         PackageConfig pc = new PackageConfig();
         pc.setParent(MODULE_NAME);
@@ -69,8 +75,14 @@ public class CodeGenerator {
     }
 
     static {
+        // 设置template为项目配置的template
         TemplateConfig tc = new TemplateConfig();
         tc.setXml(null);
+        tc.setEntity("template/entity.java");
+        tc.setService("template/service.java");
+        tc.setServiceImpl("template/serviceImpl.java");
+        tc.setController("template/controller.java");
+
         mpg.setTemplate(tc);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         InjectionConfig cfg = new InjectionConfig() {
@@ -79,16 +91,16 @@ public class CodeGenerator {
                 // to do nothing
             }
         };
-        String templatePath = "/template/mapper.xml.ftl";
+        String mapperXmlTemplatePath = "/template/mapper.xml.ftl";
         List<FileOutConfig> focList = new ArrayList<>();
-        focList.add(new FileOutConfig(templatePath) {
+        focList.add(new FileOutConfig(mapperXmlTemplatePath) {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return System.getProperty("user.dir") + "/src/main/resources/mapper"
-                        + "/" + tableInfo.getEntityName()
-                        + "Mapper" + StringPool.DOT_XML;
+                return System.getProperty("user.dir") + "/src/main/resources/mapper" + "/" + tableInfo.getEntityName()
+                    + "Mapper" + StringPool.DOT_XML;
             }
         });
+
         cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
     }
