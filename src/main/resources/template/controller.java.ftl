@@ -1,7 +1,29 @@
 package ${package.Controller};
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import org.example.common.annotation.Log;
+import org.example.common.base.BaseController;
+import org.example.common.domain.request.QueryRequest;
+import org.example.common.domain.response.Result;
+import ${package.ServiceImpl}.${table.serviceImplName};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Entity}.${entity};
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 <#if restControllerStyle>
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +54,47 @@ class ${table.controllerName}<#if superControllerClass??> : ${superControllerCla
 <#if superControllerClass??>
 public class ${table.controllerName} extends ${superControllerClass} {
 <#else>
-public class ${table.controllerName} {
+public class ${table.controllerName} extends BaseController<${table.serviceImplName}, ${table.mapperName}, ${entity}> {
+
+ @GetMapping("/page")
+ public Result page(@RequestParam Map<String , Object> requestParam) {
+     QueryRequest query = mapToQuery(requestParam);
+     LambdaQueryWrapper<${entity}> queryWrapper = new LambdaQueryWrapper<>();
+      if (!StringUtils.isEmpty(query.getKeyword())) {
+      queryWrapper.like(${entity}::getName, query.getKeyword());
+      }
+      IPage<${entity}> page = getService()
+       .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
+       return Result.success(page);
+  }
+
+ @GetMapping("/{id}")
+ public Result get(@PathVariable Long id) {
+     return Result.success(getService().getById(id));
+ }
+
+ @Log
+ @PostMapping
+ public Result save(@RequestBody ${entity} record) {
+     boolean success = getService().save(record);
+     return success ? Result.success(record) : Result.failure();
+ }
+
+ @Log
+ @PutMapping
+ public Result update(@RequestBody  ${entity} record) {
+     boolean success = getService().updateById(record);
+     return success ? Result.success(record) : Result.failure();
+ }
+
+    @Log
+    @DeleteMapping("/{ids}")
+    public Result delete(@PathVariable Long[] ids) {
+    List<Long> idList = Arrays.asList(ids);
+        getService().removeByIds(idList);
+        return Result.success();
+    }
+
 </#if>
 
 }
