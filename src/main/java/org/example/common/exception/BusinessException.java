@@ -5,6 +5,8 @@ import org.example.common.enums.ResultCode;
 
 public class BusinessException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     private Integer code;
 
     public BusinessException(Integer code, String message) {
