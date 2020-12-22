@@ -8,10 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.example.common.annotation.Log;
-import org.example.common.base.BaseController;
-import org.example.common.domain.request.QueryRequest;
-import org.example.common.domain.response.Result;
+import ${cfg.logAnnotationClass};
+import ${cfg.queryRequestClass};
+import ${cfg.resultClass};
 import ${package.ServiceImpl}.${table.serviceImplName};
 import ${package.Mapper}.${table.mapperName};
 import ${package.Entity}.${entity};
@@ -52,40 +51,42 @@ import ${superControllerClassPackage};
 class ${table.controllerName}<#if superControllerClass??> : ${superControllerClass}()</#if>
 <#else>
 <#if superControllerClass??>
-public class ${table.controllerName} extends ${superControllerClass} {
+public class ${table.controllerName} extends ${superControllerClass}<${table.serviceImplName}, ${table.mapperName}, ${entity}> {
 <#else>
-public class ${table.controllerName} extends BaseController<${table.serviceImplName}, ${table.mapperName}, ${entity}> {
+public class ${table.controllerName} extends ${superControllerClass}<${table.serviceImplName}, ${table.mapperName}, ${entity}> {
+</#if>
 
- @GetMapping("/page")
- public Result page(@RequestParam Map<String , Object> requestParam) {
-     QueryRequest query = mapToQuery(requestParam);
-     LambdaQueryWrapper<${entity}> queryWrapper = new LambdaQueryWrapper<>();
-      if (!StringUtils.isEmpty(query.getKeyword())) {
-      queryWrapper.like(${entity}::getName, query.getKeyword());
+     @GetMapping("/page")
+     public Result page(@RequestParam Map<String , Object> requestParam) {
+         QueryRequest query = mapToQuery(requestParam);
+         LambdaQueryWrapper<${entity}> queryWrapper = new LambdaQueryWrapper<>();
+         if (!StringUtils.isEmpty(query.getKeyword())) {
+          queryWrapper.like(${entity}::getName, query.getKeyword());
+         }
+         IPage<${entity}> page = getService()
+           .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
+
+         return Result.success(page);
       }
-      IPage<${entity}> page = getService()
-       .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-       return Result.success(page);
-  }
 
- @GetMapping("/{id}")
- public Result get(@PathVariable Long id) {
-     return Result.success(getService().getById(id));
- }
+     @GetMapping("/{id}")
+     public Result get(@PathVariable Long id) {
+         return Result.success(getService().getById(id));
+     }
 
- @Log
- @PostMapping
- public Result save(@RequestBody ${entity} record) {
-     boolean success = getService().save(record);
-     return success ? Result.success(record) : Result.failure();
- }
+     @Log
+     @PostMapping
+     public Result save(@RequestBody ${entity} record) {
+         boolean success = getService().save(record);
+         return success ? Result.success(record) : Result.failure();
+     }
 
- @Log
- @PutMapping
- public Result update(@RequestBody  ${entity} record) {
-     boolean success = getService().updateById(record);
-     return success ? Result.success(record) : Result.failure();
- }
+     @Log
+     @PutMapping
+     public Result update(@RequestBody  ${entity} record) {
+         boolean success = getService().updateById(record);
+         return success ? Result.success(record) : Result.failure();
+     }
 
     @Log
     @DeleteMapping("/{ids}")
@@ -94,8 +95,6 @@ public class ${table.controllerName} extends BaseController<${table.serviceImplN
         getService().removeByIds(idList);
         return Result.success();
     }
-
-</#if>
 
 }
 </#if>

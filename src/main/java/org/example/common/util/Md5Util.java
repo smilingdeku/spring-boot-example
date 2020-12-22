@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import org.springframework.util.StringUtils;
 
 /**
- * @author walle@eva
+ * @author walle&eva
  * @version V1.0
  * @since 2020-12-21 11:21
  */
