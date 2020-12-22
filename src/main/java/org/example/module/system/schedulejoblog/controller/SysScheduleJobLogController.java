@@ -41,7 +41,7 @@ public class SysScheduleJobLogController
     @PreAuthorize("hasAuthority('monitor:schedule-job-log')")
     @GetMapping("/page")
     public Result page(@RequestParam Map<String, Object> requestParam) {
-        QueryRequest query = mapToQuery(requestParam);
+        QueryRequest query = QueryRequest.from(requestParam);
         QueryWrapper<SysScheduleJobLog> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
             queryWrapper.lambda().like(SysScheduleJobLog::getJobName, query.getKeyword());

@@ -4,6 +4,7 @@ import org.example.common.util.ConvertUtil;
 import org.springframework.util.StringUtils;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author cark
@@ -39,5 +40,11 @@ public class QueryRequest extends LinkedHashMap<String, Object> {
 
     private String humpToLine(String str) {
         return str.replaceAll("[A-Z]", "_$0").toLowerCase();
+    }
+
+    public static QueryRequest from(Map<String, Object> map) {
+        QueryRequest queryRequest = new QueryRequest();
+        queryRequest.putAll(map);
+        return queryRequest;
     }
 }

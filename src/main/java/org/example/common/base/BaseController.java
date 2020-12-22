@@ -1,13 +1,10 @@
 package org.example.common.base;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.example.common.domain.request.QueryRequest;
 import org.example.common.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * @author linzhaoming
@@ -23,9 +20,6 @@ public abstract class BaseController<S extends BaseService<M, E>, M extends Base
     @Autowired
     protected S service;
 
-    @Autowired
-    private StringRedisTemplate redisTemplate;
-
     public S getService() {
         return service;
     }
@@ -40,10 +34,4 @@ public abstract class BaseController<S extends BaseService<M, E>, M extends Base
         return tokenUtil.getSubjectByToken(token);
     }
 
-
-    protected QueryRequest mapToQuery(Map<String, Object> map) {
-        QueryRequest queryRequest = new QueryRequest();
-        queryRequest.putAll(map);
-        return queryRequest;
-    }
 }

@@ -49,7 +49,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     @PreAuthorize("hasAuthority('system:role')")
     @GetMapping("/page")
     public Result page(@RequestParam Map<String, Object> requestParam) {
-        QueryRequest query = mapToQuery(requestParam);
+        QueryRequest query = QueryRequest.from(requestParam);
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
             queryWrapper.lambda().like(SysRole::getName, query.getKeyword());
