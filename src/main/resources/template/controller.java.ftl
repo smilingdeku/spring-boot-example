@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.example.common.annotation.Log;
-import org.example.common.domain.request.QueryRequest;
-import org.example.common.domain.response.Result;
+import ${cfg.logAnnotationClass};
+import ${cfg.queryRequestClass};
+import ${cfg.resultClass};
 import ${package.ServiceImpl}.${table.serviceImplName};
 import ${package.Mapper}.${table.mapperName};
 import ${package.Entity}.${entity};

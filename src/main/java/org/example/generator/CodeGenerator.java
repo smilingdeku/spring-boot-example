@@ -14,10 +14,15 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.base.BaseService;
+import org.example.common.domain.request.QueryRequest;
+import org.example.common.domain.response.Result;
 
 /**
  * 代码生成器
@@ -92,7 +97,12 @@ public class CodeGenerator {
         InjectionConfig cfg = new InjectionConfig() {
             @Override
             public void initMap() {
-                // to do nothing
+                // 配置controller通用类map
+                Map<String, Object> map = new HashMap<>();
+                map.put("logAnnotationClass", Log.class.getName());
+                map.put("queryRequestClass", QueryRequest.class.getName());
+                map.put("resultClass", Result.class.getName());
+                this.setMap(map);
             }
         };
         String mapperXmlTemplatePath = "/template/mapper.xml.ftl";
