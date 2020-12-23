@@ -70,7 +70,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @PreAuthorize("hasAuthority('system:user')")
     @GetMapping("/page")
     public Result page(@RequestParam Map<String, Object> requestParam) {
-        QueryRequest query = mapToQuery(requestParam);
+        QueryRequest query = QueryRequest.from(requestParam);
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
             queryWrapper.lambda().like(SysUser::getUsername, query.getKeyword());
