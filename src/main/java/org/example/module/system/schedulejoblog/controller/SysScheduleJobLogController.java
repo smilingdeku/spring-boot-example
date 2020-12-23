@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
+import org.example.common.domain.response.PageResult;
 import org.example.common.domain.response.Result;
 import org.example.common.util.ConvertUtil;
 import org.example.module.system.schedulejoblog.domain.entity.SysScheduleJobLog;
@@ -40,7 +41,7 @@ public class SysScheduleJobLogController
 
     @PreAuthorize("hasAuthority('monitor:schedule-job-log')")
     @GetMapping("/page")
-    public Result page(@RequestParam Map<String, Object> requestParam) {
+    public PageResult<SysScheduleJobLog> page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = QueryRequest.from(requestParam);
         QueryWrapper<SysScheduleJobLog> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
@@ -55,19 +56,19 @@ public class SysScheduleJobLogController
         }
         IPage<SysScheduleJobLog> page = getService()
                 .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-        return Result.success(page);
+        return PageResult.build(page);
     }
 
     @PreAuthorize("hasAuthority('monitor:schedule-job-log')")
     @GetMapping("/{id}")
-    public Result get(@PathVariable Long id) {
+    public Result<SysScheduleJobLog> get(@PathVariable Long id) {
         return Result.success(getService().getById(id));
     }
 
     @Log
     @PreAuthorize("hasAuthority('monitor:schedule-job-log:delete')")
     @DeleteMapping("/{ids}")
-    public Result delete(@PathVariable Long[] ids) {
+    public Result<Void> delete(@PathVariable Long[] ids) {
         List<Long> idList = Arrays.asList(ids);
         boolean success = getService().removeByIds(idList);
         return success ? Result.success() : Result.failure();

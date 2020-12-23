@@ -1,7 +1,5 @@
 package org.example.module.common.captcha.controller;
 
-import java.util.UUID;
-
 import org.example.common.domain.response.Result;
 import org.example.module.common.captcha.domain.response.CaptchaResponse;
 import org.example.module.common.captcha.service.ICaptchaService;
@@ -10,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 /**
  * @author linzhaoming
@@ -23,7 +23,7 @@ public class CaptchaController {
     private ICaptchaService captchaService;
 
     @GetMapping("/{type}")
-    public Result captcha(@PathVariable Integer type) {
+    public Result<CaptchaResponse> captcha(@PathVariable Integer type) {
         String uuid = UUID.randomUUID().toString().replace("-", "");
 
         String image = captchaService.generateCaptcha(type, uuid);

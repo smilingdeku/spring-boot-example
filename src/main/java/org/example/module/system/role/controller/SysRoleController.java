@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
+import org.example.common.domain.response.PageResult;
 import org.example.common.domain.response.Result;
+import org.example.module.system.resource.domain.dto.ResourceTreeNode;
 import org.example.module.system.resource.service.ISysResourceService;
 import org.example.module.system.role.domain.entity.SysRole;
 import org.example.module.system.role.domain.request.SysRoleRequest;
@@ -48,7 +50,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
 
     @PreAuthorize("hasAuthority('system:role')")
     @GetMapping("/page")
-    public Result page(@RequestParam Map<String, Object> requestParam) {
+    public PageResult<SysRole> page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = QueryRequest.from(requestParam);
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
@@ -59,12 +61,12 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         }
         IPage<SysRole> page = getService()
                 .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-        return Result.success(page);
+        return PageResult.build(page);
     }
 
     @PreAuthorize("hasAuthority('system:user')")
     @GetMapping("/list")
-    public Result list() {
+    public Result<List<SysRole>> list() {
         LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
         List<SysRole> list = getService().list(queryWrapper);
         return Result.success(list);
@@ -72,14 +74,14 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
 
     @PreAuthorize("hasAuthority('system:role:edit')")
     @GetMapping("/{id}")
-    public Result get(@PathVariable Long id) {
+    public Result<SysRole> get(@PathVariable Long id) {
         return Result.success(getService().getById(id));
     }
 
     @Log
     @PreAuthorize("hasAuthority('system:role:add')")
     @PostMapping
-    public Result save(@RequestBody SysRoleRequest request) {
+    public Result<SysRole> save(@RequestBody SysRoleRequest request) {
         SysRole sysRole = getService().saveRoleAndResources(request);
         return Result.success(sysRole);
     }
@@ -87,7 +89,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     @Log
     @PreAuthorize("hasAuthority('system:role:delete')")
     @DeleteMapping("/{ids}")
-    public Result delete(@PathVariable Long[] ids) {
+    public Result<Void> delete(@PathVariable Long[] ids) {
         List<Long> idList = Arrays.asList(ids);
         idList.forEach(getService()::deleteRoleAndResources);
         return Result.success();
@@ -96,14 +98,14 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     @Log
     @PreAuthorize("hasAuthority('system:role:edit')")
     @PutMapping
-    public Result update(@RequestBody SysRoleRequest request) {
+    public Result<SysRole> update(@RequestBody SysRoleRequest request) {
         SysRole sysRole = getService().updateRoleAndResources(request);
         return Result.success(sysRole);
     }
 
     @PreAuthorize("hasAnyAuthority('system:role:add', 'system:role:edit')")
     @GetMapping("/{id}/resources")
-    public Result roleResources(@PathVariable Long id) {
+    public Result<List<ResourceTreeNode>> roleResources(@PathVariable Long id) {
         return Result.success(sysResourceService.listResourceTreeNode(id));
     }
 

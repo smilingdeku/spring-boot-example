@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
+import org.example.common.domain.response.PageResult;
 import org.example.common.domain.response.Result;
 import org.example.common.util.ConvertUtil;
 import org.example.module.system.schedulejob.domain.entity.SysScheduleJob;
@@ -43,7 +44,7 @@ public class SysScheduleJobController
 
     @PreAuthorize("hasAuthority('monitor:schedule-job')")
     @GetMapping("/page")
-    public Result page(@RequestParam Map<String, Object> requestParam) {
+    public PageResult<SysScheduleJob> page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = QueryRequest.from(requestParam);
         QueryWrapper<SysScheduleJob> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
@@ -58,19 +59,19 @@ public class SysScheduleJobController
         }
         IPage<SysScheduleJob> page = getService()
             .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-        return Result.success(page);
+        return PageResult.build(page);
     }
 
     @PreAuthorize("hasAuthority('monitor:schedule-job:edit')")
     @GetMapping("/{id}")
-    public Result get(@PathVariable Long id) {
+    public Result<SysScheduleJob> get(@PathVariable Long id) {
         return Result.success(getService().getById(id));
     }
 
     @Log
     @PreAuthorize("hasAuthority('monitor:schedule-job:run')")
     @GetMapping("/{id}/run")
-    public Result run(@PathVariable Long id) throws SchedulerException {
+    public Result<Void> run(@PathVariable Long id) throws SchedulerException {
         getService().runJob(id);
         return Result.success();
     }
@@ -78,7 +79,7 @@ public class SysScheduleJobController
     @Log
     @PreAuthorize("hasAuthority('monitor:schedule-job:add')")
     @PostMapping
-    public Result save(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
+    public Result<SysScheduleJob> save(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
         // 检查任务是否存在
         // checkJobArgs(sysScheduleJob);
         boolean success = getService().saveJob(sysScheduleJob);
@@ -88,7 +89,7 @@ public class SysScheduleJobController
     @Log
     @PreAuthorize("hasAuthority('monitor:schedule-job:delete')")
     @DeleteMapping("/{ids}")
-    public Result delete(@PathVariable Long[] ids) throws SchedulerException {
+    public Result<Void> delete(@PathVariable Long[] ids) throws SchedulerException {
         List<Long> idList = Arrays.asList(ids);
         getService().deleteJobByIdList(idList);
         return Result.success();
@@ -97,7 +98,7 @@ public class SysScheduleJobController
     @Log
     @PreAuthorize("hasAuthority('monitor:schedule-job:edit')")
     @PutMapping
-    public Result update(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
+    public Result<SysScheduleJob> update(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
         // 检查任务是否存在
         // checkJobArgs(sysScheduleJob);
         boolean success = getService().updateJob(sysScheduleJob);

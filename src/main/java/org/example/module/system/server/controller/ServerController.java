@@ -27,7 +27,7 @@ public class ServerController {
     private IServerService serverService;
 
     @GetMapping("/info")
-    public Result info() throws UnknownHostException {
+    public Result<ServerResponse> info() throws UnknownHostException {
         ServerResponse response = new ServerResponse();
 
         SysInfo sysInfo = serverService.getSysInfo();

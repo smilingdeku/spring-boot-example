@@ -9,22 +9,22 @@ public enum CaptchaType {
     /**
      * 后台登录验证码
      */
-    ADMIN(1, "captcha:admin:");
+    ADMIN(1, "string:captcha:admin:%s");
 
     private final Integer value;
-    private final String keyPrefix;
+    private final String keyPattern;
 
-    CaptchaType(Integer value, String keyPrefix) {
+    CaptchaType(Integer value, String keyPattern) {
         this.value = value;
-        this.keyPrefix = keyPrefix;
+        this.keyPattern = keyPattern;
     }
 
     public Integer getValue() {
         return value;
     }
 
-    public String getKeyPrefix() {
-        return keyPrefix;
+    public String getKeyPattern() {
+        return keyPattern;
     }
 
     public static CaptchaType get(Integer value) {
