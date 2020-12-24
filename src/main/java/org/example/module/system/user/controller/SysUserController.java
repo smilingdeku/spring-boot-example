@@ -6,9 +6,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
+import org.example.common.domain.response.PageResult;
 import org.example.common.domain.response.Result;
-import org.example.common.util.MapperUtil;
 import org.example.common.util.ListUtil;
+import org.example.common.util.MapperUtil;
 import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.LoginRequest;
 import org.example.module.system.user.domain.request.SysUserRequest;
@@ -51,7 +52,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
 
     @Log
     @PostMapping("/login")
-    public Result login(@RequestBody @Validated LoginRequest request) {
+    public Result<LoginResponse> login(@RequestBody @Validated LoginRequest request) {
         String token = getService()
                 .login(request.getUsername(), request.getPassword(), request.getCaptchaKey(), request.getCaptcha());
         LoginResponse response = new LoginResponse();
@@ -60,7 +61,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     }
 
     @GetMapping
-    public Result info() {
+    public Result<UserResponse> info() {
         SysUser user = getService().getByUsername(getCurrentUsername());
         UserResponse response = MapperUtil.map(user, UserResponse.class);
         response.setPermissions(getService().listPermissionByUsername(getCurrentUsername()));
@@ -69,7 +70,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
 
     @PreAuthorize("hasAuthority('system:user')")
     @GetMapping("/page")
-    public Result page(@RequestParam Map<String, Object> requestParam) {
+    public PageResult<SysUser> page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = QueryRequest.from(requestParam);
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
@@ -80,12 +81,12 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         }
         IPage<SysUser> page = getService()
             .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-        return Result.success(page);
+        return PageResult.build(page);
     }
 
     @PreAuthorize("hasAuthority('system:user:edit')")
     @GetMapping("/{id}")
-    public Result get(@PathVariable Long id) {
+    public Result<SysUser> get(@PathVariable Long id) {
         SysUser sysUser = getService().getById(id);
         return Result.success(sysUser);
     }
@@ -93,7 +94,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @Log
     @PreAuthorize("hasAuthority('system:user:add')")
     @PostMapping
-    public Result save(@RequestBody SysUserRequest request) {
+    public Result<SysUser> save(@RequestBody SysUserRequest request) {
         SysUser sysUser = getService().saveUserAndRoles(request);
         return Result.success(sysUser);
     }
@@ -101,7 +102,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @Log
     @PreAuthorize("hasAuthority('system:user:delete')")
     @DeleteMapping("/{ids}")
-    public Result delete(@PathVariable Long[] ids) {
+    public Result<Void> delete(@PathVariable Long[] ids) {
         // 去除admin
         List<Long> idList = ListUtil.arr2List(ids);
         ListUtil.removeIf(idList, (e) -> e.equals(1L));
@@ -115,14 +116,14 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @Log
     @PreAuthorize("hasAuthority('system:user:edit')")
     @PutMapping
-    public Result update(@RequestBody SysUserRequest request) {
+    public Result<SysUser> update(@RequestBody SysUserRequest request) {
         SysUser sysUser = getService().updateUserAndRoles(request);
         return Result.success(sysUser);
     }
 
     @PreAuthorize("hasAnyAuthority('system:user:add', 'system:user:edit')")
     @GetMapping("/{id}/roles")
-    public Result userRoles(@PathVariable Long id) {
+    public Result<List<Long>> userRoles(@PathVariable Long id) {
         List<Long> roleIds = sysUserRoleService.listRoleIdByUserId(id);
         return Result.success(roleIds);
     }

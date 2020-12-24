@@ -31,7 +31,7 @@ public class CaptchaServiceImpl implements ICaptchaService {
         CaptchaType captchaType = CaptchaType.get(type);
         Preconditions.checkNotNull(captchaType, MessageUtil.get(MsgKeyConstant.CAPTCHA_TYPE_NOT_EXISTED));
 
-        String key = captchaType.getKeyPrefix() + uuid;
+        String key = String.format(captchaType.getKeyPattern(), uuid);
 
         if (ConvertUtil.toBooleanValue(redisTemplate.hasKey(key), false)) {
             redisTemplate.delete(key);

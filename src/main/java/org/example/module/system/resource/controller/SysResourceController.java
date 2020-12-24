@@ -7,7 +7,10 @@ import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.entity.Router;
 import org.example.common.domain.request.QueryRequest;
+import org.example.common.domain.response.PageResult;
 import org.example.common.domain.response.Result;
+import org.example.module.system.resource.domain.dto.ResourceTreeNode;
+import org.example.module.system.resource.domain.dto.SysResourceDTO;
 import org.example.module.system.resource.domain.entity.SysResource;
 import org.example.module.system.resource.mapper.SysResourceMapper;
 import org.example.module.system.resource.service.impl.SysResourceServiceImpl;
@@ -40,19 +43,19 @@ import java.util.Map;
 public class SysResourceController extends BaseController<SysResourceServiceImpl, SysResourceMapper, SysResource> {
 
     @GetMapping("/routers")
-    public Result getRouters() {
+    public Result<List<Router>> getRouters() {
         List<Router> routerList = getService().listRouterByUsername(getCurrentUsername());
         return Result.success(routerList);
     }
 
     @PreAuthorize("hasAuthority('system:resource:edit')")
     @GetMapping("/{id}")
-    public Result get(@PathVariable Long id) {
+    public Result<SysResourceDTO> get(@PathVariable Long id) {
         return Result.success(getService().getById(id));
     }
 
     @GetMapping("/page")
-    public Result page(@RequestParam Map<String, Object> requestParam) {
+    public PageResult<SysResource> page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = QueryRequest.from(requestParam);
         LambdaQueryWrapper<SysResource> queryWrapper = new LambdaQueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
@@ -60,12 +63,12 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         }
         IPage<SysResource> page = getService()
                 .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-        return Result.success(page);
+        return PageResult.build(page);
     }
 
     @PreAuthorize("hasAuthority('system:resource')")
     @GetMapping("/list")
-    public Result list() {
+    public Result<List<ResourceTreeNode>> list() {
         LambdaQueryWrapper<SysResource> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(SysResource::getSortNumber);
         return Result.success(getService().listResourceTreeNode(queryWrapper));
@@ -74,7 +77,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
     @Log
     @PreAuthorize("hasAuthority('system:resource:add')")
     @PostMapping
-    public Result save(@RequestBody SysResource sysResource) {
+    public Result<SysResource> save(@RequestBody SysResource sysResource) {
         boolean success = getService().save(sysResource);
         return success ? Result.success(sysResource) : Result.failure();
     }
@@ -82,7 +85,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
     @Log
     @PreAuthorize("hasAuthority('system:resource:delete')")
     @DeleteMapping("/{ids}")
-    public Result delete(@PathVariable Long[] ids) {
+    public Result<Void> delete(@PathVariable Long[] ids) {
         List<Long> idList = Arrays.asList(ids);
         idList.forEach(getService()::deleteResource);
         return Result.success();
@@ -91,7 +94,7 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
     @Log
     @PreAuthorize("hasAuthority('system:resource:edit')")
     @PutMapping
-    public Result update(@RequestBody SysResource sysResource) {
+    public Result<SysResource> update(@RequestBody SysResource sysResource) {
         boolean success = getService().updateById(sysResource);
         return success ? Result.success(sysResource) : Result.failure();
     }

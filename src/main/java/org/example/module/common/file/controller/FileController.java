@@ -24,7 +24,7 @@ public class FileController {
     private IFileService filesService;
 
     @PostMapping("/upload")
-    public Result upload(@RequestParam("files") MultipartFile[] files) {
+    public Result<List<FileInfoDTO>> upload(@RequestParam("files") MultipartFile[] files) {
         List<FileInfoDTO> list = filesService.upload(files);
         return Result.success(list);
     }
