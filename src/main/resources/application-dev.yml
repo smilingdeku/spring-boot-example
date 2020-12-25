@@ -27,6 +27,9 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+swagger:
+  title: Api Document
+  enable: true
 
 oss:
   # 七牛云配置

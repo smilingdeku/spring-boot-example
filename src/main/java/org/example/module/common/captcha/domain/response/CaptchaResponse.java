@@ -1,5 +1,6 @@
 package org.example.module.common.captcha.domain.response;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.example.common.util.JsonUtil;
 
 /**
@@ -8,8 +9,10 @@ import org.example.common.util.JsonUtil;
  **/
 public class CaptchaResponse {
 
+    @ApiModelProperty("验证码 KEY")
     private String key;
 
+    @ApiModelProperty("验证码图片")
     private String image;
 
     public String getKey() {

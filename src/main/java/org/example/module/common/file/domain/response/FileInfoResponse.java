@@ -1,19 +1,20 @@
-package org.example.module.common.file.domain.dto;
+package org.example.module.common.file.domain.response;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.example.common.util.JsonUtil;
 
 import java.io.Serializable;
 
-/**
- * @version V1.0
- * @since 2020-12-07 10:04
- */
-public class FileInfoDTO implements Serializable {
+
+public class FileInfoResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "文件名称")
     private String fileName;
+    @ApiModelProperty(value = "文件地址")
     private String fileUrl;
+    @ApiModelProperty(value = "文件大小")
     private Long fileSize;
 
     public String getFileName() {

@@ -1,17 +1,24 @@
 package org.example.module.system.user.domain.request;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 public class LoginRequest implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "用户名")
     @NotBlank(message = "{system.user.username-can-not-be-blank}")
     private String username;
+    @ApiModelProperty(value = "密码")
     @NotBlank(message = "{system.user.password-can-not-be-blank}")
     private String password;
+    @ApiModelProperty(value = "验证码 KEY")
     @NotBlank(message = "{system.user.captcha-can-not-be-blank}")
     private String captchaKey;
+    @ApiModelProperty(value = "验证码")
     @NotBlank(message = "{system.user.captcha-can-not-be-blank}")
     private String captcha;
 

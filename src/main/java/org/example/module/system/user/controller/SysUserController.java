@@ -3,6 +3,8 @@ package org.example.module.system.user.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
@@ -43,6 +45,7 @@ import java.util.Map;
  * @author linzhaoming
  * @since 2020-10-23
  */
+@Api(tags = {"系统用户接口"})
 @RestController
 @RequestMapping("/sys/user")
 public class SysUserController extends BaseController<SysUserServiceImpl, SysUserMapper, SysUser> {
@@ -50,7 +53,9 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @Autowired
     private ISysUserRoleService sysUserRoleService;
 
+
     @Log
+    @ApiOperation(value = "用户登录")
     @PostMapping("/login")
     public Result<LoginResponse> login(@RequestBody @Validated LoginRequest request) {
         String token = getService()
@@ -60,6 +65,7 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         return Result.success(response);
     }
 
+    @ApiOperation(value = "获取当前登录用户信息")
     @GetMapping
     public Result<UserResponse> info() {
         SysUser user = getService().getByUsername(getCurrentUsername());

@@ -1,5 +1,7 @@
 package org.example.module.system.user.domain.response;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 /**
@@ -8,11 +10,17 @@ import java.util.List;
  **/
 public class UserResponse {
 
+    @ApiModelProperty(value = "用户名")
     private String username;
+    @ApiModelProperty(value = "头像")
     private String avatar;
+    @ApiModelProperty(value = "真实姓名")
     private String realName;
+    @ApiModelProperty(value = "邮箱")
     private String email;
+    @ApiModelProperty(value = "电话")
     private String phone;
+    @ApiModelProperty(value = "权限列表")
     private List<String> permissions;
 
     public String getUsername() {

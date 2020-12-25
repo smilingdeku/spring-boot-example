@@ -1,6 +1,7 @@
 package org.example.common.domain.response;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.swagger.annotations.ApiModelProperty;
 import org.example.common.enums.ResultCode;
 import org.example.common.util.JsonUtil;
 
@@ -8,19 +9,22 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author linzhaoming
- * @since 2020-12-23
+ * 分页返回结果
  **/
 public class PageResult<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "返回码")
     private Integer code;
 
+    @ApiModelProperty(value = "返回消息")
     private String msg;
 
+    @ApiModelProperty(value = "分页数据")
     private List<T> data;
 
+    @ApiModelProperty(value = "总数")
     private Long total;
 
     public PageResult(Integer code, String msg, List<T> data, Long total) {
