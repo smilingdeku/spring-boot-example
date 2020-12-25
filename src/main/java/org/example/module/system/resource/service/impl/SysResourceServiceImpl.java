@@ -54,13 +54,12 @@ public class SysResourceServiceImpl extends BaseService<SysResourceMapper, SysRe
 
             routerList.add(router);
         }
-        return TreeUtil.build(routerList, CommonConstant.TOP_RESOURCE_PARENT_ID);
+        return routerList;
     }
 
     @Override
     public List<ResourceTreeNode> listResourceTreeNode(Long roleId) {
-        List<ResourceTreeNode> nodeList = this.getBaseMapper().listResourceTreeNode(roleId);
-        return TreeUtil.build(nodeList, CommonConstant.TOP_RESOURCE_PARENT_ID);
+        return this.getBaseMapper().listResourceTreeNode(roleId);
     }
 
     @Override

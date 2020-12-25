@@ -3,15 +3,23 @@ package org.example.module.system.resource.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
+import org.example.common.constant.CommonConstant;
 import org.example.common.domain.entity.Router;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.PageResult;
 import org.example.common.domain.response.Result;
-import org.example.module.system.resource.domain.dto.ResourceTreeNode;
+import org.example.common.util.MapperUtil;
+import org.example.common.util.TreeUtil;
 import org.example.module.system.resource.domain.dto.SysResourceDTO;
 import org.example.module.system.resource.domain.entity.SysResource;
+import org.example.module.system.resource.domain.request.SysResourceRequest;
+import org.example.module.system.resource.domain.response.ResourceTreeNodeResponse;
+import org.example.module.system.resource.domain.response.RouterResponse;
+import org.example.module.system.resource.domain.response.SysResourceResponse;
 import org.example.module.system.resource.mapper.SysResourceMapper;
 import org.example.module.system.resource.service.impl.SysResourceServiceImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,24 +46,31 @@ import java.util.Map;
  * @author linzhaoming
  * @since 2020-11-02
  */
+@Api(tags = {"系统资源接口"})
 @RestController
 @RequestMapping("/sys/resource")
 public class SysResourceController extends BaseController<SysResourceServiceImpl, SysResourceMapper, SysResource> {
 
+    @ApiOperation(value = "获取路由列表")
     @GetMapping("/routers")
-    public Result<List<Router>> getRouters() {
-        List<Router> routerList = getService().listRouterByUsername(getCurrentUsername());
-        return Result.success(routerList);
+    public Result<List<RouterResponse>> getRouters() {
+        List<Router> list = getService().listRouterByUsername(getCurrentUsername());
+        List<RouterResponse> responseList = MapperUtil.mapList(list, Router.class, RouterResponse.class);
+        return Result.success(TreeUtil.build(responseList, CommonConstant.TOP_RESOURCE_PARENT_ID));
     }
 
+    @ApiOperation(value = "获取资源信息")
     @PreAuthorize("hasAuthority('system:resource:edit')")
     @GetMapping("/{id}")
-    public Result<SysResourceDTO> get(@PathVariable Long id) {
-        return Result.success(getService().getById(id));
+    public Result<SysResourceResponse> get(@PathVariable Long id) {
+        SysResourceDTO dto = getService().getById(id);
+        SysResourceResponse response = MapperUtil.map(dto, SysResourceResponse.class);
+        return Result.success(response);
     }
 
+    @ApiOperation(value = "获取资源分页数据")
     @GetMapping("/page")
-    public PageResult<SysResource> page(@RequestParam Map<String, Object> requestParam) {
+    public PageResult<SysResourceResponse> page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = QueryRequest.from(requestParam);
         LambdaQueryWrapper<SysResource> queryWrapper = new LambdaQueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
@@ -63,25 +78,32 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         }
         IPage<SysResource> page = getService()
                 .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-        return PageResult.build(page);
+        List<SysResourceResponse> responseList = MapperUtil.mapList(page.getRecords(), SysResource.class, SysResourceResponse.class);
+        return PageResult.build(responseList, page.getTotal());
     }
 
+    @ApiOperation(value = "获取资源列表")
     @PreAuthorize("hasAuthority('system:resource')")
     @GetMapping("/list")
-    public Result<List<ResourceTreeNode>> list() {
+    public Result<List<ResourceTreeNodeResponse>> list() {
         LambdaQueryWrapper<SysResource> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByAsc(SysResource::getSortNumber);
-        return Result.success(getService().listResourceTreeNode(queryWrapper));
+        List<SysResource> resourceList = getService().list(queryWrapper);
+        List<ResourceTreeNodeResponse> responseList = MapperUtil.mapList(resourceList, SysResource.class, ResourceTreeNodeResponse.class);
+        return Result.success( TreeUtil.build(responseList, CommonConstant.TOP_RESOURCE_PARENT_ID));
     }
 
+    @ApiOperation(value = "添加资源")
     @Log
     @PreAuthorize("hasAuthority('system:resource:add')")
     @PostMapping
-    public Result<SysResource> save(@RequestBody SysResource sysResource) {
+    public Result<SysResourceResponse> save(@RequestBody SysResourceRequest request) {
+        SysResource sysResource = MapperUtil.map(request, SysResource.class);
         boolean success = getService().save(sysResource);
-        return success ? Result.success(sysResource) : Result.failure();
+        return success ? Result.success(MapperUtil.map(sysResource, SysResourceResponse.class)) : Result.failure();
     }
 
+    @ApiOperation(value = "删除资源")
     @Log
     @PreAuthorize("hasAuthority('system:resource:delete')")
     @DeleteMapping("/{ids}")
@@ -91,12 +113,14 @@ public class SysResourceController extends BaseController<SysResourceServiceImpl
         return Result.success();
     }
 
+    @ApiOperation(value = "更新资源")
     @Log
     @PreAuthorize("hasAuthority('system:resource:edit')")
     @PutMapping
-    public Result<SysResource> update(@RequestBody SysResource sysResource) {
+    public Result<SysResourceResponse> update(@RequestBody SysResourceRequest request) {
+        SysResource sysResource = MapperUtil.map(request, SysResource.class);
         boolean success = getService().updateById(sysResource);
-        return success ? Result.success(sysResource) : Result.failure();
+        return success ? Result.success(MapperUtil.map(sysResource, SysResourceResponse.class)) : Result.failure();
     }
 
 }

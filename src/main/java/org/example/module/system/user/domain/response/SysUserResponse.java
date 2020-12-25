@@ -1,15 +1,14 @@
-package org.example.module.system.user.domain.request;
+package org.example.module.system.user.domain.response;
 
 import io.swagger.annotations.ApiModelProperty;
+import org.example.common.util.JsonUtil;
 
 import java.io.Serializable;
-import java.util.List;
+import java.time.LocalDateTime;
 
-/**
- * @author linzhaoming
- * @since 2020/11/21
- **/
-public class SysUserRequest implements Serializable {
+
+public class SysUserResponse implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "ID")
@@ -30,8 +29,10 @@ public class SysUserRequest implements Serializable {
     private String memo;
     @ApiModelProperty(value = "状态 [0-禁用] [1-启用]")
     private Integer status;
-    @ApiModelProperty(value = "角色 ID 列表")
-    private List<Long> roleIds;
+    @ApiModelProperty(value = "创建时间")
+    private LocalDateTime createdAt;
+    @ApiModelProperty(value = "更新时间")
+    private LocalDateTime updatedAt;
 
     public Long getId() {
         return id;
@@ -49,6 +50,14 @@ public class SysUserRequest implements Serializable {
         this.username = username;
     }
 
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -63,14 +72,6 @@ public class SysUserRequest implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
     }
 
     public String getEmail() {
@@ -105,11 +106,24 @@ public class SysUserRequest implements Serializable {
         this.status = status;
     }
 
-    public List<Long> getRoleIds() {
-        return roleIds;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setRoleIds(List<Long> roleIds) {
-        this.roleIds = roleIds;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return JsonUtil.toJSONString(this);
     }
 }

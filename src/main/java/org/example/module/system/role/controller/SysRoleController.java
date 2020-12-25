@@ -5,15 +5,22 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
+import org.example.common.constant.CommonConstant;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.PageResult;
 import org.example.common.domain.response.Result;
+import org.example.common.util.MapperUtil;
+import org.example.common.util.TreeUtil;
 import org.example.module.system.resource.domain.dto.ResourceTreeNode;
+import org.example.module.system.resource.domain.response.ResourceTreeNodeResponse;
 import org.example.module.system.resource.service.ISysResourceService;
 import org.example.module.system.role.domain.entity.SysRole;
 import org.example.module.system.role.domain.request.SysRoleRequest;
+import org.example.module.system.role.domain.response.SysRoleResponse;
 import org.example.module.system.role.mapper.SysRoleMapper;
 import org.example.module.system.role.service.impl.SysRoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +48,7 @@ import java.util.Map;
  * @author linzhaoming
  * @since 2020-10-26
  */
+@Api(tags = {"系统角色接口"})
 @RestController
 @RequestMapping("/sys/role")
 public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRoleMapper, SysRole> {
@@ -48,9 +56,10 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
     @Autowired
     private ISysResourceService sysResourceService;
 
+    @ApiOperation(value = "获取角色分页数据")
     @PreAuthorize("hasAuthority('system:role')")
     @GetMapping("/page")
-    public PageResult<SysRole> page(@RequestParam Map<String, Object> requestParam) {
+    public PageResult<SysRoleResponse> page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = QueryRequest.from(requestParam);
         QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
@@ -61,31 +70,40 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         }
         IPage<SysRole> page = getService()
                 .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-        return PageResult.build(page);
+        List<SysRoleResponse> responseList = MapperUtil.mapList(page.getRecords(), SysRole.class, SysRoleResponse.class);
+        return PageResult.build(responseList, page.getTotal());
     }
 
+    @ApiOperation(value = "获取角色列表")
     @PreAuthorize("hasAuthority('system:user')")
     @GetMapping("/list")
-    public Result<List<SysRole>> list() {
+    public Result<List<SysRoleResponse>> list() {
         LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
         List<SysRole> list = getService().list(queryWrapper);
-        return Result.success(list);
+        List<SysRoleResponse> responseList = MapperUtil.mapList(list, SysRole.class, SysRoleResponse.class);
+        return Result.success(responseList);
     }
 
+    @ApiOperation(value = "获取角色信息")
     @PreAuthorize("hasAuthority('system:role:edit')")
     @GetMapping("/{id}")
-    public Result<SysRole> get(@PathVariable Long id) {
-        return Result.success(getService().getById(id));
+    public Result<SysRoleResponse> get(@PathVariable Long id) {
+        SysRole sysRole = getService().getById(id);
+        SysRoleResponse response = MapperUtil.map(sysRole, SysRoleResponse.class);
+        return Result.success(response);
     }
 
+    @ApiOperation(value = "保存角色")
     @Log
     @PreAuthorize("hasAuthority('system:role:add')")
     @PostMapping
-    public Result<SysRole> save(@RequestBody SysRoleRequest request) {
+    public Result<SysRoleResponse> save(@RequestBody SysRoleRequest request) {
         SysRole sysRole = getService().saveRoleAndResources(request);
-        return Result.success(sysRole);
+        SysRoleResponse response = MapperUtil.map(sysRole, SysRoleResponse.class);
+        return Result.success(response);
     }
 
+    @ApiOperation(value = "删除角色")
     @Log
     @PreAuthorize("hasAuthority('system:role:delete')")
     @DeleteMapping("/{ids}")
@@ -95,6 +113,7 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         return Result.success();
     }
 
+    @ApiOperation(value = "更新角色")
     @Log
     @PreAuthorize("hasAuthority('system:role:edit')")
     @PutMapping
@@ -103,10 +122,13 @@ public class SysRoleController extends BaseController<SysRoleServiceImpl, SysRol
         return Result.success(sysRole);
     }
 
+    @ApiOperation(value = "获取角色资源列表")
     @PreAuthorize("hasAnyAuthority('system:role:add', 'system:role:edit')")
     @GetMapping("/{id}/resources")
-    public Result<List<ResourceTreeNode>> roleResources(@PathVariable Long id) {
-        return Result.success(sysResourceService.listResourceTreeNode(id));
+    public Result<List<ResourceTreeNodeResponse>> roleResources(@PathVariable Long id) {
+        List<ResourceTreeNode> treeNodeList = sysResourceService.listResourceTreeNode(id);
+        List<ResourceTreeNodeResponse> responseList = MapperUtil.mapList(treeNodeList, ResourceTreeNode.class, ResourceTreeNodeResponse.class);
+        return Result.success(TreeUtil.build(responseList, CommonConstant.TOP_RESOURCE_PARENT_ID));
     }
 
 }

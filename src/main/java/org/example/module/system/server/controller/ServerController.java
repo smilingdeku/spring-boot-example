@@ -1,5 +1,7 @@
 package org.example.module.system.server.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.example.common.domain.response.Result;
 import org.example.common.util.DateUtil;
 import org.example.module.system.server.domain.entity.CpuInfo;
@@ -19,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+@Api(tags = {"服务器信息接口"})
 @RestController
 @RequestMapping("/sys/server")
 public class ServerController {
@@ -26,6 +29,7 @@ public class ServerController {
     @Autowired
     private IServerService serverService;
 
+    @ApiOperation(value = "获取服务器信息")
     @GetMapping("/info")
     public Result<ServerResponse> info() throws UnknownHostException {
         ServerResponse response = new ServerResponse();

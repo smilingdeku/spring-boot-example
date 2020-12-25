@@ -16,6 +16,7 @@ import org.example.module.system.user.domain.entity.SysUser;
 import org.example.module.system.user.domain.request.LoginRequest;
 import org.example.module.system.user.domain.request.SysUserRequest;
 import org.example.module.system.user.domain.response.LoginResponse;
+import org.example.module.system.user.domain.response.SysUserResponse;
 import org.example.module.system.user.domain.response.UserResponse;
 import org.example.module.system.user.mapper.SysUserMapper;
 import org.example.module.system.user.service.impl.SysUserServiceImpl;
@@ -53,7 +54,6 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
     @Autowired
     private ISysUserRoleService sysUserRoleService;
 
-
     @Log
     @ApiOperation(value = "用户登录")
     @PostMapping("/login")
@@ -74,9 +74,10 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         return Result.success(response);
     }
 
+    @ApiOperation(value = "获取用户分页数据")
     @PreAuthorize("hasAuthority('system:user')")
     @GetMapping("/page")
-    public PageResult<SysUser> page(@RequestParam Map<String, Object> requestParam) {
+    public PageResult<SysUserResponse> page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = QueryRequest.from(requestParam);
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
@@ -87,24 +88,30 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         }
         IPage<SysUser> page = getService()
             .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-        return PageResult.build(page);
+        List<SysUserResponse> responseList = MapperUtil.mapList(page.getRecords(), SysUser.class, SysUserResponse.class);
+        return PageResult.build(responseList, page.getTotal());
     }
 
+    @ApiOperation(value = "获取用户信息")
     @PreAuthorize("hasAuthority('system:user:edit')")
     @GetMapping("/{id}")
-    public Result<SysUser> get(@PathVariable Long id) {
+    public Result<SysUserResponse> get(@PathVariable Long id) {
         SysUser sysUser = getService().getById(id);
-        return Result.success(sysUser);
+        SysUserResponse response = MapperUtil.map(sysUser, SysUserResponse.class);
+        return Result.success(response);
     }
 
+    @ApiOperation(value = "添加用户")
     @Log
     @PreAuthorize("hasAuthority('system:user:add')")
     @PostMapping
-    public Result<SysUser> save(@RequestBody SysUserRequest request) {
+    public Result<SysUserResponse> save(@RequestBody SysUserRequest request) {
         SysUser sysUser = getService().saveUserAndRoles(request);
-        return Result.success(sysUser);
+        SysUserResponse response = MapperUtil.map(sysUser, SysUserResponse.class);
+        return Result.success(response);
     }
 
+    @ApiOperation(value = "删除用户")
     @Log
     @PreAuthorize("hasAuthority('system:user:delete')")
     @DeleteMapping("/{ids}")
@@ -119,14 +126,17 @@ public class SysUserController extends BaseController<SysUserServiceImpl, SysUse
         return Result.success();
     }
 
+    @ApiOperation(value = "更新用户")
     @Log
     @PreAuthorize("hasAuthority('system:user:edit')")
     @PutMapping
-    public Result<SysUser> update(@RequestBody SysUserRequest request) {
+    public Result<SysUserResponse> update(@RequestBody SysUserRequest request) {
         SysUser sysUser = getService().updateUserAndRoles(request);
-        return Result.success(sysUser);
+        SysUserResponse response = MapperUtil.map(sysUser, SysUserResponse.class);
+        return Result.success(response);
     }
 
+    @ApiOperation(value = "获取用户角色 ID 列表")
     @PreAuthorize("hasAnyAuthority('system:user:add', 'system:user:edit')")
     @GetMapping("/{id}/roles")
     public Result<List<Long>> userRoles(@PathVariable Long id) {

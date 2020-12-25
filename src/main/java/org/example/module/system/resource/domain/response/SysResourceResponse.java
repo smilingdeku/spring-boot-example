@@ -1,62 +1,42 @@
-package org.example.module.system.resource.domain.dto;
+package org.example.module.system.resource.domain.response;
+
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * @author linzhaoming
  * @since 2020/11/20
  **/
-public class SysResourceDTO implements Serializable {
+public class SysResourceResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    /**
-     * 主键
-     */
+
+    @ApiModelProperty(value = "ID")
     private Long id;
-
-    /**
-     * 父级 ID
-     */
+    @ApiModelProperty(value = "父级 ID")
     private Long parentId;
-    /**
-     * 父级资源名称
-     */
+    @ApiModelProperty(value = "父级资源名称")
     private String parentName;
-
-    /**
-     * 类型 [1-菜单] [2-按钮]
-     */
+    @ApiModelProperty(value = "类型 [1-菜单] [2-按钮]")
     private Integer type;
-
-    /**
-     * 名称
-     */
+    @ApiModelProperty(value = "名称")
     private String name;
-
-    /**
-     * 图标
-     */
+    @ApiModelProperty(value = "图标")
     private String icon;
-
-    /**
-     * 路径
-     */
+    @ApiModelProperty(value = "路径")
     private String path;
-
-    /**
-     * 组件
-     */
+    @ApiModelProperty(value = "组件")
     private String component;
-
-    /**
-     * 权限标志
-     */
+    @ApiModelProperty(value = "权限标志")
     private String permission;
-
-    /**
-     * 排序号
-     */
+    @ApiModelProperty(value = "排序号")
     private Integer sortNumber;
+    @ApiModelProperty(value = "创建时间")
+    private LocalDateTime createdAt;
+    @ApiModelProperty(value = "更新时间")
+    private LocalDateTime updatedAt;
 
     public Long getId() {
         return id;
@@ -136,5 +116,21 @@ public class SysResourceDTO implements Serializable {
 
     public void setSortNumber(Integer sortNumber) {
         this.sortNumber = sortNumber;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

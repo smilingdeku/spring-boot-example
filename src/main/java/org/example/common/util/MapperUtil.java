@@ -46,7 +46,7 @@ public class MapperUtil {
      * @return 目标对象列表
      */
     public static <S, D> List<D> mapList(Iterable<S> sourceList, Class<S> sourceClass, Class<D> destinationClass) {
-        return MAPPER.mapAsList(sourceList, TypeFactory.valueOf(sourceClass), TypeFactory.valueOf(destinationClass));
+        return MAPPER.mapAsList(sourceList, getType(sourceClass), getType(destinationClass));
     }
 
 
