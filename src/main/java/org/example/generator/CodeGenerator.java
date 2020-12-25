@@ -12,16 +12,18 @@ import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import org.example.common.annotation.Log;
-import org.example.common.base.BaseController;
-import org.example.common.base.BaseService;
-import org.example.common.domain.request.QueryRequest;
-import org.example.common.domain.response.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.example.common.annotation.Log;
+import org.example.common.base.BaseController;
+import org.example.common.base.BaseService;
+import org.example.common.domain.request.QueryRequest;
+import org.example.common.domain.response.PageResult;
+import org.example.common.domain.response.Result;
 
 /**
  * 代码生成器
@@ -47,7 +49,7 @@ public class CodeGenerator {
     private static final String DB = "base";
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "123456";
+    private static final String DB_PASSWORD = "7R9SATCVDW";
 
     static {
         DataSourceConfig dsc = new DataSourceConfig();
@@ -101,6 +103,7 @@ public class CodeGenerator {
                 map.put("logAnnotationClass", Log.class.getName());
                 map.put("queryRequestClass", QueryRequest.class.getName());
                 map.put("resultClass", Result.class.getName());
+                map.put("pageResultClass", PageResult.class.getName());
                 this.setMap(map);
             }
         };

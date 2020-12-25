@@ -10,6 +10,7 @@ import java.util.Map;
 
 import ${cfg.logAnnotationClass};
 import ${cfg.queryRequestClass};
+import ${cfg.pageResultClass};
 import ${cfg.resultClass};
 import ${package.ServiceImpl}.${table.serviceImplName};
 import ${package.Mapper}.${table.mapperName};
@@ -56,7 +57,7 @@ public class ${table.controllerName} extends ${superControllerClass}<${table.ser
 </#if>
 
     @GetMapping("/page")
-    public Result page(@RequestParam Map<String, Object> requestParam) {
+    public PageResult<${entity}> page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = QueryRequest.from(requestParam);
         LambdaQueryWrapper<${entity}> queryWrapper = new LambdaQueryWrapper<>();
 //        if (!StringUtils.isEmpty(query.getKeyword())) {
@@ -64,31 +65,31 @@ public class ${table.controllerName} extends ${superControllerClass}<${table.ser
 //        }
         IPage<${entity}> page = getService()
                 .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-        return Result.success(page);
+        return PageResult.build(page);
     }
 
     @GetMapping("/{id}")
-    public Result get(@PathVariable Long id) {
+    public Result<${entity}> get(@PathVariable Long id) {
         return Result.success(getService().getById(id));
     }
 
     @Log
     @PostMapping
-    public Result save(@RequestBody ${entity} record) {
+    public Result<${entity}> save(@RequestBody ${entity} record) {
         boolean success = getService().save(record);
         return success ? Result.success(record) : Result.failure();
     }
 
     @Log
     @PutMapping
-    public Result update(@RequestBody ${entity} record) {
+    public Result<${entity}> update(@RequestBody ${entity} record) {
         boolean success = getService().updateById(record);
         return success ? Result.success(record) : Result.failure();
     }
 
     @Log
     @DeleteMapping("/{ids}")
-    public Result delete(@PathVariable Long[] ids) {
+    public Result<Void> delete(@PathVariable Long[] ids) {
         List<Long> idList = Arrays.asList(ids);
         getService().removeByIds(idList);
         return Result.success();
