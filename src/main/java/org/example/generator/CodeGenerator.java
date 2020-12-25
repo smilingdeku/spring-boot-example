@@ -49,7 +49,7 @@ public class CodeGenerator {
     private static final String DB = "base";
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "7R9SATCVDW";
+    private static final String DB_PASSWORD = "123456";
 
     static {
         DataSourceConfig dsc = new DataSourceConfig();

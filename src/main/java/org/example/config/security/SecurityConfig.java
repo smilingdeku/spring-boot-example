@@ -30,13 +30,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    /**
+     * 白名单,不受权限拦截
+     */
+    private static final String[] PERMIT_ARR={
+        // swagger
+        "/swagger-ui.html",
+        "/v2/**",
+        "/swagger-resources/**",
+        "/webjars/**",
+        "/doc.html",
+
+        // system
+        "/sys/user/login",
+        "/common/captcha/*"
+    };
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/swagger-ui.html", "/v2/**", "/swagger-resources/**", "/webjars/**", "/doc.html").permitAll()
-                .antMatchers("/sys/user/login", "/common/captcha/*").permitAll()
+                .antMatchers(PERMIT_ARR).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
