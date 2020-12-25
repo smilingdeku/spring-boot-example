@@ -1,22 +1,25 @@
 package org.example.common.domain.response;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.example.common.enums.ResultCode;
 import org.example.common.util.JsonUtil;
 
 import java.io.Serializable;
 
 /**
- * @author linzhaoming
- * @since 2020-12-23
- **/
+ * 返回结果
+ */
 public class Result<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "返回码 [0-请求成功] [-1-操作失败]")
     private Integer code;
 
+    @ApiModelProperty(value = "返回消息")
     private String msg;
 
+    @ApiModelProperty(value = "返回数据")
     private T data;
 
     public Result(Integer code, String msg, T data) {
