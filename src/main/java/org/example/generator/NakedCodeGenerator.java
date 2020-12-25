@@ -12,25 +12,30 @@ import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import org.example.common.annotation.Log;
-import org.example.common.base.BaseController;
-import org.example.common.base.BaseService;
-import org.example.common.domain.request.QueryRequest;
-import org.example.common.domain.response.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.example.common.annotation.Log;
+import org.example.common.base.BaseController;
+import org.example.common.base.BaseService;
+import org.example.common.domain.request.QueryRequest;
+import org.example.common.domain.response.PageResult;
+import org.example.common.domain.response.Result;
+import org.example.common.util.JsonUtil;
+
 /**
  * 代码生成器
  */
-public class CodeGenerator {
+public class NakedCodeGenerator {
 
     private static AutoGenerator mpg = new AutoGenerator();
 
     private static final String AUTHOR = "linzhaoming";
+
+    private static final int GEN_WAY = 1;
 
     static {
         GlobalConfig gc = new GlobalConfig();
@@ -73,6 +78,7 @@ public class CodeGenerator {
         mpg.setStrategy(sc);
     }
 
+    private static final String NAKED_TEMPLATE_PATH = "template/naked/";
     private static final String MODULE_NAME = "org.example.module.xxx.xxx";
 
     static {
@@ -86,10 +92,10 @@ public class CodeGenerator {
         // 设置template为项目配置的template
         TemplateConfig tc = new TemplateConfig();
         tc.setXml(null);
-        tc.setEntity("template/entity.java");
-        tc.setService("template/service.java");
-        tc.setServiceImpl("template/serviceImpl.java");
-        tc.setController("template/controller.java");
+        tc.setEntity(NAKED_TEMPLATE_PATH + "/entity.java");
+        tc.setService(NAKED_TEMPLATE_PATH + "/service.java");
+        tc.setServiceImpl(NAKED_TEMPLATE_PATH + "/serviceImpl.java");
+        tc.setController(NAKED_TEMPLATE_PATH + "/controller.java");
 
         mpg.setTemplate(tc);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
@@ -101,10 +107,13 @@ public class CodeGenerator {
                 map.put("logAnnotationClass", Log.class.getName());
                 map.put("queryRequestClass", QueryRequest.class.getName());
                 map.put("resultClass", Result.class.getName());
+                map.put("pageResultClass", PageResult.class.getName());
+                map.put("jsonUtilClass", JsonUtil.class.getName());
                 this.setMap(map);
             }
         };
-        String mapperXmlTemplatePath = "/template/mapper.xml.ftl";
+
+        String mapperXmlTemplatePath = NAKED_TEMPLATE_PATH + "/mapper.xml.ftl";
         List<FileOutConfig> focList = new ArrayList<>();
         focList.add(new FileOutConfig(mapperXmlTemplatePath) {
             @Override
