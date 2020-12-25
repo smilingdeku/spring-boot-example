@@ -1,16 +1,12 @@
-package org.example.module.system.role.domain.request;
+package org.example.module.system.role.domain.response;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.example.common.util.JsonUtil;
 
 import java.io.Serializable;
-import java.util.List;
+import java.time.LocalDateTime;
 
-/**
- * @author linzhaoming
- * @since 2020/11/20
- **/
-public class SysRoleRequest implements Serializable {
+public class SysRoleResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,8 +16,10 @@ public class SysRoleRequest implements Serializable {
     private String name;
     @ApiModelProperty(value = "备注")
     private String memo;
-    @ApiModelProperty(value = "资源 ID 列表")
-    private List<Long> resourceIds;
+    @ApiModelProperty(value = "创建时间")
+    private LocalDateTime createdAt;
+    @ApiModelProperty(value = "更新时间")
+    private LocalDateTime updatedAt;
 
     public Long getId() {
         return id;
@@ -47,12 +45,20 @@ public class SysRoleRequest implements Serializable {
         this.memo = memo;
     }
 
-    public List<Long> getResourceIds() {
-        return resourceIds;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setResourceIds(List<Long> resourceIds) {
-        this.resourceIds = resourceIds;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

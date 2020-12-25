@@ -3,13 +3,18 @@ package org.example.module.system.schedulejob.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.PageResult;
 import org.example.common.domain.response.Result;
 import org.example.common.util.ConvertUtil;
+import org.example.common.util.MapperUtil;
 import org.example.module.system.schedulejob.domain.entity.SysScheduleJob;
+import org.example.module.system.schedulejob.domain.request.SysScheduleJobRequest;
+import org.example.module.system.schedulejob.domain.response.SysScheduleJobResponse;
 import org.example.module.system.schedulejob.mapper.SysScheduleJobMapper;
 import org.example.module.system.schedulejob.service.impl.SysScheduleJobServiceImpl;
 import org.quartz.SchedulerException;
@@ -37,14 +42,16 @@ import java.util.Map;
  * @author linzhaoming
  * @since 2020-11-25
  */
+@Api(tags = {"系统调度任务接口"})
 @RestController
 @RequestMapping("/sys/schedule-job")
 public class SysScheduleJobController
     extends BaseController<SysScheduleJobServiceImpl, SysScheduleJobMapper, SysScheduleJob> {
 
+    @ApiOperation(value = "获取调度任务分页数据")
     @PreAuthorize("hasAuthority('monitor:schedule-job')")
     @GetMapping("/page")
-    public PageResult<SysScheduleJob> page(@RequestParam Map<String, Object> requestParam) {
+    public PageResult<SysScheduleJobResponse> page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = QueryRequest.from(requestParam);
         QueryWrapper<SysScheduleJob> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
@@ -59,15 +66,20 @@ public class SysScheduleJobController
         }
         IPage<SysScheduleJob> page = getService()
             .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-        return PageResult.build(page);
+        List<SysScheduleJobResponse> responseList = MapperUtil.mapList(page.getRecords(), SysScheduleJob.class, SysScheduleJobResponse.class);
+        return PageResult.build(responseList, page.getTotal());
     }
 
+    @ApiOperation(value = "获取调度任务信息")
     @PreAuthorize("hasAuthority('monitor:schedule-job:edit')")
     @GetMapping("/{id}")
-    public Result<SysScheduleJob> get(@PathVariable Long id) {
-        return Result.success(getService().getById(id));
+    public Result<SysScheduleJobResponse> get(@PathVariable Long id) {
+        SysScheduleJob sysScheduleJob = getService().getById(id);
+        SysScheduleJobResponse response = MapperUtil.map(sysScheduleJob, SysScheduleJobResponse.class);
+        return Result.success(response);
     }
 
+    @ApiOperation(value = "运行调度任务")
     @Log
     @PreAuthorize("hasAuthority('monitor:schedule-job:run')")
     @GetMapping("/{id}/run")
@@ -76,16 +88,19 @@ public class SysScheduleJobController
         return Result.success();
     }
 
+    @ApiOperation(value = "添加调度任务")
     @Log
     @PreAuthorize("hasAuthority('monitor:schedule-job:add')")
     @PostMapping
-    public Result<SysScheduleJob> save(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
+    public Result<SysScheduleJobResponse> save(@RequestBody SysScheduleJobRequest request) throws SchedulerException {
         // 检查任务是否存在
         // checkJobArgs(sysScheduleJob);
+        SysScheduleJob sysScheduleJob = MapperUtil.map(request, SysScheduleJob.class);
         boolean success = getService().saveJob(sysScheduleJob);
-        return success ? Result.success(sysScheduleJob) : Result.failure();
+        return success ? Result.success(MapperUtil.map(sysScheduleJob, SysScheduleJobResponse.class)) : Result.failure();
     }
 
+    @ApiOperation(value = "删除调度任务")
     @Log
     @PreAuthorize("hasAuthority('monitor:schedule-job:delete')")
     @DeleteMapping("/{ids}")
@@ -95,14 +110,16 @@ public class SysScheduleJobController
         return Result.success();
     }
 
+    @ApiOperation(value = "更新调度任务")
     @Log
     @PreAuthorize("hasAuthority('monitor:schedule-job:edit')")
     @PutMapping
-    public Result<SysScheduleJob> update(@RequestBody SysScheduleJob sysScheduleJob) throws SchedulerException {
+    public Result<SysScheduleJobResponse> update(@RequestBody SysScheduleJobRequest request) throws SchedulerException {
         // 检查任务是否存在
         // checkJobArgs(sysScheduleJob);
+        SysScheduleJob sysScheduleJob = MapperUtil.map(request, SysScheduleJob.class);
         boolean success = getService().updateJob(sysScheduleJob);
-        return success ? Result.success(sysScheduleJob) : Result.failure();
+        return success ? Result.success(MapperUtil.map(sysScheduleJob, SysScheduleJobResponse.class)) : Result.failure();
     }
 
 //    /**

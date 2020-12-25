@@ -4,13 +4,17 @@ package org.example.module.system.schedulejoblog.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.example.common.annotation.Log;
 import org.example.common.base.BaseController;
 import org.example.common.domain.request.QueryRequest;
 import org.example.common.domain.response.PageResult;
 import org.example.common.domain.response.Result;
 import org.example.common.util.ConvertUtil;
+import org.example.common.util.MapperUtil;
 import org.example.module.system.schedulejoblog.domain.entity.SysScheduleJobLog;
+import org.example.module.system.schedulejoblog.domain.response.SysScheduleJobLogResponse;
 import org.example.module.system.schedulejoblog.mapper.SysScheduleJobLogMapper;
 import org.example.module.system.schedulejoblog.service.impl.SysScheduleJobLogServiceImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,14 +38,16 @@ import java.util.Map;
  * @author linzhaoming
  * @since 2020-11-30
  */
+@Api(tags = {"调度日志接口"})
 @RestController
 @RequestMapping("/sys/schedule-job-log")
 public class SysScheduleJobLogController
         extends BaseController<SysScheduleJobLogServiceImpl, SysScheduleJobLogMapper, SysScheduleJobLog> {
 
+    @ApiOperation(value = "获取调度日志分页数据")
     @PreAuthorize("hasAuthority('monitor:schedule-job-log')")
     @GetMapping("/page")
-    public PageResult<SysScheduleJobLog> page(@RequestParam Map<String, Object> requestParam) {
+    public PageResult<SysScheduleJobLogResponse> page(@RequestParam Map<String, Object> requestParam) {
         QueryRequest query = QueryRequest.from(requestParam);
         QueryWrapper<SysScheduleJobLog> queryWrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(query.getKeyword())) {
@@ -56,13 +62,17 @@ public class SysScheduleJobLogController
         }
         IPage<SysScheduleJobLog> page = getService()
                 .page(new Page<>(query.getPageIndex(), query.getPageSize()), queryWrapper);
-        return PageResult.build(page);
+        List<SysScheduleJobLogResponse> responseList = MapperUtil.mapList(page.getRecords(), SysScheduleJobLog.class, SysScheduleJobLogResponse.class);
+        return PageResult.build(responseList, page.getTotal());
     }
 
+    @ApiOperation(value = "删除调度日志")
     @PreAuthorize("hasAuthority('monitor:schedule-job-log')")
     @GetMapping("/{id}")
-    public Result<SysScheduleJobLog> get(@PathVariable Long id) {
-        return Result.success(getService().getById(id));
+    public Result<SysScheduleJobLogResponse> get(@PathVariable Long id) {
+        SysScheduleJobLog sysScheduleJobLog = getService().getById(id);
+        SysScheduleJobLogResponse response = MapperUtil.map(sysScheduleJobLog, SysScheduleJobLogResponse.class);
+        return Result.success(response);
     }
 
     @Log

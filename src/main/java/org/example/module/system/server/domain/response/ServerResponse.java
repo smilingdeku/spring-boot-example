@@ -1,5 +1,6 @@
 package org.example.module.system.server.domain.response;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.example.common.util.JsonUtil;
 
 /**
@@ -8,31 +9,23 @@ import org.example.common.util.JsonUtil;
  **/
 public class ServerResponse {
 
-    /** 主机地址 */
+    @ApiModelProperty(value = "主机地址")
     private String hostAddress;
-
-    /** 服务器时间 */
+    @ApiModelProperty(value = "服务器时间")
     private String time;
-
-    /** 已运行时间 */
+    @ApiModelProperty(value = "已运行时间")
     private String uptime;
-
-    /** 系统内存 */
+    @ApiModelProperty(value = "系统内存")
     private String memory;
-
-    /** CPU 核心数 */
+    @ApiModelProperty(value = "CPU 核心数")
     private Integer coreNum;
-
-    /** 存储空间 */
+    @ApiModelProperty(value = "存储空间")
     private String storage;
-
-    /** CPU 使用率 */
+    @ApiModelProperty(value = "CPU 使用率")
     private double cpuUsage;
-
-    /** 内存使用率 */
+    @ApiModelProperty(value = "内存使用率")
     private double memoryUsage;
-
-    /** 最大分区使用率 */
+    @ApiModelProperty(value = "最大分区使用率")
     private double maxSizePartitionUsage;
 
     public String getHostAddress() {
